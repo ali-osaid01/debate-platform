@@ -24,8 +24,8 @@ export default function Navbar() {
         </Link>
         <div className="flex md:order-2">
           <div className="hidden md:flex space-x-3">
-            <Button variant="outline">Register</Button>
-            <Button>Login</Button>
+          <Link href={'/sign-up'}> <Button variant="outline">Register</Button></Link>
+          <Link href={'/login'}> <Button variant="default">login</Button></Link>
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -42,8 +42,8 @@ export default function Navbar() {
                 </SheetDescription>
               </SheetHeader>
               <div className="mt-4 flex flex-col space-y-3">
-                <Button variant="outline" className="w-full">Register</Button>
-                <Button className="w-full">Login</Button>
+                <Button variant="outline" className="w-full"><Link href={'/sign-up'}>Register</Link></Button>
+                <Button className="w-full" ><Link href={'/login'}>Login</Link></Button>
               </div>
             </SheetContent>
           </Sheet>
