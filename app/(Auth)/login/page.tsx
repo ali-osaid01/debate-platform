@@ -58,6 +58,10 @@ export default  function Login() {
               Password
             </label>
           </div>
+          <Link href="/forget-password" className="text-sm text-gray-600 hover:underline" style={{ marginTop: '6px', display: 'inline-block' }}>
+          Forget password?
+          </Link>
+
           <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">
             Login
           </Button>
