@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const loginSchema = yup.object().shape({
+const loginValidation = yup.object().shape({
   email: yup
     .string()
     .email('Please enter a valid email address')
@@ -11,7 +11,7 @@ const loginSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-const registerSchema = yup.object().shape({
+const registerValidation = yup.object().shape({
   name: yup
     .string()
     .min(2, 'Name must be at least 2 characters long')
@@ -31,4 +31,11 @@ const registerSchema = yup.object().shape({
     .required('Confirm password is required'),
 });
 
-export { loginSchema, registerSchema };
+const forgetPasswordValidation = yup.object().shape({
+  email: yup
+  .string()
+  .email('Please enter a valid email address')
+  .required('Email is required'),
+})
+
+export { loginValidation, registerValidation,forgetPasswordValidation };

@@ -6,10 +6,24 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { FcGoogle } from "react-icons/fc"
 import Link from "next/link"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { registerValidation } from "@/validation/auth.validation"
+import { FloatingInput } from "@/components/shared/AuthInput"
+import { IRegister } from "@/types/interface/auth.interface"
 
 export default function Register() {
   const [focusedInput, setFocusedInput] = useState<string | null>(null)
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(registerValidation),
+  });
+  const onSubmit: SubmitHandler<IRegister> = async (data) => {
+    console.log("DATA ->", data)
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4">
       <Card className="w-full max-w-md shadow-xl bg-white">
@@ -18,25 +32,30 @@ export default function Register() {
           <CardDescription className="text-center">Enter your details to register</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {["name", "email", "password", "confirm-password"].map((field) => (
-            <div key={field} className="relative">
-              <Input
-                id={field}
-                type={field.includes("password") ? "password" : field === "email" ? "email" : "text"}
-                className="w-full h-10 px-3 text-base placeholder-transparent border-gray-300 peer"
-                onFocus={() => setFocusedInput(field)}
-                onBlur={(e) => e.target.value === "" && setFocusedInput(null)}
-              />
-              <label
-                htmlFor={field}
-                className={`absolute left-3 ${
-                  focusedInput === field ? "-top-2 text-xs bg-white" : "top-2 text-base"
-                } text-gray-600 transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600`}
-              >
-                {field.charAt(0).toUpperCase() + field.slice(1).replace("-", " ")}
-              </label>
-            </div>
-          ))}
+          <FloatingInput
+            placeholder="Name"
+            name="name"
+            type="text"
+            register={register}
+          />
+           <FloatingInput
+            placeholder="Email"
+            name="email"
+            type="text"
+            register={register}
+          />
+           <FloatingInput
+            placeholder="Password"
+            name="password"
+            type="password"
+            register={register}
+          />
+           <FloatingInput
+            placeholder="Confirm Password"
+            name="cPassword"
+            type="password"
+            register={register}
+          />
           <Button className="w-full bg-black text-white hover:bg-gray-800">
             Register
           </Button>

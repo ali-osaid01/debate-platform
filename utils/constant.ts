@@ -1,0 +1,1 @@
+export const vapidKey = 'BK2WrcNO5mJn6WwlB7YfMHLBoJHjkxXeOrw-44Sqmx1TGT-NpQsfjP3bCe4TbxeRJqd61LULnHbvs-ko1GBluPg'

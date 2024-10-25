@@ -1,65 +1,75 @@
 "use client"
-
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { FcGoogle } from "react-icons/fc"
 import Link from "next/link"
-import { useMutation } from "@tanstack/react-query";
+import { FloatingInput } from "@/components/shared/AuthInput"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { loginValidation } from "@/validation/auth.validation"
+import useFcmToken from "@/hooks/useFcmToken"
+import GoogleButton from "@/components/shared/GoogleButton"
+import { toast } from "sonner"
+import { ILogin } from "@/types/interface/auth.interface"
 
-export default  function Login() {
-  const [focusedInput, setFocusedInput] = useState<string | null>(null)
 
-  // const { mutateAsync } = useMutation({
-  //   mutationFn: onLogin,
-  // });
+export default function Login() {
+  // const { fcmToken,notificationPermissionStatus } = useFcmToken();
 
-  
+  // console.log("FCM TOKEN ->",fcmToken)
+  // console.log("notificationPermissionStatus ->",notificationPermissionStatus)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(loginValidation),
+  });
+
+  const onSubmit: SubmitHandler<ILogin> = async (data) => {
+    console.log("DATA ->", data)
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4">
+    <form className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4" onSubmit={handleSubmit(onSubmit)}>
       <Card className="w-full max-w-md shadow-xl bg-white">
         <CardHeader className="space-y-1">
           <CardTitle className="text-3xl font-bold text-center">Login</CardTitle>
           <CardDescription className="text-center">Enter your email and password to login</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="relative">
-            <Input
-              id="email"
-              type="email"
-              className="w-full h-10 px-3 text-base placeholder-transparent border-gray-300 peer"
-              onFocus={() => setFocusedInput("email")}
-              onBlur={(e) => e.target.value === "" && setFocusedInput(null)}
+        <CardContent className={`${errors.root ? null : 'space-y-2'}`}>
+          <div>
+          <FloatingInput
+            placeholder="Email"
+            name="email"
+            type="text"
+            register={register}
             />
-            <label
-              htmlFor="email"
-              className={`absolute left-3 ${
-                focusedInput === "email" ? "-top-2 text-xs bg-white" : "top-2 text-base"
-              } text-gray-600 transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600`}
-            >
-              Email
-            </label>
+              {
+            errors.email &&
+            <p className="text-xs p-1 text-red-600 ">
+              *{errors.email.message}
+            </p>
+          }
           </div>
-          <div className="relative">
-            <Input
-              id="password"
-              type="password"
-              className="w-full h-10 px-3 text-base placeholder-transparent border-gray-300 peer"
-              onFocus={() => setFocusedInput("password")}
-              onBlur={(e) => e.target.value === "" && setFocusedInput(null)}
-            />
-            <label
-              htmlFor="password"
-              className={`absolute left-3 ${
-                focusedInput === "password" ? "-top-2 text-xs bg-white" : "top-2 text-base"
-              } text-gray-600 transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600`}
-            >
-              Password
-            </label>
-          </div>
+        
+        <div>
+        <FloatingInput
+            placeholder="Password"
+            name="password"
+            type="password"
+            register={register}
+          />
+           {
+            errors.password &&
+            <p className="text-xs p-1 text-red-600 ">
+              *{errors.password.message}
+            </p>
+          }
+        </div>
+         
           <Link href="/forget-password" className="text-sm text-gray-600 hover:underline" style={{ marginTop: '6px', display: 'inline-block' }}>
-          Forget password?
+            Forget password?
           </Link>
 
           <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">
@@ -75,10 +85,7 @@ export default  function Login() {
               <span className="bg-white px-2 text-gray-500">Or continue with</span>
             </div>
           </div>
-          <Button variant="outline" className="w-full border-gray-300 text-gray-900 hover:bg-gray-100">
-            <FcGoogle className="mr-2 h-4 w-4" />
-            Google
-          </Button>
+          <GoogleButton />
           <div className="text-center text-sm text-gray-500">
             Don't have an account?{" "}
             <Link href={'/sign-up'} className="text-gray-900 hover:underline">
@@ -87,6 +94,6 @@ export default  function Login() {
           </div>
         </CardFooter>
       </Card>
-    </div>
+    </form>
   )
 }
