@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner"
+import ReactQueryProvider from "@/provider/ReactQueryProvider";
 
 export const metadata: Metadata = {
     title: "Debate Website",
@@ -26,9 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+             <ReactQueryProvider>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
+      </ReactQueryProvider>
         <Toaster richColors position="top-right"/>
     </html>
   );
