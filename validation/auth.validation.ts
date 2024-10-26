@@ -25,7 +25,7 @@ const registerValidation = yup.object().shape({
     .string()
     .min(6, 'Password must be at least 6 characters long')
     .required('Password is required'),
-  confirmPassword: yup
+  cPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')
     .required('Confirm password is required'),
@@ -37,5 +37,22 @@ const forgetPasswordValidation = yup.object().shape({
   .email('Please enter a valid email address')
   .required('Email is required'),
 })
-
-export { loginValidation, registerValidation,forgetPasswordValidation };
+ const onboardingValidation = yup.object({
+  username: yup.string().required('Username is required'),
+  age: yup
+    .number()
+    .required('Age is required')
+    .min(13, 'You must be at least 13 years old'),
+  phoneNumber: yup
+    .string()
+    .required('Phone number is required')
+    .matches(/^\+?\d{10,15}$/, 'Enter a valid phone number'),
+  interest: yup.string().required('Interest is required'),
+  language: yup.string().required('Language is required'),
+  location: yup.object({
+    city: yup.string().required('City is required'),
+    country: yup.string().required('Country is required'),
+  }),
+  topicSelection: yup.string().required('Topic selection is required'),
+});
+export { loginValidation, registerValidation,forgetPasswordValidation,onboardingValidation };

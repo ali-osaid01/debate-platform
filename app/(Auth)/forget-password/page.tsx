@@ -1,28 +1,36 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { FloatingInput } from "@/components/shared/AuthInput"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { forgetPasswordValidation } from "@/validation/auth.validation"
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FloatingInput } from "@/components/shared/Auth-Input";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { forgetPasswordValidation } from "@/validation/auth.validation";
+import { IForgetPasswordForm } from "@/types/interface/auth.interface";
+import { toast } from "sonner";
+
+
 
 export default function ForgotPasswordPage() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const handleSendOTP = () => {
-    console.log("OTP sent to email!")
-    router.push("/verify-otp")
-  }
-
+  // Set up form validation and submission handler
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<IForgetPasswordForm>({
     resolver: yupResolver(forgetPasswordValidation),
   });
+
+  // Submission handler with interface enforcement
+  const onSubmit: SubmitHandler<IForgetPasswordForm> = (data) => {
+    console.log("OTP sent to email!", data.email);
+    toast("OTP send to email!")
+    router.push("/verify-otp");
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4">
@@ -31,20 +39,31 @@ export default function ForgotPasswordPage() {
           <CardTitle className="text-3xl font-bold text-center">Forgot Password</CardTitle>
           <CardDescription className="text-center">Enter your email to receive an OTP</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <FloatingInput
-            placeholder="Email"
-            name="email"
-            type="text"
-            register={register}
-          />
-          <Button
-            className="w-full bg-gray-900 text-white hover:bg-gray-800"
-            onClick={handleSendOTP}
-          >
-            Send OTP
-          </Button>
-        </CardContent>
+        
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            <FloatingInput
+              placeholder="Email"
+              name="email"
+              type="text"
+              register={register}
+            />
+            {errors.email && (
+              <p className="text-xs p-1 text-red-600">
+                *{errors.email.message}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              className="w-full bg-gray-900 text-white hover:bg-gray-800"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sending OTP..." : "Send OTP"}
+            </Button>
+          </CardContent>
+        </form>
+
         <CardFooter className="flex flex-col space-y-4 pt-0">
           <div className="text-center text-sm text-gray-500">
             Remember your password?{" "}
@@ -55,5 +74,5 @@ export default function ForgotPasswordPage() {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

@@ -7,3 +7,20 @@ export interface IRegister extends ILogin {
     name:string,
     cPassword:string
 }
+
+export interface IOnboarding {
+    username: string;
+    age: number;
+    phoneNumber: string;
+    interest: string;
+    language: string;
+    location: {
+      city: string;
+      country: string;
+    };
+    topicSelection: string;
+}
+
+export interface IForgetPasswordForm {
+  email: string;
+}

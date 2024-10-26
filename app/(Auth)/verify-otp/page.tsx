@@ -26,8 +26,8 @@ export default function VerifyOTPPage() {
           <CardDescription className="text-center">Enter the OTP sent to your email</CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-4">
-          <div className="relative">
+        <CardContent className="space-y-4 ">
+          <div className="relative flex justify-center items-center">
             <InputOTP maxLength={6}>
               <InputOTPGroup>
                 <InputOTPSlot index={0} />

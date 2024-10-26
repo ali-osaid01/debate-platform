@@ -1,6 +1,7 @@
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import "../globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 export default function RootLayout({
   children,
@@ -13,6 +14,7 @@ export default function RootLayout({
       <body>
           <Navbar/>
         {children}
+        <Footer/>
       </body>
        </ReactQueryProvider>
     </html>

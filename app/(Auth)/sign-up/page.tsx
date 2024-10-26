@@ -1,65 +1,72 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { FcGoogle } from "react-icons/fc"
-import Link from "next/link"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { registerValidation } from "@/validation/auth.validation"
-import { FloatingInput } from "@/components/shared/AuthInput"
-import { IRegister } from "@/types/interface/auth.interface"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { FcGoogle } from "react-icons/fc";
+import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerValidation } from "@/validation/auth.validation";
+import { FloatingInput } from "@/components/shared/Auth-Input";
+import { IRegister } from "@/types/interface/auth.interface";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Register() {
-  const [focusedInput, setFocusedInput] = useState<string | null>(null)
+  const router = useRouter();
+  
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<IRegister>({
     resolver: yupResolver(registerValidation),
   });
+
   const onSubmit: SubmitHandler<IRegister> = async (data) => {
-    console.log("DATA ->", data)
-  }
+    try {
+      console.log("DATA ->", data);
+      toast("Register has been successfully completed")
+      router.push('/onboarding');
+    } catch (error) {
+      console.log("ERROR ->",error)
+      toast("Registration Error");
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4">
+    <form
+      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Card className="w-full max-w-md shadow-xl bg-white">
         <CardHeader className="space-y-1">
           <CardTitle className="text-3xl font-bold text-center">Create an account</CardTitle>
           <CardDescription className="text-center">Enter your details to register</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <FloatingInput
-            placeholder="Name"
-            name="name"
-            type="text"
-            register={register}
-          />
-           <FloatingInput
-            placeholder="Email"
-            name="email"
-            type="text"
-            register={register}
-          />
-           <FloatingInput
-            placeholder="Password"
-            name="password"
-            type="password"
-            register={register}
-          />
-           <FloatingInput
-            placeholder="Confirm Password"
-            name="cPassword"
-            type="password"
-            register={register}
-          />
-          <Button className="w-full bg-black text-white hover:bg-gray-800">
-            Register
+        
+        <CardContent className="space-y-2">
+          {/* Name Field */}
+          <FloatingInput placeholder="Name" name="name" type="text" register={register} />
+          {errors.name && <p className="text-xs text-red-600">*{errors.name.message}</p>}
+
+          {/* Email Field */}
+          <FloatingInput placeholder="Email" name="email" type="text" register={register} />
+          {errors.email && <p className="text-xs text-red-600">*{errors.email.message}</p>}
+
+          {/* Password Field */}
+          <FloatingInput placeholder="Password" name="password" type="password" register={register} />
+          {errors.password && <p className="text-xs text-red-600">*{errors.password.message}</p>}
+
+          {/* Confirm Password Field */}
+          <FloatingInput placeholder="Confirm Password" name="cPassword" type="password" register={register} />
+          {errors.cPassword && <p className="text-xs text-red-600">*{errors.cPassword.message}</p>}
+
+          <Button className="w-full bg-black text-white hover:bg-gray-800" disabled={isSubmitting}>
+            {isSubmitting ? "Registering..." : "Register"}
           </Button>
         </CardContent>
+
         <CardFooter className="flex flex-col space-y-4 pt-0">
           <div className="relative w-full">
             <div className="absolute inset-0 flex items-center">
@@ -69,10 +76,14 @@ export default function Register() {
               <span className="bg-white px-2 text-gray-500">Or register with</span>
             </div>
           </div>
+
+          {/* Google Register Button */}
           <Button variant="outline" className="w-full border-gray-300 text-gray-900 hover:bg-gray-100">
             <FcGoogle className="mr-2 h-4 w-4" />
             Google
           </Button>
+
+          {/* Link to Login */}
           <div className="text-center text-sm text-gray-500">
             Already have an account?{" "}
             <Link href={'/login'} className="text-gray-900 hover:underline">
@@ -81,6 +92,6 @@ export default function Register() {
           </div>
         </CardFooter>
       </Card>
-    </div>
-  )
+    </form>
+  );
 }
