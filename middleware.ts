@@ -6,10 +6,10 @@ export function middleware(request: NextRequest) {
   const publicPaths = [
     "/",
     "/login",
-    "sign-up",
-    "forget-password",
-    "reset-password",
-    "verify-otp",
+    "/sign-up",
+    "/forget-password",
+    "/reset-password",
+    "/verify-otp",
   ];
   const isPublicPath = publicPaths.includes(path);
 
@@ -33,10 +33,10 @@ export const config = {
   matcher: [
     "/",
     "/login",
-    "sign-up",
-    "forget-password",
-    "reset-password",
-    "verify-otp",
+    "/sign-up",
+    "/forget-password",
+    "/reset-password",
+    "/verify-otp",
     "/feed"
   ],
 };
