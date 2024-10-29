@@ -18,10 +18,10 @@ export function middleware(request: NextRequest) {
   ];
   const isPrivatePath = privatePaths.includes(path);
 
-  const token = request.cookies.get("accessToken")?.value;
+  const token =  request.cookies.get("accessToken")?.value;
   console.log("TOKEN ->",token)
   if (isPublicPath && token) {
-    return NextResponse.redirect(new URL("/", request.nextUrl));
+    return NextResponse.redirect(new URL("/feed", request.nextUrl));
   }
 
   if (isPrivatePath && !token) {

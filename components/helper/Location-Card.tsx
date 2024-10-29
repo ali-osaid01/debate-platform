@@ -17,7 +17,7 @@ const UserOriginCard:FC<UserOriginCardProps> = ({ countries }) => (
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {countries.map((country, index) => (
-            <div key={index} className="flex items-center space-x-2">
+            <div key={index.toString()+country} className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: country.color }}></div>
               <p className="text-sm text-gray-600">{country.name}: <span className="font-semibold">{country.users.toLocaleString()}</span></p>
             </div>

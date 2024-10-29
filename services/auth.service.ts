@@ -8,19 +8,18 @@ export const login = async (payload:ILogin) => {
         const response = await api.post('/auth/login',payload);
        
         const token = response?.data?.data?.accessToken;
-        if(token) Cookies.setCookie("accessToken",token)
-
-        return {
-            status: STATUS.SUCCESS,
-            response
+        if(token) {
+            Cookies.setCookie("accessToken",token)
+            localStorage.setItem("accessToken",token)
         }
+        return { status: STATUS.SUCCESS,response}
+        
     } catch (error: any) {
         console.log("ERROR ->", error)
         return {
             status: STATUS.FAILED,
             response: error.response?.data?.message || "Something went wrong",
         }
-        
     }
 }
 

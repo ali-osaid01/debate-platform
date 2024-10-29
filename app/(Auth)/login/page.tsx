@@ -23,7 +23,7 @@ export default function Login() {
     mutationFn: login,
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
-    route:'/feed'
+    route: '/feed'
   });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
@@ -47,41 +47,41 @@ export default function Login() {
         </CardHeader>
         <CardContent className={`${errors.root ? null : 'space-y-2'}`}>
           <div>
-          <FloatingInput
-            placeholder="Email"
-            name="email"
-            type="text"
-            register={register}
+            <FloatingInput
+              placeholder="Email"
+              name="email"
+              type="text"
+              register={register}
             />
-              {
-            errors.email &&
-            <p className="text-xs p-1 text-red-600 ">
-              *{errors.email.message}
-            </p>
-          }
+            {
+              errors.email &&
+              <p className="text-xs p-1 text-red-600 ">
+                *{errors.email.message}
+              </p>
+            }
           </div>
-        
-        <div>
-        <FloatingInput
-            placeholder="Password"
-            name="password"
-            type="password"
-            register={register}
-          />
-           {
-            errors.password &&
-            <p className="text-xs p-1 text-red-600 ">
-              *{errors.password.message}
-            </p>
-          }
-        </div>
-         
+
+          <div>
+            <FloatingInput
+              placeholder="Password"
+              name="password"
+              type="password"
+              register={register}
+            />
+            {
+              errors.password &&
+              <p className="text-xs p-1 text-red-600 ">
+                *{errors.password.message}
+              </p>
+            }
+          </div>
+
           <Link href="/forget-password" className="text-sm text-gray-600 hover:underline" style={{ marginTop: '6px', display: 'inline-block' }}>
             Forget password?
           </Link>
 
           <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">
-            {isSubmitting? "Processing..." : "Login"}
+            {isSubmitting ? "Processing..." : "Login"}
           </Button>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 pt-0">

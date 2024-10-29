@@ -2,6 +2,7 @@ import React from 'react'
 import backgroundImage from '@/public/assets/debate.jpg'
 import Image from 'next/image'
 import { Button } from '../ui/button'
+
 export default function Hero() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
@@ -9,6 +10,7 @@ export default function Hero() {
         <Image
           src={backgroundImage}
           alt="Background image of a debate"
+          width={350}
         />
       </div>
       <div className="px-4 md:px-6">
