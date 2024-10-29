@@ -1,6 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import React from 'react'
 import FeatureCard from '../helper/Feature-Card'
 import { Globe, MessageCircle, Shield, TrendingUp, Users, Zap } from 'lucide-react'
 import StatCard from '../helper/Stat-Card'
@@ -21,7 +20,7 @@ export default function Analytics() {
 
     return (
         <section>
-            <section className="py-20 bg-gray-50">
+            <div className="py-20 bg-gray-50">
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold text-center mb-12">Why Choose DebateHub?</h2>
                     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -57,8 +56,8 @@ export default function Analytics() {
                         />
                     </div>
                 </div>
-            </section>
-            <section className="py-20">
+            </div>
+            <div className="py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center mb-12">
                         <h2 className="text-3xl font-bold mb-4">Our Global Impact</h2>
@@ -74,7 +73,7 @@ export default function Analytics() {
                         <UserOriginCard countries={userOrigins} />
                     </div>
                 </div>
-            </section>
+            </div>
         </section>
     )
 }

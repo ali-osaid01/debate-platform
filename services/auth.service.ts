@@ -1,18 +1,19 @@
 import api from "./middleware";
+import Cookies from "cookies-next";
 import { STATUS } from "@/types/enum";
 import { ILogin, IResetPassword, IVerifyOTP } from "@/types/interface/auth.interface";
+
 export const login = async (payload:ILogin) => {
     try {
         const response = await api.post('/auth/login',payload);
        
         const token = response?.data?.data?.accessToken;
-        if(token) localStorage.setItem("accessToken",token);
+        if(token) Cookies.setCookie("accessToken",token)
 
         return {
             status: STATUS.SUCCESS,
             response
         }
-
     } catch (error: any) {
         console.log("ERROR ->", error)
         return {

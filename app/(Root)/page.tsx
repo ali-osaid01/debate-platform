@@ -5,10 +5,10 @@ import React from 'react'
 
 export default function page() {
   return (
-    <main className='flex-1'>
+    <div className='flex-1'>
         <Hero/>
         <Analytics/>
         <JoinUs/>
-    </main>
+    </div>
   )
 }

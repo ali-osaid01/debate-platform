@@ -22,10 +22,8 @@ export default function Navbar() {
     queryKey: ['user'],
     queryFn: authenticatedUser,
     enabled: !user,
-    staleTime: 1000 * 60 * 5,
   });
 
-  console.log("USER DATA ->",user)
   useEffect(() => {
     if (!isLoading && data?.success && data.response && !user) {
       setUser(data?.response?.data.data);
@@ -64,7 +62,7 @@ export default function Navbar() {
                 <SheetTitle>Menu</SheetTitle>
                 <SheetDescription>Navigate our website or sign in.</SheetDescription>
               </SheetHeader>
-              {user ? (
+              {data ? (
                 <div>hello world</div>
               ) : (
                 <div className="mt-4 flex flex-col space-y-3">

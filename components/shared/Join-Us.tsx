@@ -1,7 +1,7 @@
 import React from 'react'
+import Link from 'next/link'
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
-import Link from 'next/link'
 
 const JoinUs = () => (
     <section className="py-20 bg-gray-50">
