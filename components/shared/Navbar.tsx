@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { BellDot, Menu, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,30 +11,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useQuery } from '@tanstack/react-query';
-import { authenticatedUser } from '@/services/user.service';
-import { useUserStore } from '@/store/user.store';
 import ProfileAvatar from './Profile-Avatar';
 import Logo from '@/public/assets/logo.jpg'
 import Image from 'next/image';
+import { useAuthenticatedUser } from '@/hooks/useAuthenticatedUser';
+import NotificationSheet from '../helper/notification-sheet';
 export default function Navbar() {
-  const { user, setUser } = useUserStore();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['user'],
-    queryFn: authenticatedUser,
-    enabled: !user,
-    staleTime: 5000 * 60,
-  });
-
-  useEffect(() => {
-    if (!isLoading && data?.success && data.response && !user) {
-      setUser(data.response.data.data);
-    }
-  }, [data, isLoading, user, setUser]);
-
+  const { user, isLoading } = useAuthenticatedUser();
+  
   return (
-    <nav className="bg-background border-b">
+    <div className="bg-background border-b">
       <div className="px-5 flex flex-wrap items-center justify-between mx-auto">
         <Link href="/" className="flex items-center">
           <span className="text-2xl font-semibold flex items-center">
@@ -55,7 +42,7 @@ export default function Navbar() {
           ) : user ? (
             <div className='flex gap-2 items-center'>
               <MessageSquare />
-              <BellDot />
+              <NotificationSheet />
               <ProfileAvatar />
             </div>
           ) : (
@@ -98,6 +85,6 @@ export default function Navbar() {
           </Sheet>
         </div>
       </div>
-    </nav>
+    </div>
   );
 }
