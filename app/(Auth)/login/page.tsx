@@ -7,12 +7,10 @@ import { FloatingInput } from "@/components/shared/Auth-Input"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { loginValidation } from "@/validation/auth.validation"
-import { toast } from "sonner"
 import { ILogin } from "@/types/interface/auth.interface"
 import { login } from "@/services/auth.service"
-import { useMutation } from "@tanstack/react-query"
-import { ERROR_LOGIN, NETWORK_ERROR, SUCCESS_LOGIN_PASSED } from "@/utils/constant"
-import { STATUS } from "@/types/enum"
+import { useFormMutation } from "@/hooks/useFormMutation"
+import { ERROR_LOGIN, SUCCESS_LOGIN_PASSED } from "@/utils/constant"
 
 
 export default function Login() {
@@ -21,19 +19,15 @@ export default function Login() {
   // console.log("FCM TOKEN ->",fcmToken)
   // console.log("notificationPermissionStatus ->",notificationPermissionStatus)
 
-  const {mutateAsync} = useMutation({
+  const { handleFormSubmit } = useFormMutation<any, Error, ILogin>({
     mutationFn: login,
-    onSuccess({status}) {
-      if(status == STATUS.SUCCESS) return toast.success(SUCCESS_LOGIN_PASSED)
-      else return toast.error(ERROR_LOGIN)  
-    },
-    onError:()=>{
-      toast.error(NETWORK_ERROR)
-    }
-  })
+    successMessage: SUCCESS_LOGIN_PASSED,
+    errorMessage: ERROR_LOGIN,
+    route:'/feed'
+  });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
-     await mutateAsync(data);
+    await handleFormSubmit(data)
   }
 
   const {
@@ -87,7 +81,7 @@ export default function Login() {
           </Link>
 
           <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">
-            Login
+            {isSubmitting? "Processing..." : "Login"}
           </Button>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 pt-0">

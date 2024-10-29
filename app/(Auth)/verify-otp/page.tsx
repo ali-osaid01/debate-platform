@@ -1,21 +1,36 @@
 "use client"
-
+import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp"
-import Link from "next/link"
+import { InputOTP,InputOTPGroup,InputOTPSlot} from "@/components/ui/input-otp"
+import { useFormMutation } from "@/hooks/useFormMutation"
+import { IVerifyOTP } from "@/types/interface/auth.interface"
+import { verifyOtp } from "@/services/auth.service"
+import { SUCCESS_OTP_VERIFICATION_FAILED, SUCCESS_OTP_VERIFICATION_PASSED } from "@/utils/constant"
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner"
 
 export default function VerifyOTPPage() {
-  const [otp, setOtp] = useState("")
+  const [otp, setOtp] = useState<string>("")
+  const searchParams = useSearchParams();
+  
+  const { handleFormSubmit } = useFormMutation<any, Error, IVerifyOTP>({
+    mutationFn: verifyOtp,
+    successMessage: SUCCESS_OTP_VERIFICATION_PASSED,
+    errorMessage: SUCCESS_OTP_VERIFICATION_FAILED,
+    route:'/reset-password'
+  });
 
-  const handleVerifyOTP = () => {
-    console.log("OTP verified:", otp)
+  const handleVerifyOTP = async ()  => {
+    const email = searchParams.get('email')
+    console.log("EMAIL",email)
+    if(!email) return toast.error("Please Send OTP again")
+    const payload = {
+      otp:Number(otp),
+      email
+    }
+    await handleFormSubmit(payload)
   }
 
   return (
@@ -28,14 +43,11 @@ export default function VerifyOTPPage() {
 
         <CardContent className="space-y-4 ">
           <div className="relative flex justify-center items-center">
-            <InputOTP maxLength={6}>
-              <InputOTPGroup>
+            <InputOTP maxLength={6} onChange={(value)=>setOtp(value)}>
+              <InputOTPGroup >
                 <InputOTPSlot index={0} />
                 <InputOTPSlot index={1} />
                 <InputOTPSlot index={2} />
-              </InputOTPGroup>
-              <InputOTPSeparator />
-              <InputOTPGroup>
                 <InputOTPSlot index={3} />
                 <InputOTPSlot index={4} />
                 <InputOTPSlot index={5} />

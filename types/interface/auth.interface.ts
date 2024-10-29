@@ -4,8 +4,8 @@ export interface ILogin {
 }
 
 export interface IRegister extends ILogin {
-    name:string,
-    cPassword:string
+    name:string
+    cPassword?:string
 }
 
 export interface IOnboarding {
@@ -23,4 +23,13 @@ export interface IOnboarding {
 
 export interface IForgetPasswordForm {
   email: string;
+}
+
+export interface IVerifyOTP {
+  email:string
+  otp:number
+}
+
+export interface IResetPassword {
+  password:string
 }

@@ -10,29 +10,31 @@ import { registerValidation } from "@/validation/auth.validation";
 import { FloatingInput } from "@/components/shared/Auth-Input";
 import { IRegister } from "@/types/interface/auth.interface";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useFormMutation } from "@/hooks/useFormMutation";
+import { ERROR_VALIDATION, SUCCESS_REGISTRATION_PASSED } from "@/utils/constant";
+import { register as registerApi} from "@/services/auth.service";
 
 export default function Register() {
-  const router = useRouter();
   
+  const { handleFormSubmit } = useFormMutation<any, Error, IRegister>({
+    mutationFn: registerApi,
+    successMessage: SUCCESS_REGISTRATION_PASSED,
+    errorMessage: ERROR_VALIDATION,
+    route:'/login'
+  });
+
+  const onSubmit: SubmitHandler<IRegister> = async ({email,name,password}) => {
+    await handleFormSubmit({email,name,password})
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<IRegister>({
+  } = useForm({
     resolver: yupResolver(registerValidation),
   });
-
-  const onSubmit: SubmitHandler<IRegister> = async (data) => {
-    try {
-      console.log("DATA ->", data);
-      toast("Register has been successfully completed")
-      router.push('/onboarding');
-    } catch (error) {
-      console.log("ERROR ->",error)
-      toast("Registration Error");
-    }
-  };
+  
 
   return (
     <form

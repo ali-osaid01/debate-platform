@@ -10,26 +10,32 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { forgetPasswordValidation } from "@/validation/auth.validation";
 import { IForgetPasswordForm } from "@/types/interface/auth.interface";
 import { toast } from "sonner";
+import { useFormMutation } from "@/hooks/useFormMutation";
+import { forgetPassword } from "@/services/auth.service";
+import { NETWORK_ERROR, SUCCESS_OTP_SEND_PASSED } from "@/utils/constant";
 
 
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
 
-  // Set up form validation and submission handler
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<IForgetPasswordForm>({
     resolver: yupResolver(forgetPasswordValidation),
   });
 
-  // Submission handler with interface enforcement
-  const onSubmit: SubmitHandler<IForgetPasswordForm> = (data) => {
-    console.log("OTP sent to email!", data.email);
-    toast("OTP send to email!")
-    router.push("/verify-otp");
+  const { handleFormSubmit } = useFormMutation<any, Error, IForgetPasswordForm>({
+    mutationFn: forgetPassword,
+    successMessage: SUCCESS_OTP_SEND_PASSED,
+    errorMessage: NETWORK_ERROR,
+    route:`/verify-otp?email=${watch('email')}`
+  });
+
+  const onSubmit: SubmitHandler<IForgetPasswordForm> = async (data) => {
+    await handleFormSubmit(data)
   };
 
   return (
@@ -59,7 +65,7 @@ export default function ForgotPasswordPage() {
               className="w-full bg-gray-900 text-white hover:bg-gray-800"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Sending OTP..." : "Send OTP"}
+              {isSubmitting ? "Sending OTP..." : "verify"}
             </Button>
           </CardContent>
         </form>

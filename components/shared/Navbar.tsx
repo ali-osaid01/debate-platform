@@ -1,8 +1,8 @@
-import React from "react"
-import Link from "next/link"
-import { Menu } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
+'use client';
+import React, { useEffect } from 'react';
+import Link from 'next/link';
+import { Menu } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
@@ -10,9 +10,28 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from '@/components/ui/sheet';
+import { useQuery } from '@tanstack/react-query';
+import { authenticatedUser } from '@/services/user.service';
+import { useUserStore } from '@/store/user.store';
 
 export default function Navbar() {
+  const { user, setUser } = useUserStore();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: authenticatedUser,
+    enabled: !user,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  console.log("USER DATA ->",user)
+  useEffect(() => {
+    if (!isLoading && data?.success && data.response && !user) {
+      setUser(data?.response?.data.data);
+    }
+  }, [data, isLoading, user, setUser]);
+
   return (
     <nav className="bg-background border-b">
       <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -23,11 +42,17 @@ export default function Navbar() {
           </span>
         </Link>
         <div className="flex md:order-2">
+          {user ? <div> hello world </div> :
           <div className="hidden md:flex space-x-3">
-          <Link href={'/sign-up'}> <Button variant="outline">Register</Button></Link>
-          <Link href={'/login'}> <Button variant="default">login</Button></Link>
+            <Link href="/sign-up" passHref>
+              <Button variant="outline">Register</Button>
+            </Link>
+            <Link href="/login" passHref>
+              <Button variant="default">Login</Button>
+            </Link>
           </div>
-          <Sheet>
+          }
+          <Sheet key="navbar-sheet">
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="md:hidden">
                 <Menu className="h-5 w-5" />
@@ -37,18 +62,26 @@ export default function Navbar() {
             <SheetContent>
               <SheetHeader>
                 <SheetTitle>Menu</SheetTitle>
-                <SheetDescription>
-                  Navigate our website or sign in.
-                </SheetDescription>
+                <SheetDescription>Navigate our website or sign in.</SheetDescription>
               </SheetHeader>
-              <div className="mt-4 flex flex-col space-y-3">
-                <Button variant="outline" className="w-full"><Link href={'/sign-up'}>Register</Link></Button>
-                <Button className="w-full" ><Link href={'/login'}>Login</Link></Button>
-              </div>
+              {user ? (
+                <div>hello world</div>
+              ) : (
+                <div className="mt-4 flex flex-col space-y-3">
+                  <Link href="/sign-up" passHref>
+                    <Button variant="outline" className="w-full">
+                      Register
+                    </Button>
+                  </Link>
+                  <Link href="/login" passHref>
+                    <Button className="w-full">Login</Button>
+                  </Link>
+                </div>
+              )}
             </SheetContent>
           </Sheet>
         </div>
       </div>
     </nav>
-  )
+  );
 }
