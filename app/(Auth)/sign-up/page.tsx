@@ -16,6 +16,14 @@ import { register as registerApi} from "@/services/auth.service";
 
 export default function Register() {
   
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(registerValidation),
+  });
+
   const { handleFormSubmit } = useFormMutation<any, Error, IRegister>({
     mutationFn: registerApi,
     successMessage: SUCCESS_REGISTRATION_PASSED,
@@ -26,15 +34,6 @@ export default function Register() {
   const onSubmit: SubmitHandler<IRegister> = async ({email,name,password}) => {
     await handleFormSubmit({email,name,password})
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(registerValidation),
-  });
-  
 
   return (
     <form
@@ -50,19 +49,19 @@ export default function Register() {
         <CardContent className="space-y-2">
           {/* Name Field */}
           <FloatingInput placeholder="Name" name="name" type="text" register={register} />
-          {errors.name && <p className="text-xs text-red-600">*{errors.name.message}</p>}
+          {/* {errors.name && <p className="text-xs text-red-600">*{errors.name.message}</p>} */}
 
           {/* Email Field */}
           <FloatingInput placeholder="Email" name="email" type="text" register={register} />
-          {errors.email && <p className="text-xs text-red-600">*{errors.email.message}</p>}
+          {/* {errors.email && <p className="text-xs text-red-600">*{errors.email.message}</p>} */}
 
           {/* Password Field */}
           <FloatingInput placeholder="Password" name="password" type="password" register={register} />
-          {errors.password && <p className="text-xs text-red-600">*{errors.password.message}</p>}
+          {/* {errors.password && <p className="text-xs text-red-600">*{errors.password.message}</p>} */}
 
           {/* Confirm Password Field */}
           <FloatingInput placeholder="Confirm Password" name="cPassword" type="password" register={register} />
-          {errors.cPassword && <p className="text-xs text-red-600">*{errors.cPassword.message}</p>}
+          {/* {errors.cPassword && <p className="text-xs text-red-600">*{errors.cPassword.message}</p>} */}
 
           <Button className="w-full bg-black text-white hover:bg-gray-800" disabled={isSubmitting}>
             {isSubmitting ? "Registering..." : "Register"}

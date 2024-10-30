@@ -22,7 +22,7 @@ export default function ProfileAvatar() {
   }
 
   return (
-    <div className=''>
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger className=''>
           <Avatar>

@@ -31,10 +31,10 @@ export function useFormMutation<TResponse, TError = Error, TVariables = unknown>
   const router = useRouter();
   const mutation = useMutation<MutationResponse<TResponse>, TError, TVariables, unknown>({
     mutationFn,
-    onSuccess: ({ status, response }) => {
+    onSuccess: async ({ status, response }) => {
       if (status === STATUS.SUCCESS) {
-        toast.success(successMessage);
-        if (route) return router.push(route)
+       toast(successMessage); 
+       router.push(route!); 
       } else {
         toast.error(response as string);
       }

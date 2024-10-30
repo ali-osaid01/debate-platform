@@ -4,7 +4,7 @@ import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 
 const JoinUs = () => (
-    <section className="py-20 bg-gray-50">
+    <div className="py-20 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-4">Ready to Join the Conversation?</h2>
@@ -27,7 +27,7 @@ const JoinUs = () => (
               </p>
             </div>
           </div>
-        </section>
+        </div>
   )
 
 export default JoinUs

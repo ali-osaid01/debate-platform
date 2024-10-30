@@ -54,11 +54,11 @@ export default function ForgotPasswordPage() {
               type="text"
               register={register}
             />
-            {errors.email && (
+            {/* {errors.email && (
               <p className="text-xs p-1 text-red-600">
                 *{errors.email.message}
               </p>
-            )}
+            )} */}
 
             <Button
               type="submit"

@@ -10,7 +10,7 @@ const GoogleButton = () => {
         try {
             const result = await signInWithPopup(auth, provider);
             const credential = GoogleAuthProvider.credentialFromResult(result);
-            console.log("credential ->",credential)
+            console.log("credential ->", credential)
             const user = result.user;
             console.log('User Info:', user);
 

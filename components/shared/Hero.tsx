@@ -5,7 +5,7 @@ import { Button } from '../ui/button'
 
 export default function Hero() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <div className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
       <div className="relative lg:absolute -z-10 my-5">
         <Image
           src={backgroundImage}
@@ -29,7 +29,7 @@ export default function Hero() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 

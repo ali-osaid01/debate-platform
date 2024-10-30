@@ -9,12 +9,12 @@ import { useUserStore } from '@/store/user.store';
 export function useAuthenticatedUser() {
   const { user, setUser} = useUserStore();
   const router = useRouter();
-  const [sessionExpired, setSessionExpired] = useState(false);
+  // const [sessionExpired, setSessionExpired] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['user'],
     queryFn: authenticatedUser,
-    enabled: !user && !sessionExpired,
+    enabled: !user,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -30,7 +30,7 @@ export function useAuthenticatedUser() {
   console.log("USER ->",user)
   useEffect(() => {
     if (!isLoading && data?.success && data.response && !user) {
-      setUser(data.response.data.data);
+      setUser(data?.response?.data?.data);
     }
   }, [data, isLoading, user, setUser]);
 

@@ -9,7 +9,6 @@ export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("events")
   return (
     <div>
-
       <div className="w-full max-w-3xl mx-auto mt-5">
         <div className="flex mb-8 bg-muted rounded-tr-full rounded-bl-full relative">
           <button
@@ -35,11 +34,10 @@ export default function FeedPage() {
         </div>
       </div>
       <div className="space-y-6">
-      {events.map((event,index) => (
-        <EventCard key={index} event={event} />
-      ))}
+        {events.map((event, index) => (
+          <EventCard key={index} event={event} />
+        ))}
+      </div>
     </div>
-    </div>
-
   )
 }

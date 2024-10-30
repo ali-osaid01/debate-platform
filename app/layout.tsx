@@ -1,7 +1,7 @@
-import "./globals.css";
 import { Metadata } from "next";
-import { Toaster } from "@/components/ui/sonner"
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
+import { Toaster } from "@/components/ui/sonner";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Debate Website",
@@ -16,9 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReactQueryProvider>
+        <Toaster position="top-right" richColors />
         <body>
           {children}
-          <Toaster richColors position="top-right" />
         </body>
       </ReactQueryProvider>
     </html>
