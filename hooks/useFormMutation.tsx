@@ -33,8 +33,8 @@ export function useFormMutation<TResponse, TError = Error, TVariables = unknown>
     mutationFn,
     onSuccess: async ({ status, response }) => {
       if (status === STATUS.SUCCESS) {
-       toast(successMessage); 
-       router.push(route!); 
+        router.push("/feed")
+        toast(successMessage); 
       } else {
         toast.error(response as string);
       }

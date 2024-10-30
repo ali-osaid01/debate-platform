@@ -15,12 +15,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ReactQueryProvider>
-        <Toaster position="top-right" richColors />
-        <body>
-          {children}
-        </body>
-      </ReactQueryProvider>
+      <body>
+        <main>
+          <ReactQueryProvider>
+              <Toaster position="top-right" richColors key={"toaster"} />
+            {children}
+          </ReactQueryProvider>
+        </main>
+      </body>
     </html>
   );
 }
