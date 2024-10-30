@@ -84,7 +84,7 @@ export default function EventCard({ event }:{event:EventCardProps}) {
         </div>
         <Button variant="outline" size="sm" className="flex items-center gap-1">
           <Calendar className="w-4 h-4" />
-          <span>Schedule</span>
+          <span>Add to Calender</span>
         </Button>
       </CardFooter>
     </Card>
