@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { useUserStore } from '@/store/user.store';
 
 export function useAuthenticatedUser() {
-  const { user, setUser } = useUserStore();
+  const { user, setUser} = useUserStore();
   const router = useRouter();
   const [sessionExpired, setSessionExpired] = useState(false);
 
@@ -28,6 +28,7 @@ export function useAuthenticatedUser() {
     }
   }, [data, isLoading, sessionExpired, router]);
 
+  console.log("USER ->",user)
   useEffect(() => {
     if (!isLoading && data?.success && data.response && !user) {
       setUser(data.response.data.data);
