@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import Link from 'next/link';
-import { BellDot, Menu, MessageSquare } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -31,7 +31,7 @@ export default function Navbar() {
               width={45}
               height={20}
             />
-            <p className='font-extralight font-mono'>
+            <p className='font-extralight font-mono hidden lg:block'>
               Virtual Debate
             </p>
           </span>
@@ -40,8 +40,7 @@ export default function Navbar() {
           {isLoading ? (
             <div>Loading...</div>
           ) : user ? (
-            <div className='flex gap-2 items-center'>
-              <MessageSquare />
+            <div className='md:flex gap-2 items-center hidden'>
               <NotificationSheet />
               <ProfileAvatar />
             </div>

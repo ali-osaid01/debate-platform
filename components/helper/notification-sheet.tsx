@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Bell, Calendar, ThumbsUp } from "lucide-react"
-import { Badge } from "../ui/badge"
 import { useState } from "react"
 
 type Notification = {

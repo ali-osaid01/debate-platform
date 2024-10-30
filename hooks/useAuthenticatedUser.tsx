@@ -18,15 +18,14 @@ export function useAuthenticatedUser() {
     staleTime: 5 * 60 * 1000,
   });
 
-  useEffect(() => {
-    if (!isLoading && data && !data.success && !sessionExpired) {
-      setSessionExpired(true);
-      localStorage.removeItem("accessToken");
-      deleteCookie("accessToken");
-      toast.error("Session expired");
-      router.push("/");
-    }
-  }, [data, isLoading, sessionExpired, router]);
+  // useEffect(() => {
+  //   if (!isLoading && data && !data.success && !sessionExpired) {
+  //     setSessionExpired(true);
+  //     localStorage.removeItem("accessToken");
+  //     deleteCookie("accessToken");
+  //     toast.error("Session expired");
+  //   }
+  // }, [data, isLoading, sessionExpired, router]);
 
   console.log("USER ->",user)
   useEffect(() => {
