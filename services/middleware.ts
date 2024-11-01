@@ -1,12 +1,10 @@
 import axios from "axios";
-// import { toast } from "sonner";
-// import { useUserStore } from "@/store/user.store";
 
 const getAccessToken = () => {
   return localStorage.getItem("accessToken");
 };
 
-const baseURL = 'http://localhost:5000/api';
+const baseURL = 'http://64.225.4.148:5000/api';
 console.log("BASE URL ->", baseURL);
 
 const api = axios.create({
