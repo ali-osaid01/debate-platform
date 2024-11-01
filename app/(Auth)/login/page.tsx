@@ -28,7 +28,7 @@ export default function Login() {
     resolver: yupResolver(loginValidation),
   });
   
-  const { handleFormSubmit } = useFormMutation<any, Error, ILogin>({
+  const { handleFormSubmit } = useFormMutation<unknown, Error, ILogin>({
     mutationFn: login,
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
@@ -96,7 +96,7 @@ export default function Login() {
             </div>
             <GoogleButton />
             <div className="text-center text-sm text-gray-500">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href={'/sign-up'} className="text-gray-900 hover:underline">
                 Sign up
               </Link>

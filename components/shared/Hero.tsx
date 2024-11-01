@@ -19,7 +19,7 @@ export default function Hero() {
               Welcome to the Future of Debate
             </h1>
             <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
-              Join the world's largest virtual debate platform. Engage in meaningful discussions, challenge your
+              Join the world&apos;s largest virtual debate platform. Engage in meaningful discussions, challenge your
               perspectives, and connect with diverse minds.
             </p>
           </div>

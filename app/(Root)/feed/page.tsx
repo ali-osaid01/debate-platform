@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-import { ETabs } from '@/types/enum'
 import { Activity, CalendarDays } from 'lucide-react'
 import { events } from '@/utils/data'
 import EventCard from '@/components/shared/event-post-card'

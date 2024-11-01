@@ -3,13 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FloatingInput } from "@/components/shared/Auth-Input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { forgetPasswordValidation } from "@/validation/auth.validation";
 import { IForgetPasswordForm } from "@/types/interface/auth.interface";
-import { toast } from "sonner";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { forgetPassword } from "@/services/auth.service";
 import { NETWORK_ERROR, SUCCESS_OTP_SEND_PASSED } from "@/utils/constant";
@@ -22,14 +20,14 @@ export default function ForgotPasswordPage() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<IForgetPasswordForm>({
     resolver: yupResolver(forgetPasswordValidation),
   });
 
-  const { handleFormSubmit } = useFormMutation<any, Error, IForgetPasswordForm>({
+  const { handleFormSubmit } = useFormMutation<unknown, Error, IForgetPasswordForm>({
     mutationFn: forgetPassword,
-    successMessage: SUCCESS_OTP_SEND_PASSED,
+    successMessage: SUCCESS_OTP_SEND_PASSED as string,
     errorMessage: NETWORK_ERROR,
     route:`/verify-otp?email=${watch('email')}`
   });

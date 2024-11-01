@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidation } from "@/validation/auth.validation";
 import { FloatingInput } from "@/components/shared/Auth-Input";
 import { IRegister } from "@/types/interface/auth.interface";
-import { useRouter } from "next/navigation";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { ERROR_VALIDATION, SUCCESS_REGISTRATION_PASSED } from "@/utils/constant";
 import { register as registerApi} from "@/services/auth.service";
@@ -19,12 +18,12 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm({
     resolver: yupResolver(registerValidation),
   });
 
-  const { handleFormSubmit } = useFormMutation<any, Error, IRegister>({
+  const { handleFormSubmit } = useFormMutation<unknown, Error, IRegister>({
     mutationFn: registerApi,
     successMessage: SUCCESS_REGISTRATION_PASSED,
     errorMessage: ERROR_VALIDATION,

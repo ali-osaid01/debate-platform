@@ -15,7 +15,7 @@ export default function VerifyOTPPage() {
   const [otp, setOtp] = useState<string>("")
   const searchParams = useSearchParams();
   
-  const { handleFormSubmit } = useFormMutation<any, Error, IVerifyOTP>({
+  const { handleFormSubmit } = useFormMutation<unknown, Error, IVerifyOTP>({
     mutationFn: verifyOtp,
     successMessage: SUCCESS_OTP_VERIFICATION_PASSED,
     errorMessage: SUCCESS_OTP_VERIFICATION_FAILED,
