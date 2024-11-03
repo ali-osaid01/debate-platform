@@ -94,7 +94,9 @@ const JoinUs = () => (
 
                     <h2 className="text-xl font-semibold mt-6 mb-2">9. Indemnification</h2>
                     <p className="mb-4">
+
                       You agree to indemnify and hold harmless Virtual Debate, its owners, affiliates, and agents from any claims, liabilities, damages, or expenses (including attorney&ldquo;s fees) arising out of your use of the website, violation of these terms, or infringement of any third-party rights.
+
                     </p>
 
                     <h2 className="text-xl font-semibold mt-6 mb-2">10. Modifications to Terms</h2>

@@ -8,7 +8,9 @@ import {
   CredenzaBody,
   CredenzaClose,
   CredenzaContent,
+
   CredenzaFooter,
+
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/ui/drawer-dialog"
@@ -73,7 +75,7 @@ export default function Hero() {
 
                       <h2 className="text-xl font-semibold mt-6 mb-2">Join Us</h2>
                       <p className="mb-4">
-                        Whether you want to Express your opinions, learn from others, or simply engage in thoughtful conversations, Virtual Debate is the place for you. Join our community today and be part of the conversation!
+                        Whether you want to express your opinions, learn from others, or simply engage in thoughtful conversations, Virtual Debate is the place for you. Join our community today and be part of the conversation!
                       </p>
 
                       <h2 className="text-xl font-semibold mt-6 mb-2">Connect With Us</h2>
