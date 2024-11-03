@@ -8,9 +8,9 @@ import {
   CredenzaBody,
   CredenzaClose,
   CredenzaContent,
-  CredenzaDescription,
+
   CredenzaFooter,
-  CredenzaHeader,
+
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/ui/drawer-dialog"
