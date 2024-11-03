@@ -50,19 +50,40 @@ export default function Hero() {
                 </CredenzaTitle>
                 <ScrollArea className='h-[calc(40vh-8rem)]'>
                   <CredenzaBody>
-                    <p className='text-sm p-2'>
-                      Welcome to Virtual Debate, the ultimate platform for real-time, engaging, and thought-provoking debates. Whether you're a seasoned debater or new to the world of argumentation, Virtual Debate provides a space where your voice and ideas can shine. Our platform leverages cutting-edge video technology to connect people from all around the globe, bringing the excitement and intensity of live debates directly to you.
+                    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+                      <h1 className="text-2xl font-bold mb-4">About Us</h1>
 
-                      At Virtual Debate, we believe that powerful conversations drive change, inspire learning, and foster a deeper understanding of diverse perspectives. Here, you can challenge others to a debate, accept challenges on topics that spark your interest, or simply join to watch as audiences engage with new perspectives. Our community covers a wide range of topics—from current events and social issues to science, technology, and beyond—making every debate an opportunity to learn and grow.
+                      <p className="mb-4">
+                        <strong>Welcome to Virtual Debate!</strong>
+                      </p>
 
-                      Why Virtual Debate?
+                      <p className="mb-4">
+                        At Virtual Debate, we believe in the power of dialogue and the importance of diverse perspectives. Our platform is designed to foster meaningful discussions, promote critical thinking, and encourage respectful exchanges of ideas among individuals from all walks of life.
+                      </p>
 
-                      Real-Time Video Debates: Participate in live video debates with users worldwide, simulating the experience of an in-person debate from the comfort of your home.
-                      Open Challenges: Post debate challenges on topics you&apos;re passionate about or accept open challenges to test your skills and viewpoints.
-                      A Growing Community: Join a network of thinkers, students, and professionals who love meaningful discussions and challenging ideas.
-                      Structured and Fair: Our platform includes built-in timing and moderation features, ensuring every debate is balanced and respectful.
-                      Whether you&apos;re here to refine your debating skills, build confidence, or simply enjoy great discussions, Virtual Debate is here to connect you with a global community passionate about ideas.
-                    </p>
+                      <h2 className="text-xl font-semibold mt-6 mb-2">Our Mission</h2>
+                      <p className="mb-4">
+                        Our mission is to create a safe and inclusive environment where users can engage in constructive debates on a wide range of topics. We strive to empower individuals to articulate their viewpoints, challenge assumptions, and explore new ideas. We believe that through respectful discourse, we can enhance understanding and promote social cohesion.
+                      </p>
+
+                      <h2 className="text-xl font-semibold mt-6 mb-2">What We Offer</h2>
+                      <ul className="list-disc list-inside mb-4">
+                        <li><strong>Dynamic Discussions:</strong> Participate in a variety of debates covering current events, social issues, science, technology, and more. Our platform connects you with users who share your interests and those who challenge your views.</li>
+                        <li><strong>User-Friendly Experience:</strong> With a simple and intuitive interface, it&apos;s easy to join debates, share your thoughts, and interact with others. Whether you&apos;re a seasoned debater or just starting out, Virtual Debate welcomes you.</li>
+                        <li><strong>Community Guidelines:</strong> We are committed to maintaining a respectful and supportive community. Our guidelines encourage constructive criticism and discourage any form of harassment or abuse, ensuring a safe space for everyone.</li>
+                      </ul>
+
+                      <h2 className="text-xl font-semibold mt-6 mb-2">Join Us</h2>
+                      <p className="mb-4">
+                        Whether you want to express your opinions, learn from others, or simply engage in thoughtful conversations, Virtual Debate is the place for you. Join our community today and be part of the conversation!
+                      </p>
+
+                      <h2 className="text-xl font-semibold mt-6 mb-2">Connect With Us</h2>
+                      <p className="mb-4">
+                        We value your feedback and suggestions. If you have any questions or ideas, feel free to reach out to us through our contact page. Together, let&apos;s make Virtual Debate a vibrant hub for discussion and learning!
+                      </p>
+                    </div>
+
                   </CredenzaBody>
                 </ScrollArea>
                 <CredenzaFooter>
