@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { debateTopic } from "@/utils/data";
 import Image from "next/image";

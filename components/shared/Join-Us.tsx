@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
-import { Credenza, CredenzaBody, CredenzaClose, CredenzaContent, CredenzaDescription, CredenzaFooter, CredenzaHeader, CredenzaTitle, CredenzaTrigger } from '@/components/ui/drawer-dialog'
+import { Credenza, CredenzaBody, CredenzaClose, CredenzaContent, CredenzaFooter, CredenzaHeader, CredenzaTitle, CredenzaTrigger } from '@/components/ui/drawer-dialog'
 import { ScrollArea } from '../ui/scroll-area'
 
 const JoinUs = () => (
@@ -84,7 +84,7 @@ const JoinUs = () => (
 
                     <h2 className="text-xl font-semibold mt-6 mb-2">7. Disclaimer of Warranties</h2>
                     <p className="mb-4">
-                      Virtual Debate is provided on an "as-is" and "as-available" basis. We make no warranties, express or implied, regarding the accuracy, reliability, or availability of the website or its content. Your use of the site is at your own risk.
+                      Virtual Debate is provided on an &ldquo;as-is&ldquo; and &ldquo;as-available&ldquo; basis. We make no warranties, express or implied, regarding the accuracy, reliability, or availability of the website or its content. Your use of the site is at your own risk.
                     </p>
 
                     <h2 className="text-xl font-semibold mt-6 mb-2">8. Limitation of Liability</h2>
@@ -94,7 +94,7 @@ const JoinUs = () => (
 
                     <h2 className="text-xl font-semibold mt-6 mb-2">9. Indemnification</h2>
                     <p className="mb-4">
-                      You agree to indemnify and hold harmless Virtual Debate, its owners, affiliates, and agents from any claims, liabilities, damages, or expenses (including attorney's fees) arising out of your use of the website, violation of these terms, or infringement of any third-party rights.
+                      You agree to indemnify and hold harmless Virtual Debate, its owners, affiliates, and agents from any claims, liabilities, damages, or expenses (including attorney&ldquo;s fees) arising out of your use of the website, violation of these terms, or infringement of any third-party rights.
                     </p>
 
                     <h2 className="text-xl font-semibold mt-6 mb-2">10. Modifications to Terms</h2>
