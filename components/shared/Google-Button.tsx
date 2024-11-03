@@ -22,6 +22,7 @@ const GoogleButton = () => {
     return (
         <Button variant="outline" className="w-full border-gray-300 text-gray-900 hover:bg-gray-100"
             onClick={handleGoogleLogin}
+            type='button'
         >
             <FcGoogle className="mr-2 h-4 w-4" />
             Google
