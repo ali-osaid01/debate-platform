@@ -21,9 +21,9 @@ const JoinUs = () => (
               </form>
               <p className="text-sm text-gray-500 mt-4">
                 By signing up, you agree to our{" "}
-                <Link href={''} className="underline hover:text-black">
+                <span className='underline font-bold cursor-pointer'>
                   Terms & Conditions
-                </Link>
+                </span>
               </p>
             </div>
           </div>

@@ -53,3 +53,15 @@ export const events = [
     }
   ]
   
+  export const debateTopic = [
+    "Colonization",
+    "AI",
+    "Gaming",
+    "Drugs",
+    "Income",
+    "Genetics",
+    "Superheroes",
+    "Exploration",
+    "Privacy",
+    "Art"
+];
