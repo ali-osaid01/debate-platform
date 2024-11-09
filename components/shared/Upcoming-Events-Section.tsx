@@ -5,7 +5,7 @@ import { Calendar } from 'lucide-react'
 export default function UpcomingEvents() {
 
     return (
-        <div className="hidden md:flex md:w-1/4 p-4">
+        <div className="hidden md:flex">
         <div className="bg-white rounded-lg shadow-md p-4">
           <div className='flex gap-3'>
           <h1 className="text-xl font-semibold text-gray-800 mb-4">Upcoming Events</h1>

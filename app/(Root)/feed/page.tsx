@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("events");
-  const desktop = useMediaQuery('(min-width: 768px)');
+  const desktop = useMediaQuery('(min-width: 1025px)');
 
   return (
     <div>
@@ -41,10 +41,11 @@ export default function FeedPage() {
 
       <div className="flex flex-col md:flex-row md:justify-center md:items-start">
         {/* Left Div */}
+        {desktop && 
         <div className="hidden md:flex md:w-1/4 bg-gray-200 p-4">
           <p>Left Sidebar Content</p>
         </div>
-
+    }
         {/* Center Div for Event Cards */}
         <div className="md:w-1/2 flex flex-col items-center space-y-4 w-full">
           <Link href="/create-event" passHref>
