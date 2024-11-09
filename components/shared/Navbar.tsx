@@ -1,16 +1,7 @@
 'use client'
 import React from 'react';
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 import ProfileAvatar from './Profile-Avatar';
 import Logo from '@/public/assets/logo.jpg'
 import Image from 'next/image';
@@ -21,7 +12,7 @@ export default function Navbar() {
 
   const { user, isLoading } = useAuthenticatedUser();
   const path = usePathname();
-  console.log("PATH ->",path)
+  
   return (
     <nav className="bg-background border-b sticky top-0 z-50">
       <div className="px-5 flex flex-wrap items-center justify-between mx-auto">

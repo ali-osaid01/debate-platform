@@ -16,7 +16,7 @@ import Link from 'next/link'
 export default function ProfileAvatar() {
   
   const router = useRouter()
-  const { clearUser } = useUserStore()
+  const { clearUser,user} = useUserStore()
 
   const handleLogout = () => {
     clearUser();
@@ -35,19 +35,25 @@ export default function ProfileAvatar() {
         <DropdownMenuContent>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <Link href={`/profile/${user?._id}`}>
           <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
         <User className="h-4 w-4" />
         Profile
       </DropdownMenuItem>
+          </Link>
+          <Link href={'/profile/notification'}>
       <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
         <Settings className="h-4 w-4" />
         Setting
       </DropdownMenuItem>
+          </Link>
+      <Link href={'/billing'}>
       <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
         <CreditCard className="h-4 w-4" />
         Billing
       </DropdownMenuItem>
-      <Link href={'/profile/subscription'}>
+      </Link>
+      <Link href={'/subscription'}>
       <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
         <Package className="h-4 w-4" />
         Subscription
