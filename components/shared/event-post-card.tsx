@@ -64,8 +64,8 @@ export default function EventCard({ event }: { event: EventCardProps }) {
           </div>
           <p className="text-sm">{event.description}</p>
         </CardContent>
-        <CardFooter className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
+        <CardFooter className="flex justify-between items-center px-2">
+          <div className="flex items-center">
             <Button
               variant="ghost"
               size="sm"
@@ -89,7 +89,7 @@ export default function EventCard({ event }: { event: EventCardProps }) {
             description: 'Monday, January 3rd at 6:00pm',
           })}>
             <Calendar className="w-4 h-4" />
-            <span>Add to Calender</span>
+            <span className="text-xs">Add to Calender</span>
           </Button>
         </CardFooter>
       </Card>

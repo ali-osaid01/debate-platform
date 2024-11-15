@@ -1,3 +1,4 @@
+
 import React from 'react'
 import backgroundImage from '@/public/assets/debate.jpg'
 import Image from 'next/image'

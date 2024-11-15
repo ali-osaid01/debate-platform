@@ -95,15 +95,15 @@ export default function Login() {
               </div>
             </div>
             <GoogleButton />
-            <div className="text-center text-sm text-gray-500">
+          </CardFooter>
+        </Card>
+      </form>
+      <div className="text-center text-sm text-gray-500">
               Don&apos;t have an account?{" "}
               <Link href={'/sign-up'} className="text-gray-900 hover:underline">
                 Sign up
               </Link>
             </div>
-          </CardFooter>
-        </Card>
-      </form>
     </div>
   )
 }
