@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Check } from "lucide-react"
 
-export default function Component() {
+export default function Subscription() {
   const tiers = [
     {
       name: "Basic",

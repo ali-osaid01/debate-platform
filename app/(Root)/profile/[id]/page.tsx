@@ -7,19 +7,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import EditProfile from '@/components/helper/edit-profile'
 import { useParams } from 'next/navigation'
-
-
+import { useQuery } from '@tanstack/react-query'
+import { authenticatedUser } from '@/services/user.service'
 
 export default  function Profile() {
 
   const params = useParams<{ id: string; }>()
-  console.log("id->",params.id)
+
+  const {data:user,isLoading} = useQuery({
+    queryKey:["user-profile"],
+    queryFn:()=>authenticatedUser(params.id)
+  })
+
   const [activeTab, setActiveTab] = useState('posts')
 
   const posts = 42
   const followers = 1234
   const following = 567
 
+  console.log("PROFILE DATA ->",user)
+  console.log("PROFILE LOADING ->",isLoading);
+  
   return (
     <div className="mx-auto p-4 max-w-4xl">
       <div className="flex flex-col md:flex-row items-center md:items-start mb-8">

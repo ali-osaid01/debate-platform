@@ -2,16 +2,17 @@ import api from "./middleware";
 import Cookies from "cookies-next";
 import { STATUS } from "@/types/enum";
 import { ILogin, IResetPassword, IVerifyOTP } from "@/types/interface/auth.interface";
-
+// import { useUserStore } from "@/store/user.store";
 export const login = async (payload:ILogin) => {
     try {
         const response = await api.post('/auth/login',payload);
-       
+    //    const {setUser} = useUserStore()
         const token = response?.data?.data?.accessToken;
         if(token) {
             Cookies.setCookie("accessToken",token)
             localStorage.setItem("accessToken",token)
         }
+        // setUser(response.data.data)
         return { status: STATUS.SUCCESS,response}
         
     } catch (error: any) {

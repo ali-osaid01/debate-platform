@@ -14,9 +14,9 @@ import { CreditCard, LogOut, Package, Settings, User } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ProfileAvatar() {
-  
+
   const router = useRouter()
-  const { clearUser,user} = useUserStore()
+  const { clearUser, user } = useUserStore()
 
   const handleLogout = () => {
     clearUser();
@@ -36,33 +36,33 @@ export default function ProfileAvatar() {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link href={`/profile/${user?._id}`}>
-          <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
-        <User className="h-4 w-4" />
-        Profile
-      </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Profile
+            </DropdownMenuItem>
           </Link>
           <Link href={'/profile/notification'}>
-      <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
-        <Settings className="h-4 w-4" />
-        Setting
-      </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              Setting
+            </DropdownMenuItem>
           </Link>
-      <Link href={'/billing'}>
-      <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
-        <CreditCard className="h-4 w-4" />
-        Billing
-      </DropdownMenuItem>
-      </Link>
-      <Link href={'/subscription'}>
-      <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
-        <Package className="h-4 w-4" />
-        Subscription
-      </DropdownMenuItem>
-      </Link>
-      <DropdownMenuItem className="cursor-pointer flex items-center gap-2" onClick={handleLogout}>
-        <LogOut className="h-4 w-4" />
-        Logout
-      </DropdownMenuItem>
+          <Link href={'/billing'}>
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+              <CreditCard className="h-4 w-4" />
+              Billing
+            </DropdownMenuItem>
+          </Link>
+          <Link href={'/subscription'}>
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              Subscription
+            </DropdownMenuItem>
+          </Link>
+          <DropdownMenuItem className="cursor-pointer flex items-center gap-2" onClick={handleLogout}>
+            <LogOut className="h-4 w-4" />
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
