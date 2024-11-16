@@ -19,7 +19,7 @@ export const login = async (payload:ILogin) => {
         console.log("ERROR ->", error)
         return {
             status: STATUS.FAILED,
-            response: error.response?.data?.message || "Something went wrong",
+            response: error.response?.data?.msg || "Something went wrong",
         }
     }
 }
@@ -38,7 +38,7 @@ export const register =  async (payload:ILogin) => {
        
         return {
             status: STATUS.FAILED,
-            response: error.response?.data?.message || "Something went wrong",
+            response: error.response?.data?.msg || "Something went wrong",
         }
     }
 }
@@ -57,7 +57,7 @@ export const forgetPassword = async ({email}:{email:string}) => {
        
         return {
             status: STATUS.FAILED,
-            response: error.response?.data?.message || "Something went wrong",
+            response: error.response?.data?.msg || "Something went wrong",
         }
         
     }
@@ -77,7 +77,7 @@ export const verifyOtp = async (payload:IVerifyOTP) => {
        
         return {
             status: STATUS.FAILED,
-            response: error.response?.data?.message || "Something went wrong",
+            response: error.response?.data?.msg || "Something went wrong",
         }
     }
 }
@@ -96,7 +96,7 @@ export const resetPassword = async (payload:IResetPassword) => {
        
         return {
             status: STATUS.FAILED,
-            response: error.response?.data?.message || "Something went wrong",
+            response: error.response?.data?.msg || "Something went wrong",
         }
     }
 }
