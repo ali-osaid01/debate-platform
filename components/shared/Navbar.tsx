@@ -7,12 +7,12 @@ import Logo from '@/public/assets/logo.jpg';
 import Image from 'next/image';
 import { useAuthenticatedUser } from '@/hooks/useAuthenticatedUser';
 import NotificationSheet from '../helper/notification-sheet';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation';
 import { MessageCircleMore } from 'lucide-react';
 
 export default function Navbar() {
   const { user, isLoading } = useAuthenticatedUser();
-  const path = usePathname();
+  // const path = usePathname();
 
   return (
     <nav className="bg-background border-b sticky top-0 z-50">
@@ -29,21 +29,19 @@ export default function Navbar() {
 
         {/* User Actions Section */}
         <div className="flex md:order-2">
-          {!user && isLoading ? (
+          {isLoading ? (
             <div>Loading...</div>
           ) : user ? (
-            path !== '/' && (
-              <div className="flex gap-2 items-center">
-                <Link href={'/chat'}>
+            <div className="flex gap-2 items-center">
+              <Link href="/chat">
                 <Button variant="outline" size="icon">
                   <MessageCircleMore className="h-5 w-5" />
                 </Button>
-                </Link>
-                <NotificationSheet />
-                <ProfileAvatar />
-              </div>
-            )
-          ) : path === '/' ? (
+              </Link>
+              <NotificationSheet />
+              <ProfileAvatar />
+            </div>
+          ) : (
             <div className="md:flex space-x-3">
               <Link href="/sign-up" passHref>
                 <Button variant="outline">Register</Button>
@@ -52,7 +50,7 @@ export default function Navbar() {
                 <Button variant="default">Login</Button>
               </Link>
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </nav>
