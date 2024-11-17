@@ -17,7 +17,7 @@ interface UseFormMutationOptions<TResponse, TError, TVariables> {
 }
 
 interface UseFormMutationReturn<TResponse, TError, TVariables> {
-  handleFormSubmit: (data: TVariables) => Promise<void>;
+  handleFormSubmit: (data: TVariables) => Promise<TResponse>;
   isLoading: boolean;
   mutation: UseMutationResult<MutationResponse<TResponse>, TError, TVariables, unknown>;
 }
@@ -33,7 +33,7 @@ export function useFormMutation<TResponse, TError = Error, TVariables = unknown>
     mutationFn,
     onSuccess: async ({ status, response }) => {
       if (status === STATUS.SUCCESS) {
-        router.push("/feed")
+        if(route) router.push(route)
         toast(successMessage); 
       } else {
         toast.error(response as string);
@@ -46,7 +46,8 @@ export function useFormMutation<TResponse, TError = Error, TVariables = unknown>
 
   const handleFormSubmit = async (data: TVariables) => {
     const { response } = await mutation.mutateAsync(data);
-    console.log("response ->", response)
+    console.log("Hook Response ->", response)
+    return response;
   };
 
   return { handleFormSubmit, isLoading: mutation.isPending, mutation };

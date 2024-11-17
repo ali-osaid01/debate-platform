@@ -11,6 +11,7 @@ import { ILogin } from "@/types/interface/auth.interface"
 import { login } from "@/services/auth.service"
 import { useFormMutation } from "@/hooks/useFormMutation"
 import { ERROR_LOGIN, SUCCESS_LOGIN_PASSED } from "@/utils/constant"
+import { useUserStore } from "@/store/user.store";
 
 
 export default function Login() {
@@ -19,7 +20,7 @@ export default function Login() {
   // console.log("FCM TOKEN ->",fcmToken)
   // console.log("notificationPermissionStatus ->",notificationPermissionStatus)
 
-  
+  const {setUser} = useUserStore()
   const {
     register,
     handleSubmit,
@@ -33,10 +34,13 @@ export default function Login() {
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
     route: '/feed'
+  
   });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
-    await handleFormSubmit(data)
+    const payload:any = await handleFormSubmit(data)
+    if(payload) setUser(payload?.data?.data?.user)
+    console.log("payload ->>",payload)
   }
 
   return (
