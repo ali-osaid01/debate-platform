@@ -9,12 +9,13 @@ import EditProfile from '@/components/helper/edit-profile'
 import { useParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import { authenticatedUser } from '@/services/user.service'
+import { IUser } from '@/types/interface/user.interface'
 
 export default  function Profile() {
 
   const params = useParams<{ id: string; }>()
 
-  const {data:user,isLoading} = useQuery({
+  const {data:user,isLoading} = useQuery<ApiResponse<IUser>>({
     queryKey:["user-profile"],
     queryFn:()=>authenticatedUser(params.id)
   })
@@ -25,7 +26,7 @@ export default  function Profile() {
   const followers = 1234
   const following = 567
 
-  console.log("PROFILE DATA ->",user)
+  console.log("PROFILE DATA ->",user?.response.data)
   console.log("PROFILE LOADING ->",isLoading);
   
   return (
@@ -41,7 +42,7 @@ export default  function Profile() {
         </div>
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
-            <h1 className="text-2xl font-bold mr-4">johndoe</h1>
+            <h1 className="text-2xl font-bold mr-4">{user?.response.data.name}</h1>
             <div className="flex space-x-2 mt-2 md:mt-0">
               <Button>Edit Profile</Button>
               <Button variant="outline">
@@ -61,8 +62,8 @@ export default  function Profile() {
             </div>
           </div>
           <div className="text-center md:text-left">
-            <h2 className="font-bold">John Doe</h2>
-            <p className="text-sm text-muted-foreground">Photographer | Traveler | Coffee Lover</p>
+            <h2 className="font-bold">{user?.response?.data?.name}</h2>
+            <p className="text-sm text-muted-foreground">{user?.response.data.bio}</p>
             <p className="text-sm">www.johndoe.com</p>
           </div>
         </div>
@@ -80,7 +81,7 @@ export default  function Profile() {
           </div>
         </TabsContent>
         <TabsContent value="edit">
-          <EditProfile/>
+          <EditProfile user={user?.response?.data}/>
         </TabsContent>
       </Tabs>
     </div>

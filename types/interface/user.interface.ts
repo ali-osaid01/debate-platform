@@ -3,11 +3,21 @@ export interface IUser {
     _id: string;
     name: string;
     email: string;
-    password: string;
+    bio:string;
+    dob:Date;
+    phone:string
+    settings:{
+        notification:boolean
+    }
+    location:string;
+    gender:string;
+    isProfileCompleted:boolean
     profilePicture:string;
+    password: string;
     role: string;
-    otp: number;
+    otp:number
     fcmToken?: string;
+    website?:string
     createdAt: string;
     updatedAt: string;
 }

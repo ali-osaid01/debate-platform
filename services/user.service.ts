@@ -1,6 +1,7 @@
+import { IUser } from "@/types/interface/user.interface";
 import api from "./middleware";
 
-export const authenticatedUser = async (id?: string) => {
+export const authenticatedUser = async (id?: string): Promise<any>  => {
    try {
       const url = id ? `/user/authenticated/?userId=${id}` : `/user/authenticated/`;
 
