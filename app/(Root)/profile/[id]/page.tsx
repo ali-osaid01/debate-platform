@@ -26,7 +26,7 @@ export default  function Profile() {
   const followers = 1234
   const following = 567
 
-  console.log("PROFILE DATA ->",user?.response.data)
+  console.log("PROFILE DATA ->",user?.response?.data)
   console.log("PROFILE LOADING ->",isLoading);
   
   return (
@@ -42,7 +42,7 @@ export default  function Profile() {
         </div>
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
-            <h1 className="text-2xl font-bold mr-4">{user?.response.data.name}</h1>
+            <h1 className="text-2xl font-bold mr-4">{user?.response?.data?.name}</h1>
             <div className="flex space-x-2 mt-2 md:mt-0">
               <Button>Edit Profile</Button>
               <Button variant="outline">
@@ -63,7 +63,7 @@ export default  function Profile() {
           </div>
           <div className="text-center md:text-left">
             <h2 className="font-bold">{user?.response?.data?.name}</h2>
-            <p className="text-sm text-muted-foreground">{user?.response.data.bio}</p>
+            <p className="text-sm text-muted-foreground">{user?.response?.data?.bio}</p>
             <p className="text-sm">www.johndoe.com</p>
           </div>
         </div>

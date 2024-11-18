@@ -7,6 +7,7 @@ import UpcomingEvents from '@/components/shared/Upcoming-Events-Section';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import EventFormDialog from '@/components/helper/create-event-dialog';
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("events");
@@ -48,12 +49,7 @@ export default function FeedPage() {
     }
         {/* Center Div for Event Cards */}
         <div className="md:w-1/2 flex flex-col items-center space-y-4 w-full">
-          <Link href="/create-event" passHref>
-            <Button className="bg-black text-white font-semibold rounded-lg w-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50">
-              Create Event
-              <PlusCircle className="mr-2 h-5 w-5" />
-            </Button>
-          </Link>
+          <EventFormDialog/>
           <div className="space-y-6 w-full">
             {events.map((event, index) => (
               <EventCard key={index} event={event} />

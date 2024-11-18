@@ -1,4 +1,7 @@
+import { useUserStore } from "@/store/user.store";
 import axios from "axios";
+import {useRouter} from "next/navigation";
+import { toast } from "sonner";
 
 const getAccessToken = () => {
   return localStorage.getItem("accessToken");
@@ -27,19 +30,25 @@ api.interceptors.request.use(
   }
 );
 
-// api.interceptors.response.use(
-//   response => {
-//     return response;
-//   },
-//   async error => {
-//     if (error.response && error.response?.status === 401) {
-//       const { clearUser } = useUserStore()
-//       toast.error(error.response.message.data);
-//       clearUser()
-//     } else {
-//       return Promise.reject(error);
-//     }
-//   },
-// );
+api.interceptors.response.use(
+  response => {
+    return response;
+  },
+  async error => {
+    if (error && error.status === 401) {
+      const {clearUser} = useUserStore()
+      console.log("interceptors Error ->",error.status)
+      const router = useRouter();
+      toast.error(`${
+        error?.response?.data?.data == 'Invalid Credentials!'
+        ? 'Invalid Credentials!'
+        : 'Session timed out'}`);
+        clearUser();
+        router.push("/")
+    } else {
+      return Promise.reject(error);
+    }
+  },
+);
 
 export default api;

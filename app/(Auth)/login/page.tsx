@@ -21,6 +21,7 @@ export default function Login() {
   // console.log("notificationPermissionStatus ->",notificationPermissionStatus)
 
   const {setUser} = useUserStore()
+  
   const {
     register,
     handleSubmit,

@@ -1,24 +1,24 @@
 export interface ILogin {
-    email:string,
-    password:string
+  email: string,
+  password: string
 }
 
 export interface IRegister extends ILogin {
-    name:string
-    cPassword?:string
+  name: string
+  cPassword?: string
 }
 
 export interface IOnboarding {
-    username: string;
-    age: number;
-    phoneNumber: string;
-    interest: string;
-    language: string;
-    location: {
-      city: string;
-      country: string;
-    };
-    topicSelection: string;
+  username: string;
+  age: number;
+  phoneNumber: string;
+  interest: string;
+  language: string;
+  location: {
+    city: string;
+    country: string;
+  };
+  topicSelection: string;
 }
 
 export interface IForgetPasswordForm {
@@ -26,10 +26,10 @@ export interface IForgetPasswordForm {
 }
 
 export interface IVerifyOTP {
-  email:string
-  otp:number
+  email: string
+  otp: number
 }
 
 export interface IResetPassword {
-  password:string
+  password: string
 }

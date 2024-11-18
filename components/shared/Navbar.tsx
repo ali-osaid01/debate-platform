@@ -12,13 +12,12 @@ import { MessageCircleMore } from 'lucide-react';
 
 export default function Navbar() {
   const { user, isLoading } = useAuthenticatedUser();
-  // const path = usePathname();
 
   return (
     <nav className="bg-background border-b sticky top-0 z-50">
       <div className="px-5 flex flex-wrap items-center justify-between mx-auto">
         {/* Logo Section */}
-        <Link href="/" className="flex items-center">
+        <Link href={user ? '/feed' : '/'} className="flex items-center">
           <span className="text-2xl font-semibold flex items-center">
             <Image src={Logo} alt="Logo" width={45} height={20} />
             <p className="font-extralight font-mono hidden lg:block">
@@ -29,7 +28,7 @@ export default function Navbar() {
 
         {/* User Actions Section */}
         <div className="flex md:order-2">
-          {isLoading ? (
+          {!user && isLoading ? (
             <div>Loading...</div>
           ) : user ? (
             <div className="flex gap-2 items-center">
