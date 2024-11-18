@@ -22,7 +22,6 @@ export const useUserStore = create<UserStore>((set, get) => {
 
         clearUser: () => {
             set({ user: null });
-            toast("Logout Successfully")
             deleteCookie("accessToken");
             localStorage.removeItem("accessToken")
         },

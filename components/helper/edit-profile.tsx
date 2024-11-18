@@ -33,20 +33,22 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
       <CardContent className="pt-6">
         <form className="space-y-4">
           <div className="space-y-2">
-            <FloatingInput id="name" placeholder="Enter username" defaultValue={user?.name || ""} name="name" register={register}/>
+            <FloatingInput id="name" placeholder="Enter username" defaultValue={user?.name || ""} name="name" register={register} />
           </div>
           <div className="space-y-2">
-            <FloatingInput id="website" placeholder="Website" defaultValue={user?.website || ""} name="website" register={register}/>
+            <FloatingInput id="website" placeholder="Website" defaultValue={user?.website || ""} name="website" register={register} />
           </div>
           {/* Bio Field */}
           <div className="space-y-2">
-            <Label htmlFor="bio">Bio</Label>
-            <Textarea
-              id="bio"
-              placeholder="Tell us about yourself e.g., Photographer | Traveler | Coffee Lover"
-              defaultValue={user?.bio || ""}
-              {...register}
-            />
+            <div className="group relative">
+              <label
+                htmlFor="bio"
+                className="origin-start absolute top-0 block translate-y-2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:-translate-y-1/2 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+textarea:not(:placeholder-shown)]:pointer-events-none has-[+textarea:not(:placeholder-shown)]:-translate-y-1/2 has-[+textarea:not(:placeholder-shown)]:cursor-default has-[+textarea:not(:placeholder-shown)]:text-xs has-[+textarea:not(:placeholder-shown)]:font-medium has-[+textarea:not(:placeholder-shown)]:text-foreground"
+              >
+                <span className="inline-flex bg-background px-2">Textarea with label animation</span>
+              </label>
+              <Textarea id="bio" placeholder="" />
+            </div>
           </div>
 
           {/* <div className="grid grid-cols-2 gap-4">
@@ -85,12 +87,12 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
           <div className="space-y-2">
             <Label htmlFor="phone">Phone</Label>
             {/* <Input id="phone" type="tel" placeholder="Your phone number" defaultValue={user?.phone || ""} /> */}
-            <PhoneInputShadcnUiPhoneInput register={register} name="phone" defaultValue={user?.phone}/>
+            <PhoneInputShadcnUiPhoneInput register={register} name="phone" defaultValue={user?.phone} />
           </div>
 
           {/* Location Field */}
           <div className="space-y-2">
-            <FloatingInput id="location" placeholder="Location" name="location" defaultValue={user?.location || ""}  register={register} />
+            <FloatingInput id="location" placeholder="Location" name="location" defaultValue={user?.location || ""} register={register} />
           </div>
 
           {/* Profile Picture */}

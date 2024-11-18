@@ -12,7 +12,7 @@ export function useAuthenticatedUser() {
     queryKey: ['user'],
     queryFn: ()=>authenticatedUser(),
     staleTime: 5 * 60 * 1000,
-    // enabled:!user
+    enabled:!user
   });
 
 
