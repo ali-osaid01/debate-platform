@@ -17,7 +17,7 @@ export function useAuthenticatedUser() {
 
 
   console.log("USER ERROR",error);
-  console.log("USER ->",user);
+  console.log("STORE USER ->",user);
   console.log("User DATA ->",data);
   useEffect(() => {
     if (!isLoading && data?.success && data.response && !user) {

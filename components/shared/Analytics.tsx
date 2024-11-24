@@ -4,6 +4,7 @@ import FeatureCard from '../helper/Feature-Card'
 import { Globe, MessageCircle, Shield, TrendingUp, Users, Zap } from 'lucide-react'
 import StatCard from '../helper/Stat-Card'
 import UserOriginCard from '../helper/Location-Card'
+import EventSlider from '../helper/event-slider'
 
 export default function Analytics() {
 
@@ -57,6 +58,7 @@ export default function Analytics() {
                     </div>
                 </div>
             </div>
+            <EventSlider/>
             <div className="py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center mb-12">

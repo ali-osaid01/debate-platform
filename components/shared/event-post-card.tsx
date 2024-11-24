@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Calendar, Heart, MapPin, Users } from "lucide-react"
 import { toast } from "sonner"
+import Image from "next/image"
 
 interface EventCardProps {
   id: number
@@ -37,9 +38,7 @@ export default function EventCard({ event }: { event: EventCardProps }) {
   }
 
   return (
-    <div>
-
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="w-full max-w-xl mx-auto">
         <CardHeader className="flex flex-row items-center gap-4">
           <Avatar>
             <AvatarImage src={event.avatar} alt={event.organizer} />
@@ -52,7 +51,7 @@ export default function EventCard({ event }: { event: EventCardProps }) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="aspect-video w-full bg-muted rounded-md overflow-hidden">
-            <img src={event.image} alt="Event cover" className="object-cover w-full h-full" />
+            <Image src={event.image} alt="Event cover" className="object-cover w-full h-full" width={400} height={400}/>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="w-4 h-4" />
@@ -93,7 +92,6 @@ export default function EventCard({ event }: { event: EventCardProps }) {
           </Button>
         </CardFooter>
       </Card>
-    </div>
   )
 }
 

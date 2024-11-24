@@ -8,10 +8,12 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import EventFormDialog from '@/components/helper/create-event-dialog';
+import { FilterSidebar } from '@/components/shared/filter-sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("events");
-  const desktop = useMediaQuery('(min-width: 1025px)');
+  const desktop = useMediaQuery('(min-width: 1020px)');
 
   return (
     <div>
@@ -40,16 +42,19 @@ export default function FeedPage() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-center md:items-start">
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:space-x-4 w-full">
         {/* Left Div */}
-        {desktop && 
-        <div className="hidden md:flex md:w-1/4 bg-gray-200 p-4">
-          <p>Left Sidebar Content</p>
-        </div>
-    }
-        {/* Center Div for Event Cards */}
-        <div className="md:w-1/2 flex flex-col items-center space-y-4 w-full">
-          <EventFormDialog/>
+        {desktop && (
+          <div className="hidden lg:block w-full lg:w-1/4">
+             <SidebarProvider>
+            <FilterSidebar />
+             </SidebarProvider>
+          </div>
+        )}
+
+        {/* Center Div */}
+        <div className="flex flex-col items-center space-y-4 w-full lg:w-1/2">
+          <EventFormDialog />
           <div className="space-y-6 w-full">
             {events.map((event, index) => (
               <EventCard key={index} event={event} />
@@ -59,12 +64,11 @@ export default function FeedPage() {
 
         {/* Right Div */}
         {desktop && (
-          <div className="hidden md:flex md:w-1/4 p-4">
+          <div className="p-4 hidden lg:block w-full lg:w-1/4">
             <UpcomingEvents />
           </div>
         )}
       </div>
-
     </div>
   );
 }

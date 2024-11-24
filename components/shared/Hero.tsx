@@ -1,4 +1,4 @@
-
+'use client'
 import React from 'react'
 import backgroundImage from '@/public/assets/debate.jpg'
 import Image from 'next/image'
@@ -9,9 +9,7 @@ import {
   CredenzaBody,
   CredenzaClose,
   CredenzaContent,
-
   CredenzaFooter,
-
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/ui/drawer-dialog"
@@ -49,7 +47,7 @@ export default function Hero() {
                 <CredenzaTitle className='text-center pt-2'>
                   About US
                 </CredenzaTitle>
-                <ScrollArea className='h-[calc(50vh-8rem)] md:h-[calc(40vh-8rem)]'>
+                <ScrollArea className='h-[calc(70vh-8rem)] md:h-[calc(40vh-8rem)]'>
                   <CredenzaBody>
                     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
                       <h1 className="text-2xl font-bold mb-4">About Us</h1>

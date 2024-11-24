@@ -32,7 +32,7 @@ const JoinUs = () => (
               <CredenzaHeader>
                 <CredenzaTitle>Terms & Condition</CredenzaTitle>
               </CredenzaHeader>
-              <ScrollArea className='h-[calc(50vh-8rem)] md:h-[calc(40vh-8rem)] pr-4'>
+              <ScrollArea className='h-[calc(70vh-8rem)] md:h-[calc(50vh-8rem)] pr-4'>
                 <CredenzaBody>
                   <div className="p-6 bg-gray-100">
                     <h1 className="text-2xl font-bold mb-4">Terms and Conditions</h1>
