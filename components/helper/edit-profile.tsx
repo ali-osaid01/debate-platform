@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FloatingInput } from "../shared/Auth-Input";
 import userValidationSchema from "@/validation/user.validation";
+import FileUpload from "./file-upload";
 
 interface EditProfileProps {
   user?: IUser;
@@ -33,7 +34,7 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
       <CardContent className="pt-6">
         <form className="space-y-4">
           <div className="space-y-2">
-            <FloatingInput id="name" placeholder="Enter username" defaultValue={user?.name || ""} name="name" register={register} />
+            <FloatingInput id="name" placeholder="Enter Name" defaultValue={user?.name || ""} name="name" register={register} />
           </div>
           <div className="space-y-2">
             <FloatingInput id="website" placeholder="Website" defaultValue={user?.website || ""} name="website" register={register} />
@@ -45,7 +46,7 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
                 htmlFor="bio"
                 className="origin-start absolute top-0 block translate-y-2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:-translate-y-1/2 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+textarea:not(:placeholder-shown)]:pointer-events-none has-[+textarea:not(:placeholder-shown)]:-translate-y-1/2 has-[+textarea:not(:placeholder-shown)]:cursor-default has-[+textarea:not(:placeholder-shown)]:text-xs has-[+textarea:not(:placeholder-shown)]:font-medium has-[+textarea:not(:placeholder-shown)]:text-foreground"
               >
-                <span className="inline-flex bg-background px-2">Textarea with label animation</span>
+                <span className="inline-flex bg-background px-2">Bio</span>
               </label>
               <Textarea id="bio" placeholder="" />
             </div>
@@ -97,7 +98,7 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
 
           {/* Profile Picture */}
           <div className="space-y-2">
-            <Label htmlFor="profile-picture">Profile Picture</Label>
+            {/* <Label htmlFor="profile-picture">Profile Picture</Label>
             <div className="flex items-center space-x-4">
               <Avatar className="w-16 h-16">
                 <AvatarImage src={user?.profilePicture || "/placeholder.svg"} alt="Current profile picture" />
@@ -109,7 +110,8 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
                 <CameraIcon className="mr-2 h-4 w-4" />
                 Change Picture
               </Button>
-            </div>
+            </div> */}
+            <FileUpload shape="circle" />
           </div>
 
           {/* Submit Button */}

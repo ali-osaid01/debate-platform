@@ -5,8 +5,6 @@ import { ILogin, IResetPassword, IVerifyOTP } from "@/types/interface/auth.inter
 export const login = async (payload:ILogin) => {
     try {
         const response = await api.post('/auth/login',payload,{withCredentials:true,});
-        const token = response?.data?.data?.accessToken;
-        if(token) localStorage.setItem("accessToken",token)
         return { status: STATUS.SUCCESS,response}
         
     } catch (error: any) {
@@ -68,7 +66,6 @@ export const verifyOtp = async (payload:IVerifyOTP) => {
 
     } catch (error: any) {
         console.log("ERROR ->", error)
-       
         return {
             status: STATUS.FAILED,
             response: error.response?.data?.msg || "Something went wrong",
@@ -84,7 +81,6 @@ export const resetPassword = async (payload:IResetPassword) => {
             status: STATUS.SUCCESS,
             response
         }
-
     } catch (error: any) {
         console.log("ERROR ->", error)
        

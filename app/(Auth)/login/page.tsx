@@ -40,7 +40,7 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
     const payload:any = await handleFormSubmit(data)
-    if(payload) setUser(payload?.data?.data?.user)
+    if(payload) {setUser(payload?.data?.data?.user)}
     console.log("payload ->>",payload)
   }
 

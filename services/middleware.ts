@@ -12,17 +12,12 @@ const baseURL = 'http://localhost:5000/api'
 console.log("BASE URL ->", baseURL);
 
 const api = axios.create({
-  baseURL
+  baseURL,
+  withCredentials:true
 });
 
 api.interceptors.request.use(
   async (config) => {
-    const accessToken = getAccessToken();
-
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-
     return config;
   },
   (error) => {
@@ -30,25 +25,25 @@ api.interceptors.request.use(
   }
 );
 
-api.interceptors.response.use(
-  response => {
-    return response;
-  },
-  async error => {
-    if (error && error.status === 401) {
-      const {clearUser} = useUserStore()
-      console.log("interceptors Error ->",error.status)
-      const router = useRouter();
-      toast.error(`${
-        error?.response?.data?.data == 'Invalid Credentials!'
-        ? 'Invalid Credentials!'
-        : 'Session timed out'}`);
-        clearUser();
-        router.push("/")
-    } else {
-      return Promise.reject(error);
-    }
-  },
-);
+// api.interceptors.response.use(
+//   response => {
+//     return response;
+//   },
+//   async error => {
+//     if (error && error.status === 401) {
+//       const {clearUser} = useUserStore()
+//       console.log("interceptors Error ->",error.status)
+//       const router = useRouter();
+//       toast.error(`${
+//         error?.response?.data?.data == 'Invalid Credentials!'
+//         ? 'Invalid Credentials!'
+//         : 'Session timed out'}`);
+//         clearUser();
+//         router.push("/")
+//     } else {
+//       return Promise.reject(error);
+//     }
+//   },
+// );
 
 export default api;

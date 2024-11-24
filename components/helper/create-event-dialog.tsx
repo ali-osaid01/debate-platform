@@ -48,9 +48,7 @@ export default function EventFormDialog() {
                                 <Label htmlFor="date">Date</Label>
                                 <DatePicker />
                             </div>
-                        </div>
-
-                        <div className="space-y-2">
+                            <div className="space-y-2">
                             <div className="group relative">
                                 <label
                                     htmlFor="bio"
@@ -61,6 +59,9 @@ export default function EventFormDialog() {
                                 <Textarea id="bio" placeholder="" />
                             </div>
                         </div>
+                        </div>
+
+                       
 
                         <div className="space-y-2">
                             <Label htmlFor="picture">Picture</Label>
@@ -73,23 +74,13 @@ export default function EventFormDialog() {
 
                         <div className="space-y-2">
                             <Label htmlFor="participants">Participants</Label>
-                            <div className="space-y-2">
-                                <Label htmlFor="input-26">Search input with icon and button</Label>
                                 <div className="relative">
-                                    <Input id="input-26" className="peer pe-9 ps-9" placeholder="Search..." type="search" />
+                                    <Input className="peer pe-9 ps-9" placeholder='Search'/>
                                     <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
                                         <Search size={16} strokeWidth={2} />
                                     </div>
-                                    <button
-                                        className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 ring-offset-background transition-shadow hover:text-foreground focus-visible:border focus-visible:border-ring focus-visible:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-                                        aria-label="Submit search"
-                                        type="submit"
-                                    >
-                                        <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-                                    </button>
                                 </div>
                             </div>
-                        </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="topic">Topic</Label>
