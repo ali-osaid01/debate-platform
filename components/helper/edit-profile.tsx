@@ -111,10 +111,9 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
                 Change Picture
               </Button>
             </div> */}
-            <FileUpload shape="circle" />
+            <FileUpload shape="circle" className="w-32 h-32" />
           </div>
 
-          {/* Submit Button */}
           <Button type="submit">Update Profile</Button>
         </form>
       </CardContent>

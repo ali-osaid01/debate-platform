@@ -1,25 +1,44 @@
 'use client'
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
-const FileUpload = ({ shape = 'circle'}) => {
-  const [file, setFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
+interface FileUploadProps {
+  shape?: 'circle' | 'rectangle'; // Ensure shape type is restricted to either circle or rectangle
+  className?: string; // Made className optional
+}
+
+const FileUpload = ({ shape = 'circle', className = '' }: FileUploadProps) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = (event: any) => {
-    const selectedFile = event?.target?.files[0];
+  // Handle file change event
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target?.files ? event.target.files[0] : null;
     if (selectedFile) {
       setFile(selectedFile);
       handleFileUpload(selectedFile);
     }
   };
+  
+  const isValidFileType = (file: File) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+    return allowedTypes.includes(file.type);
+  };
 
   // Handle file upload
   const handleFileUpload = async (selectedFile: File) => {
+    // File type validation
+    if (!isValidFileType(selectedFile)) {
+      setError('Invalid file type. Please upload an image file.');
+      toast.error('Invalid file type. Please upload an image file.'); 
+      return;
+    }
+
     const formData = new FormData();
     formData.append('media', selectedFile);
 
@@ -33,25 +52,23 @@ const FileUpload = ({ shape = 'circle'}) => {
         },
       });
 
-      console.log("MEDIA UPLOAD",response.data)
       setUploading(false);
-      setUploadedFileUrl(response.data.urls[0]); // Assuming the API responds with the file URL
-    } catch (error) {
+      setUploadedFileUrl(response.data.urls[0]);
+      toast.success('File uploaded successfully!'); 
+    } catch (err) {
       setUploading(false);
-      setError('Error uploading file');
+      setError('Error uploading file. Please try again.');
+      toast.error('Error uploading file. Please try again.');
     }
   };
 
-  // Get shape class for styling
+  // Get shape class for styling based on the "shape" prop
   const getShapeClass = () => {
-    if (shape === 'circle') {
-      return 'rounded-full'; // Circle shape
-    }
-    return 'rounded-lg'; // Rectangle shape
+    return shape === 'circle' ? 'rounded-full' : 'rounded-lg';
   };
 
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       {/* Invisible file input */}
       <input
         type="file"
@@ -59,9 +76,10 @@ const FileUpload = ({ shape = 'circle'}) => {
         onChange={handleFileChange}
         style={{ display: 'none' }} 
         id="file-upload-input"
+        accept="image/*" // Restrict file input to images only
       />
 
-      {/* Clickable area (can be an image preview or a div) */}
+      {/* Clickable area to upload */}
       <div
         className={`cursor-pointer ${getShapeClass()} w-40 h-40 flex justify-center items-center bg-gray-200 hover:bg-gray-300 transition-all ease-in-out`}
         style={{
@@ -71,7 +89,7 @@ const FileUpload = ({ shape = 'circle'}) => {
         }}
         onClick={() => fileInputRef?.current?.click()} 
       >
-        {/* Placeholder text or image */}
+        {/* Placeholder or uploading text */}
         {!uploadedFileUrl && !uploading && (
           <div className="text-center text-gray-500">
             Click to upload
@@ -82,6 +100,7 @@ const FileUpload = ({ shape = 'circle'}) => {
         )}
       </div>
 
+      {/* Error Message */}
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
