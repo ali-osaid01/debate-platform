@@ -28,7 +28,7 @@ export default function ProfileAvatar() {
       <DropdownMenu>
         <DropdownMenuTrigger className=''>
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={user?.profilePicture || "https://github.com/shadcn.png"} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>

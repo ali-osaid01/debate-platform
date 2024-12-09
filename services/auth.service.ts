@@ -1,6 +1,7 @@
 import api from "./middleware";
 import { STATUS } from "@/types/enum";
 import { ILogin, IResetPassword, IVerifyOTP } from "@/types/interface/auth.interface";
+import { IUser } from "@/types/interface/user.interface";
 
 export const login = async (payload:ILogin) => {
     try {
@@ -84,6 +85,23 @@ export const resetPassword = async (payload:IResetPassword) => {
     } catch (error: any) {
         console.log("ERROR ->", error)
        
+        return {
+            status: STATUS.FAILED,
+            response: error.response?.data?.msg || "Something went wrong",
+        }
+    }
+}
+
+export const googleAuth = async (payload:Partial<IUser>) => {
+    try {
+        const response = await api.post('/auth/google-auth',payload);
+        
+        return {
+            status: STATUS.SUCCESS,
+            response
+        }
+    } catch (error: any) {
+        console.log("ERROR ->", error)
         return {
             status: STATUS.FAILED,
             response: error.response?.data?.msg || "Something went wrong",

@@ -1,29 +1,31 @@
 import { useEffect } from 'react';
-// import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { authenticatedUser } from '@/services/user.service';
 import { useUserStore } from '@/store/user.store';
+import { STATUS } from '@/types/enum';
 
 export function useAuthenticatedUser() {
-  const { user, setUser} = useUserStore();
-  // const router = useRouter();
+  const { user, setUser } = useUserStore();
 
-  const { data, isLoading,error } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['user'],
     queryFn: ()=>authenticatedUser(),
-    staleTime: 5 * 60 * 1000,
-    enabled:!user
+    enabled: user === null, 
+    // initialData:user
   });
 
-
-  console.log("USER ERROR",error);
-  console.log("STORE USER ->",user);
-  console.log("User DATA ->",data);
+  console.log("HOOK DATA ->",data);
+  console.log("STORE USER ->",user)
   useEffect(() => {
-    if (!isLoading && data?.success && data.response && !user) {
-      setUser(data?.response.data);
+    if (data?.status == STATUS.SUCCESS && data?.response?.data) {
+      setUser(data.response.data); 
     }
-  }, [data, isLoading, user, setUser]);
+  }, [data, user, setUser]);
 
-  return { user, isLoading };
+  return {
+    user: user, 
+    isLoading,
+    isError,
+    error,
+  };
 }

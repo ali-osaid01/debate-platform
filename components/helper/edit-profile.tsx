@@ -14,6 +14,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FloatingInput } from "../shared/Auth-Input";
 import userValidationSchema from "@/validation/user.validation";
 import FileUpload from "./file-upload";
+import { useFormMutation } from "@/hooks/useFormMutation";
+import {  ERROR_UPDATE_PROFILE, SUCCESS_UPDATE_PROFILE } from "@/utils/constant";
+import { updateUser } from "@/services/user.service";
+import { E164Number, parsePhoneNumber } from "libphonenumber-js";
 
 interface EditProfileProps {
   user?: IUser;
@@ -24,22 +28,49 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(userValidationSchema),
   });
 
+  const { handleFormSubmit } = useFormMutation<unknown, Error, Partial<IUser>>({
+    mutationFn: updateUser,
+    successMessage: SUCCESS_UPDATE_PROFILE,
+    errorMessage: ERROR_UPDATE_PROFILE,
+    route: '/feed'
+  });
+
+  const onSubmit = async (data: Partial<IUser>) => {
+    handleFormSubmit(data);
+    console.log("FORM DATA PROFILE ->", data);
+  };
+
   return (
     <Card>
       <CardContent className="pt-6">
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-2">
-            <FloatingInput id="name" placeholder="Enter Name" defaultValue={user?.name || ""} name="name" register={register} />
+            <FloatingInput 
+              id="name" 
+              placeholder="Enter Name" 
+              defaultValue={user?.name || ""} 
+              name="name" 
+              register={register} 
+            />
+            {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>} {/* Display error */}
           </div>
           <div className="space-y-2">
-            <FloatingInput id="website" placeholder="Website" defaultValue={user?.website || ""} name="website" register={register} />
+            <FloatingInput 
+              id="website" 
+              placeholder="Website" 
+              defaultValue={user?.website || ""} 
+              name="website" 
+              register={register} 
+            />
+            {errors.website && <span className="text-red-500 text-sm">{errors.website.message}</span>} {/* Display error */}
           </div>
-          {/* Bio Field */}
+
           <div className="space-y-2">
             <div className="group relative">
               <label
@@ -48,73 +79,51 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
               >
                 <span className="inline-flex bg-background px-2">Bio</span>
               </label>
-              <Textarea id="bio" placeholder="" />
+              <Textarea id="bio" placeholder="" {...register("bio")} defaultValue={user?.bio}/>
             </div>
+            {errors.bio && <span className="text-red-500 text-sm">{errors.bio.message}</span>} {/* Display error */}
           </div>
 
-          {/* <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="dob">Date of Birth</Label>
-              <div className="flex">
-                <Input
-                  id="dob"
-                  type="date"
-                  className="rounded-r-none"
-                  defaultValue={user?.dob ? new Date(user.dob).toISOString().split('T')[0] : ''}
-                />
-                <Button variant="outline" className="rounded-l-none">
-                  <CalendarIcon className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="gender">Gender</Label>
-              <Select defaultValue={user?.gender || ""}>
-                <SelectTrigger id="gender">
-                  <SelectValue placeholder="Select gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div> */}
-
           {/* Phone Field */}
-
           <div className="space-y-2">
             <Label htmlFor="phone">Phone</Label>
-            {/* <Input id="phone" type="tel" placeholder="Your phone number" defaultValue={user?.phone || ""} /> */}
-            <PhoneInputShadcnUiPhoneInput register={register} name="phone" defaultValue={user?.phone} />
+            <PhoneInputShadcnUiPhoneInput 
+            
+              register={register} 
+              name="phone" 
+              defaultValue={user?.phone?.trim() ?? "+33"}/>
+            {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>} {/* Display error */}
           </div>
 
           {/* Location Field */}
           <div className="space-y-2">
-            <FloatingInput id="location" placeholder="Location" name="location" defaultValue={user?.location || ""} register={register} />
+            <FloatingInput 
+              id="location" 
+              placeholder="Location" 
+              name="location" 
+              defaultValue={user?.location || ""} 
+              register={register} 
+            />
+            {errors.location && <span className="text-red-500 text-sm">{errors.location.message}</span>} {/* Display error */}
           </div>
 
           {/* Profile Picture */}
           <div className="space-y-2">
-            {/* <Label htmlFor="profile-picture">Profile Picture</Label>
-            <div className="flex items-center space-x-4">
-              <Avatar className="w-16 h-16">
-                <AvatarImage src={user?.profilePicture || "/placeholder.svg"} alt="Current profile picture" />
-                <AvatarFallback>
-                  <UserIcon className="w-8 h-8" />
-                </AvatarFallback>
-              </Avatar>
-              <Button variant="outline">
-                <CameraIcon className="mr-2 h-4 w-4" />
-                Change Picture
-              </Button>
-            </div> */}
-            <FileUpload shape="circle" className="w-32 h-32" />
+            <FileUpload
+              setValue={setValue}
+              maxFileSize={2 * 1024 * 1024}
+              onUploadSuccess={(url) => console.log('Uploaded:', url)}
+              onUploadError={(error) => console.error(error)}
+              className="rounded-full w-16 h-16 bg-gray-200 flex justify-center items-center cursor-pointer hover:bg-gray-300 transition-all"
+              name="profilePicture"
+            >
+              <UserIcon />
+            </FileUpload>
           </div>
 
-          <Button type="submit">Update Profile</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Updating...' : 'Update Profile'}
+          </Button>
         </form>
       </CardContent>
     </Card>

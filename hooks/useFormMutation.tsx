@@ -11,9 +11,11 @@ interface MutationResponse<TResponse> {
 
 interface UseFormMutationOptions<TResponse, TError, TVariables> {
   mutationFn: (data: TVariables) => Promise<MutationResponse<TResponse>>;
-  successMessage: string;
-  errorMessage: string;
+  successMessage?: string;
+  errorMessage?: string;
   route?: string
+  onSuccess?:()=>void
+  onError?:()=>void
 }
 
 interface UseFormMutationReturn<TResponse, TError, TVariables> {
@@ -26,17 +28,22 @@ export function useFormMutation<TResponse, TError = Error, TVariables = unknown>
   mutationFn,
   successMessage,
   errorMessage,
-  route
+  route,
+  onError,
+  onSuccess
 }: UseFormMutationOptions<TResponse, TError, TVariables>): UseFormMutationReturn<TResponse, TError, TVariables> {
   const router = useRouter();
   const mutation = useMutation<MutationResponse<TResponse>, TError, TVariables, unknown>({
     mutationFn,
     onSuccess: async ({ status, response }) => {
+      console.log("STATUS coming onSuccess",status)
       if (status === STATUS.SUCCESS) {
+        if(onSuccess) onSuccess()
         if(route) router.push(route)
-        toast(successMessage); 
+        if(successMessage) toast(successMessage);
       } else {
-        toast.error(response as string);
+        if(onError) onError()
+        toast.error(errorMessage);
       }
     },
     onError: () => {

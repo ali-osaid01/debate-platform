@@ -4,6 +4,7 @@ export interface IUser {
     name: string;
     email: string;
     bio:string;
+    socialAuth:string
     dob:Date;
     phone:string
     settings:{
@@ -12,7 +13,7 @@ export interface IUser {
     location:string;
     gender:string;
     isProfileCompleted:boolean
-    profilePicture:string;
+    profilePicture:string | null;
     password: string;
     role: string;
     otp:number

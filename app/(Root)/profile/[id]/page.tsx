@@ -34,7 +34,7 @@ export default  function Profile() {
       <div className="flex flex-col md:flex-row items-center md:items-start mb-8">
         <div className="mb-4 md:mb-0 md:mr-8">
           <Avatar className="w-32 h-32 md:w-40 md:h-40">
-            <AvatarImage src="/placeholder.svg" alt="Profile picture" />
+            <AvatarImage src={user?.response?.data?.profilePicture || "./placeholderImage.png"} alt="Profile picture" />
             <AvatarFallback>
               <UserIcon className="w-16 h-16" />
             </AvatarFallback>
@@ -42,12 +42,8 @@ export default  function Profile() {
         </div>
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
-            <h1 className="text-2xl font-bold mr-4">{user?.response?.data?.name}</h1>
+            <h1 className="text-2xl font-bold mr-4">{user?.response?.data?.name }</h1>
             <div className="flex space-x-2 mt-2 md:mt-0">
-              <Button>Edit Profile</Button>
-              <Button variant="outline">
-                <SettingsIcon className="w-4 h-4" />
-              </Button>
             </div>
           </div>
           <div className="flex justify-center md:justify-start space-x-8 mb-4">
@@ -64,7 +60,7 @@ export default  function Profile() {
           <div className="text-center md:text-left">
             <h2 className="font-bold">{user?.response?.data?.name}</h2>
             <p className="text-sm text-muted-foreground">{user?.response?.data?.bio}</p>
-            <p className="text-sm">www.johndoe.com</p>
+            <p className="text-sm">{user?.response?.data?.website}</p>
           </div>
         </div>
       </div>

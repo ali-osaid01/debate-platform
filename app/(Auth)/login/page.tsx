@@ -35,7 +35,6 @@ export default function Login() {
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
     route: '/feed'
-  
   });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
@@ -100,15 +99,17 @@ export default function Login() {
               </div>
             </div>
             <GoogleButton />
-          </CardFooter>
-        </Card>
-      </form>
-      <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm text-gray-500">
               Don&apos;t have an account?{" "}
               <Link href={'/sign-up'} className="text-gray-900 hover:underline">
                 Sign up
               </Link>
             </div>
+          </CardFooter>
+        </Card>
+        
+      </form>
+     
     </div>
   )
 }

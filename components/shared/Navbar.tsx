@@ -7,12 +7,12 @@ import Logo from '@/public/assets/logo.jpg';
 import Image from 'next/image';
 import { useAuthenticatedUser } from '@/hooks/useAuthenticatedUser';
 import NotificationSheet from '../helper/notification-sheet';
-// import { usePathname } from 'next/navigation';
 import { MessageCircleMore } from 'lucide-react';
 
 export default function Navbar() {
   const { user, isLoading } = useAuthenticatedUser();
 
+  console.log("NAVBAR USER ->",user)
   return (
     <nav className="bg-background border-b sticky top-0 z-50">
       <div className="px-5 flex flex-wrap items-center justify-between mx-auto">

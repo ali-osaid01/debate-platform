@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 import { type UseFormRegister } from "react-hook-form";
-
 import {
   type CountryCallingCode,
   type E164Number,
@@ -13,13 +12,8 @@ import enCountries from "i18n-iso-countries/langs/en.json";
 import PhoneInput, { type Country } from "react-phone-number-input/input";
 import examples from "libphonenumber-js/mobile/examples";
 import { Input } from "../ui/input";
-
 import { ComboboxCountryInput } from "./combobox";
-import {
-  getCountriesOptions,
-  isoToEmoji,
-  replaceNumbersWithZeros,
-} from "./helper";
+import { getCountriesOptions, isoToEmoji, replaceNumbersWithZeros } from "./helper";
 
 type CountryOption = {
   value: Country;
@@ -32,7 +26,7 @@ i18nIsoCountries.registerLocale(enCountries);
 type Props = {
   register: UseFormRegister<any>;
   name: string;
-  defaultValue?: string;
+  defaultValue?: string | undefined; // Accept a string or undefined
 };
 
 export const PhoneInputShadcnUiPhoneInput = ({
@@ -42,21 +36,30 @@ export const PhoneInputShadcnUiPhoneInput = ({
 }: Props) => {
   const options = useMemo(() => getCountriesOptions(), []);
 
-  const defaultCountry = useMemo(
-    () => parsePhoneNumber("+33606060606")?.country,
-    []
-  );
+  // Parse the phone number to extract country, falling back to a default country
+  const parsedPhone = defaultValue
+    ? (() => {
+        try {
+          return parsePhoneNumber(defaultValue);
+        } catch {
+          return null;
+        }
+      })()
+    : null;
 
-  const defaultCountryOption = useMemo(
-    () => options.find((option) => option.value === defaultCountry),
-    [options, defaultCountry]
+  const defaultCountry = parsedPhone?.country || "FR"; // Fallback to France ("FR") if parsing fails
+
+  const defaultCountryOption = options.find(
+    (option) => option.value === defaultCountry
   );
 
   const [country, setCountry] = useState<CountryOption>(
     defaultCountryOption || options[0]!
   );
 
-  const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>(defaultValue as E164Number);
+  const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>(
+    parsedPhone?.number || undefined
+  );
 
   const placeholder = useMemo(
     () =>
@@ -67,11 +70,10 @@ export const PhoneInputShadcnUiPhoneInput = ({
   );
 
   const onCountryChange = (value: CountryOption) => {
-    setPhoneNumber(undefined);
+    setPhoneNumber(undefined); // Reset phone number when country changes
     setCountry(value);
   };
 
- 
   return (
     <div className="not-prose mt-8 flex flex-col gap-4">
       <div className="flex gap-2">

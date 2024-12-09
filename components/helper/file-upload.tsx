@@ -1,107 +1,131 @@
-'use client'
+'use client';
 import React, { useState, useRef } from 'react';
-import axios from 'axios';
 import { toast } from 'sonner';
+import Image from 'next/image';
+import { useFormMutation } from '@/hooks/useFormMutation';
+import { ERROR_FILE_UPLOAD, SUCCESS_FILE_UPLOAD } from '@/utils/constant';
+import { upload } from '@/services/file-upload.server';
+import { FieldValues, Path, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { Input } from '../ui/input';
+import { Loader2 } from 'lucide-react';
 
-interface FileUploadProps {
-  shape?: 'circle' | 'rectangle'; // Ensure shape type is restricted to either circle or rectangle
-  className?: string; // Made className optional
+interface FileUploadProps<T extends FieldValues> {
+  maxFileSize?: number; 
+  onUploadSuccess?: (url: string) => void; 
+  onUploadError?: (error: string) => void; 
+  children?: React.ReactNode; 
+  className: string; 
+  setValue:UseFormSetValue<T>
+  name:Path<T>
 }
 
-const FileUpload = ({ shape = 'circle', className = '' }: FileUploadProps) => {
-  const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+const FileUpload = <T extends FieldValues>({
+  maxFileSize = 5 * 1024 * 1024, 
+  onUploadSuccess,
+  onUploadError,
+  children,
+  className,
+  setValue,
+  name
+}: FileUploadProps<T>) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
-  
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Handle file change event
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target?.files ? event.target.files[0] : null;
-    if (selectedFile) {
-      setFile(selectedFile);
-      handleFileUpload(selectedFile);
-    }
-  };
-  
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const uploadedCache = useRef<Map<string, string>>(new Map()); 
+
+  // Validate file type
   const isValidFileType = (file: File) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
     return allowedTypes.includes(file.type);
   };
 
-  // Handle file upload
-  const handleFileUpload = async (selectedFile: File) => {
-    // File type validation
-    if (!isValidFileType(selectedFile)) {
-      setError('Invalid file type. Please upload an image file.');
-      toast.error('Invalid file type. Please upload an image file.'); 
+  const { handleFormSubmit, isLoading, mutation } = useFormMutation<
+    any, 
+    Error,
+    File
+  >({
+    mutationFn: upload, 
+    errorMessage: ERROR_FILE_UPLOAD,
+  });
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const media = event.target?.files ? event.target.files[0] : null;
+
+    if (!media) return;
+
+    if (!isValidFileType(media)) {
+      const errorMessage = 'Invalid file type. Please upload an image file.';
+      toast.error(errorMessage);
       return;
     }
 
-    const formData = new FormData();
-    formData.append('media', selectedFile);
+    if (media.size > maxFileSize) {
+      const errorMessage = `File is too large. Max size is ${maxFileSize / 1024 / 1024}MB.`;
+      toast.error(errorMessage);
+      return;
+    }
 
-    setUploading(true);
-    setError(null);
+    
+    const cacheKey = `${media.name}-${media.lastModified}`;
+    
+    if (uploadedCache.current.has(cacheKey)) {
+      const cachedUrl = uploadedCache.current.get(cacheKey)!;
+      setUploadedFileUrl(cachedUrl);
+      toast.success('File loaded from cache!');
+      return;
+    }
 
-    try {
-      const response = await axios.post('http://localhost:5000/api/media', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      setUploading(false);
-      setUploadedFileUrl(response.data.urls[0]);
-      toast.success('File uploaded successfully!'); 
-    } catch (err) {
-      setUploading(false);
-      setError('Error uploading file. Please try again.');
-      toast.error('Error uploading file. Please try again.');
+    const result = await handleFormSubmit(media);
+    setValue(name,result);
+    if (result) {
+      setUploadedFileUrl(String(result));
+      uploadedCache.current.set(cacheKey, String(result));
+      toast.success('File uploaded successfully!');
     }
   };
 
-  // Get shape class for styling based on the "shape" prop
-  const getShapeClass = () => {
-    return shape === 'circle' ? 'rounded-full' : 'rounded-lg';
+  const handleCustomClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
-    <div className={`relative ${className}`}>
-      {/* Invisible file input */}
+    <div>
       <input
         type="file"
-        ref={fileInputRef} 
+        ref={fileInputRef}
         onChange={handleFileChange}
-        style={{ display: 'none' }} 
-        id="file-upload-input"
-        accept="image/*" // Restrict file input to images only
+        style={{ display: 'none' }}
+        accept="image/*"
       />
 
-      {/* Clickable area to upload */}
       <div
-        className={`cursor-pointer ${getShapeClass()} w-40 h-40 flex justify-center items-center bg-gray-200 hover:bg-gray-300 transition-all ease-in-out`}
+        className={className}
+        onClick={handleCustomClick} 
         style={{
-          backgroundImage: uploadedFileUrl ? `url(${uploadedFileUrl})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          cursor: 'pointer',
+          position: 'relative',
+          overflow: 'hidden',
         }}
-        onClick={() => fileInputRef?.current?.click()} 
       >
-        {/* Placeholder or uploading text */}
-        {!uploadedFileUrl && !uploading && (
-          <div className="text-center text-gray-500">
-            Click to upload
+        {isLoading ? (
+          <Loader2 className='animate-spin'/>
+        ) : uploadedFileUrl ? (
+          <div className="relative w-full h-full">
+            <Image
+              src={uploadedFileUrl}
+              alt="Uploaded"
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
-        )}
-        {uploading && (
-          <div className="text-center text-gray-500">Uploading...</div>
+        ) : (
+          children
         )}
       </div>
 
-      {/* Error Message */}
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {mutation.isError && (
+        <p className="text-red-500 text-sm mt-2">Error uploading file. Try again.</p>
+      )}
     </div>
   );
 };
