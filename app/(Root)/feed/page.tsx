@@ -5,8 +5,6 @@ import { events } from '@/utils/data';
 import EventCard from '@/components/shared/event-post-card';
 import UpcomingEvents from '@/components/shared/Upcoming-Events-Section';
 import useMediaQuery from '@/hooks/useMediaQuery';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import EventFormDialog from '@/components/helper/create-event-dialog';
 import { FilterSidebar } from '@/components/shared/filter-sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -14,10 +12,9 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("events");
   const desktop = useMediaQuery('(min-width: 1020px)');
-
   return (
     <div>
-      <div className="w-full max-w-3xl mx-auto mt-5">
+      <div className="w-full max-w-[300px] md:max-w-[500px]  mx-auto mt-5">
         <div className="flex mb-8 bg-muted rounded-tr-full rounded-bl-full relative">
           <button
             onClick={() => setActiveTab("events")}
@@ -44,7 +41,7 @@ export default function FeedPage() {
 
       <div className="flex flex-col lg:flex-row lg:justify-between lg:space-x-4 w-full">
         {/* Left Div */}
-        {desktop && (
+        {desktop  && (
           <div className="hidden lg:block w-full lg:w-1/4">
              <SidebarProvider>
             <FilterSidebar />

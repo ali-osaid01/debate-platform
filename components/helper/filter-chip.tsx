@@ -22,7 +22,7 @@ export function FilterChip({
       variant={selected ? "secondary" : "outline"}
       size="sm"
       className={cn(
-        "h-auto rounded-full px-3 py-1 text-xs font-normal",
+        "h-auto rounded-full px-3 py-1 text-[10px]",
         selected && "pr-1",
         className
       )}

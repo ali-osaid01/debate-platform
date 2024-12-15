@@ -1,87 +1,84 @@
-'use client'
-import * as React from "react"
-import { ChevronDown } from 'lucide-react'
+"use client";
+import * as React from "react";
+import { ChevronDown } from "lucide-react";
 
-import { FilterChip } from "@/components/helper/filter-chip"
+import { FilterChip } from "@/components/helper/filter-chip";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
-  SidebarHeader,
   SidebarGroup,
   SidebarProvider,
-} from "@/components/ui/sidebar"
-
-interface Category {
-  name: string
-  topics: string[]
-}
-
-const categories: Category[] = [
-  {
-    name: "Technology and Ethics",
-    topics: ["AI", "Privacy", "SocialMedia", "Cryptocurrency", "Surveillance"],
-  },
-  {
-    name: "Society and Culture",
-    topics: ["Speech", "Globalization", "Workweek", "CancelCulture", "MentalHealth"],
-  },
-  {
-    name: "Education and Innovation",
-    topics: ["Coding", "OnlineDegrees", "AI", "Assignments", "Tests"],
-  },
-  {
-    name: "Environmental Policies",
-    topics: ["Emissions", "Nuclear", "EVs", "Meat", "Geoengineering"],
-  },
-];
+} from "@/components/ui/sidebar";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCategories } from "@/services/category.service";
 
 export function FilterSidebar() {
-  const [selectedTopics, setSelectedTopics] = React.useState<string[]>([])
+  const [selectedTopics, setSelectedTopics] = React.useState<string[]>([]);
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
-      prev.includes(topic)
-        ? prev.filter((t) => t !== topic)
-        : [...prev, topic]
-    )
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
+    );
+  };
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: fetchCategories,
+    queryKey: ["Categories"],
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center p-4">
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center p-4 text-red-500">
+        <span>
+          Error: {error instanceof Error ? error.message : "Unknown error"}
+        </span>
+      </div>
+    );
   }
 
   return (
     <SidebarProvider>
-      <Sidebar className="w-72 border-r">
-      <SidebarContent className="pt-16">
-        {categories.map((category) => (
-          <SidebarGroup key={category.name}>
-            <Collapsible defaultOpen>
-              <CollapsibleTrigger className="flex w-full items-center justify-between px-4 py-2 text-sm font-medium hover:bg-muted/50">
-                {category.name}
-                <ChevronDown className="h-4 w-4" />
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="flex flex-wrap gap-2 p-4">
-                  {category.topics.map((topic) => (
-                    <FilterChip
-                      key={topic}
-                      selected={selectedTopics.includes(topic)}
-                      onClick={() => toggleTopic(topic)}
-                      onRemove={() => toggleTopic(topic)}
-                    >
-                      {topic}
-                    </FilterChip>
-                  ))}
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          </SidebarGroup>
-        ))}
-      </SidebarContent>
+      <Sidebar className="w-64 xl:w-80 border-r md:fixed md:left-0 md:top-0 md:h-full md:overflow-y-auto">
+        <SidebarContent className="pt-16">
+          {data?.response?.data.map((category: ICategory) => (
+            <SidebarGroup key={category._id}>
+              <Collapsible defaultOpen>
+                <CollapsibleTrigger className="flex w-full items-center justify-between px-4 py-2 text-xs hover:bg-muted/50">
+                  {category.title}
+                  <ChevronDown className="h-4 w-4" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="flex flex-wrap gap-2 p-4">
+                    {category?.subCategories?.map((subCategory: any) => (
+                      <FilterChip
+                        key={subCategory._id}
+                        selected={selectedTopics.includes(subCategory.title)}
+                        onClick={() => toggleTopic(subCategory.title)}
+                        onRemove={() => toggleTopic(subCategory.title)}
+                      >
+                        {subCategory.title}
+                      </FilterChip>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </SidebarGroup>
+          ))}
+        </SidebarContent>
       </Sidebar>
     </SidebarProvider>
-  )
+  );
 }
-
