@@ -41,7 +41,7 @@ export const useParticipantStore = create<ParticipantState>((set, get) => ({
     if (!exists) {
       const updatedParticipants = [...participants, { user }];
       set({ participants: updatedParticipants });
-      setValue("participants", updatedParticipants); // Sync with form state
+      setValue("participants", updatedParticipants.map(p => ({ user: p.user._id }))); 
     }
   },
 
@@ -55,7 +55,7 @@ export const useParticipantStore = create<ParticipantState>((set, get) => ({
       (participant) => participant.user._id !== userId,
     );
     set({ participants: updatedParticipants });
-    setValue("participants", updatedParticipants); // Sync with form state
+    setValue("participants", updatedParticipants.map(p => ({ user: p.user._id }))); // Sync with form state
   },
 
   // Check if another participant can be added

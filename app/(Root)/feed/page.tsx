@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Activity, CalendarDays, PlusCircle } from 'lucide-react';
+import { Activity, CalendarDays } from 'lucide-react';
 import { events } from '@/utils/data';
 import EventCard from '@/components/shared/event-post-card';
 import UpcomingEvents from '@/components/shared/Upcoming-Events-Section';

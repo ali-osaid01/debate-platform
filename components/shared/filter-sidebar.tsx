@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCategories } from "@/services/category.service";
+import { ICategory } from "@/types/interface/category.interface";
 
 export function FilterSidebar() {
   const [selectedTopics, setSelectedTopics] = React.useState<string[]>([]);

@@ -12,6 +12,7 @@ import { login } from "@/services/auth.service"
 import { useFormMutation } from "@/hooks/useFormMutation"
 import { ERROR_LOGIN, SUCCESS_LOGIN_PASSED } from "@/utils/constant"
 import { useUserStore } from "@/store/user.store";
+import { IUser } from "@/types/interface/user.interface"
 
 
 export default function Login() {
@@ -30,7 +31,7 @@ export default function Login() {
     resolver: yupResolver(loginValidation),
   });
   
-  const { handleFormSubmit } = useFormMutation<unknown, Error, ILogin>({
+  const { handleFormSubmit } = useFormMutation<{data:{data:{user:IUser}}}, Error, ILogin>({
     mutationFn: login,
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
@@ -38,7 +39,7 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
-    const payload:any = await handleFormSubmit(data)
+    const payload = await handleFormSubmit(data)
     if(payload) {setUser(payload?.data?.data?.user)}
     console.log("payload ->>",payload)
   }

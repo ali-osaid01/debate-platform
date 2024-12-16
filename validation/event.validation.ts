@@ -13,6 +13,7 @@ const eventValidation = yup.object().shape({
     .required("Description is required"),
   category: yup.string().required("Category is required"),
   location: yup.string().required("Location is required"),
+  date:yup.date().required("Date is required"),
   picture: yup.string().required("Event Poster is required"),
   type: yup.string().required("Event Type is required"),
   topic: yup.string().required("Event Topic is required"),
@@ -20,7 +21,7 @@ const eventValidation = yup.object().shape({
     .array()
     .of(
       yup.object().shape({
-        user: yup.mixed(),
+        user: yup.string().required(),
         // .test(
         //   "isValidUser",
         //   "User must be an object with valid fields or a string",

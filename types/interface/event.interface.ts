@@ -14,8 +14,9 @@ export interface IEventValues extends FieldValues {
   picture: string;
   type: string;
   topic: string;
-  participants: IParticipant[];
+  participants: { user: string }[]
 }
+
 export enum ApprovalStatus {
   PENDING = "pending",
   APPROVED = "approved",

@@ -30,9 +30,9 @@ import { fetchSingleCategory } from "@/services/category.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import eventValidation from "@/validation/event.validation";
 import ParticipantSearch from "./participant-search";
-import { IEventValues } from "@/types/interface/event.interface";
 import { ICategory } from "@/types/interface/category.interface";
 import { createEvent } from "@/services/event.service";
+import { IEventValues } from "@/types/interface/event.interface";
 
 export default function EventFormDialog() {
   const {
@@ -41,7 +41,7 @@ export default function EventFormDialog() {
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<IEventValues>({
     resolver: yupResolver(eventValidation),
   });
 
@@ -164,7 +164,7 @@ export default function EventFormDialog() {
               </div>
 
               {/* Participants */}
-              <ParticipantSearch setValue={setValue} />
+              <ParticipantSearch setValue={setValue}  watch={watch}/>
 
               {/* Event Type */}
               <div className="space-y-2">

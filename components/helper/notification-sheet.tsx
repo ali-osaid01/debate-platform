@@ -56,8 +56,8 @@ export default function NotificationSheet() {
                 >
                   <Avatar>
                     <AvatarImage
-                      src={(notification.sender as IUser).profilePicture}
-                      alt={(notification.sender as IUser).name}
+                      src={(notification?.sender as IUser).profilePicture || " "}
+                      alt={(notification?.sender as IUser).name}
                     />
                     <AvatarFallback>
                       {(notification.sender as IUser).name.charAt(0)}

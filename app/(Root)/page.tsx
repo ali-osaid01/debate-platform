@@ -1,4 +1,3 @@
-import EventSlider from '@/components/helper/event-slider'
 import Analytics from '@/components/shared/Analytics'
 import Content from '@/components/shared/Content'
 import Hero from '@/components/shared/Hero'

@@ -28,24 +28,16 @@ export function FollowButton({ initialIsFollowing, user }: FollowButtonProps) {
     },
   });
 
-  const { handleFormSubmit } = useFormMutation<FollowFormValues, Error>({
-    mutationFn: followUser,
-    successMessage: FOLLOW_USER_SUCCESS,
-    errorMessage: NETWORK_ERROR,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["isFollowing"] });
-      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
-    },
-  });
-
   const queryClient = useQueryClient();
+
   useEffect(() => {
     setIsFollowing(initialIsFollowing);
   }, [initialIsFollowing]);
 
-  const onSubmit: SubmitHandler<FollowFormValues> = async () => {
-    handleFormSubmit(user);
-
+  const onSubmit: SubmitHandler<FollowFormValues> = async (data) => {
+    followUser(user);
+    queryClient.invalidateQueries({ queryKey: ["isFollowing"] });
+    queryClient.invalidateQueries({ queryKey: ["user-profile"] });
     console.log("THIS PART CALLED");
   };
 
