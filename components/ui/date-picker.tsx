@@ -12,8 +12,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { UseFormSetValue } from "react-hook-form";
+import { IEventValues } from "@/types/interface/event.interface";
 
-export function DatePicker() {
+export function DatePicker({
+  setValue,
+}: {
+  setValue: UseFormSetValue<IEventValues>;
+}) {
   const [date, setDate] = React.useState<Date>();
 
   return (
@@ -34,7 +40,11 @@ export function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(value) => {
+            setValue("date", value || new Date());
+            console.log("DATE ->", value);
+            setDate(value);
+          }}
           initialFocus
         />
       </PopoverContent>

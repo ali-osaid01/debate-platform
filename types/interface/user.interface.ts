@@ -1,7 +1,7 @@
 export interface IUser {
-  id: string;
   _id: string;
   name: string;
+  username: string;
   email: string;
   bio: string;
   socialAuth: string;
@@ -24,4 +24,8 @@ export interface IUser {
   website?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IUsers {
+  data: IUser[];
 }

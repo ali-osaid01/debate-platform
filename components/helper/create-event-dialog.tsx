@@ -1,5 +1,4 @@
 "use client";
-
 import { CalendarRangeIcon, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -15,29 +14,25 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { DatePicker } from "../ui/date-picker";
 import {
   Credenza,
+  CredenzaClose,
   CredenzaContent,
   CredenzaDescription,
   CredenzaHeader,
   CredenzaTitle,
   CredenzaTrigger,
 } from "../ui/drawer-dialog";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+
 import { useForm } from "react-hook-form";
 import { FloatingInput } from "../shared/Auth-Input";
 import FileUpload from "./file-upload";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchSingleCategory } from "@/services/category.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import eventValidation from "@/validation/event.validation";
-import { fetchUsers } from "@/services/user.service";
-import { IUser } from "@/types/interface/user.interface";
+import ParticipantSearch from "./participant-search";
+import { IEventValues } from "@/types/interface/event.interface";
+import { ICategory } from "@/types/interface/category.interface";
+import { createEvent } from "@/services/event.service";
 
 export default function EventFormDialog() {
   const {
@@ -45,35 +40,35 @@ export default function EventFormDialog() {
     handleSubmit,
     setValue,
     watch,
-
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(eventValidation),
   });
 
-  const { data, isLoading } = useQuery<ApiResponse<ICategory[]>>({
+  const queryClient = useQueryClient();
+
+  const category = watch("category");
+
+  const { data } = useQuery({
     queryKey: ["Categories"],
     queryFn: () => fetchSingleCategory(""),
+    staleTime: 5 * 60 * 1000,
   });
 
-  const { data: subCategories } = useQuery<ApiResponse<ICategory[]>>({
-    queryKey: ["Categories-SubTopics"],
-    queryFn: () => fetchSingleCategory(watch("category")),
+  const { data: subCategories } = useQuery({
+    queryKey: ["Categories-SubTopics", category],
+    queryFn: () => fetchSingleCategory(category),
+    enabled: !!category,
   });
 
-  const { data: users } = useQuery<ApiResponse<IUser[]>>({
-    queryKey: ["users"],
-    queryFn: () => fetchUsers(1, 5, ""),
-  });
-
-  console.log("Users ->", users);
-  console.log("Categories ->", data);
-  console.log("LOADING ->", isLoading);
-  console.log("subCategories ->", subCategories);
-
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: IEventValues) => {
     console.log("DATA ->", data);
+    const response = await createEvent(data);
+    console.log("RESPONSE EVENT CREATE ->", response);
   };
+
+  console.log("ERROR ->", errors);
+
   return (
     <>
       <Credenza>
@@ -83,7 +78,7 @@ export default function EventFormDialog() {
             <PlusCircle className="mr-2 h-5 w-5" />
           </Button>
         </CredenzaTrigger>
-        <CredenzaContent className=" md:max-w-[700px] h-[80vh] flex flex-col">
+        <CredenzaContent className="md:max-w-[700px] h-[80vh] flex flex-col">
           <CredenzaHeader>
             <CredenzaTitle>Create New Event</CredenzaTitle>
             <CredenzaDescription>
@@ -108,7 +103,7 @@ export default function EventFormDialog() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <DatePicker />
+                  <DatePicker setValue={setValue} />
                 </div>
 
                 {/* Description */}
@@ -169,27 +164,7 @@ export default function EventFormDialog() {
               </div>
 
               {/* Participants */}
-              <div className="space-y-2">
-                <Label htmlFor="participants">Participants</Label>
-                <Command
-                  className="rounded-lg border shadow-md md:min-w-[450px]"
-                  onSelect={(value: string) => {
-                    setValue("participants", [
-                      ...watch("participants"),
-                      { user: value },
-                    ]);
-                  }}
-                >
-                  <CommandInput placeholder="Search Participants" />
-                  <CommandList>
-                    <CommandEmpty>No results found.</CommandEmpty>
-                    <CommandGroup heading="Suggestions">
-                      <CommandItem value="user1">User 1</CommandItem>
-                      <CommandItem value="user2">User 2</CommandItem>
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </div>
+              <ParticipantSearch setValue={setValue} />
 
               {/* Event Type */}
               <div className="space-y-2">
@@ -201,9 +176,9 @@ export default function EventFormDialog() {
                   <SelectTrigger id="eventType">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Public">Public</SelectItem>
-                    <SelectItem value="Private">Private</SelectItem>
+                  <SelectContent defaultValue={"PUBLIC"}>
+                    <SelectItem value="PUBLIC">Public</SelectItem>
+                    <SelectItem value="PRIVATE">Private</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -212,7 +187,12 @@ export default function EventFormDialog() {
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
                 <Select
-                  onValueChange={(value) => setValue("category", value)}
+                  onValueChange={(value) => {
+                    setValue("category", value);
+                    queryClient.invalidateQueries({
+                      queryKey: ["Categories"],
+                    });
+                  }}
                   defaultValue=""
                 >
                   <SelectTrigger id="category">
@@ -232,11 +212,14 @@ export default function EventFormDialog() {
                   </p>
                 )}
               </div>
+
+              {/* Topic */}
               <div className="space-y-2">
                 <Label htmlFor="topic">Topic</Label>
                 <Select
                   onValueChange={(value) => setValue("topic", value)}
                   defaultValue=""
+                  disabled={!watch("category")}
                 >
                   <SelectTrigger id="topic">
                     <SelectValue placeholder="Select Topic" />
@@ -249,29 +232,26 @@ export default function EventFormDialog() {
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.category && (
-                  <p className="text-sm text-red-500">
-                    {errors.category.message}
-                  </p>
+                {errors.topic && (
+                  <p className="text-sm text-red-500">{errors.topic.message}</p>
                 )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end space-x-4 p-6 border-t">
+                <CredenzaClose asChild>
+                  <Button variant={"outline"}>Cancel</Button>
+                </CredenzaClose>
+                <Button
+                  type="submit"
+                  className="bg-black text-white"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Saving..." : "Save Event"}
+                </Button>
               </div>
             </form>
           </ScrollArea>
-
-          {/* Action Buttons */}
-          <div className="flex justify-end space-x-4 p-6 border-t">
-            <Button type="button" variant="outline">
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              onClick={handleSubmit(onSubmit)}
-              className="bg-black text-white"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Saving..." : "Save Event"}
-            </Button>
-          </div>
         </CredenzaContent>
       </Credenza>
     </>

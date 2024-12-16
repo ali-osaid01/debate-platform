@@ -26,34 +26,18 @@ export function FilterSidebar() {
     );
   };
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data } = useQuery({
     queryFn: fetchCategories,
-    queryKey: ["Categories"],
+    queryKey: ["Categories", { type: "Filter-Categories" }],
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center p-4">
-        <span>Loading...</span>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="flex justify-center items-center p-4 text-red-500">
-        <span>
-          Error: {error instanceof Error ? error.message : "Unknown error"}
-        </span>
-      </div>
-    );
-  }
+  console.log("CATEGORIES ->", data);
 
   return (
     <SidebarProvider>
       <Sidebar className="w-64 xl:w-80 border-r md:fixed md:left-0 md:top-0 md:h-full md:overflow-y-auto">
         <SidebarContent className="pt-16">
-          {data?.response?.data.map((category: ICategory) => (
+          {data?.response?.data?.map((category: ICategory) => (
             <SidebarGroup key={category._id}>
               <Collapsible defaultOpen>
                 <CollapsibleTrigger className="flex w-full items-center justify-between px-4 py-2 text-xs hover:bg-muted/50">

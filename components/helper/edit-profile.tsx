@@ -65,6 +65,13 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
                 {errors.name.message}
               </span>
             )}{" "}
+            <FloatingInput
+              id="username"
+              placeholder="Enter Username"
+              defaultValue={user?.username || ""}
+              name="username"
+              register={register}
+            />
             {/* Display error */}
           </div>
           <div className="space-y-2">

@@ -12,7 +12,6 @@ const eventValidation = yup.object().shape({
     .max(40, "Description cannot be longer than 40 characters")
     .required("Description is required"),
   category: yup.string().required("Category is required"),
-  subCategory: yup.string().required("Sub Category is required"), // Changed from duplicate 'title'
   location: yup.string().required("Location is required"),
   picture: yup.string().required("Event Poster is required"),
   type: yup.string().required("Event Type is required"),
@@ -21,10 +20,20 @@ const eventValidation = yup.object().shape({
     .array()
     .of(
       yup.object().shape({
-        user: yup.string().required("Each participant must have a user ID"),
+        user: yup.mixed(),
+        // .test(
+        //   "isValidUser",
+        //   "User must be an object with valid fields or a string",
+        //   (value) =>
+        //     typeof value === "string" ||
+        //     (typeof value === "object" &&
+        //       value !== null &&
+        //       "_id" in value &&
+        //       "username" in value),
+        // ),
       }),
     )
-    .min(1, "At least one participant is required") // Optional: enforce minimum participants
+    .min(1, "At least one participant is required")
     .required("Participants are required"),
 });
 

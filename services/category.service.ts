@@ -17,7 +17,7 @@ export const fetchCategories = async () => {
   }
 };
 
-export const fetchSingleCategory = async (id: string | null): Promise<any> => {
+export const fetchSingleCategory = async (id?: string): Promise<any> => {
   try {
     const { data } = await api.get(`/category/show?id=${id}`);
     return {
