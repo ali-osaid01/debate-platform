@@ -65,3 +65,27 @@ export const events = [
     "Privacy",
     "Art"
 ];
+
+
+// utils/formatDate.ts
+export function formatDate(dateString: string | Date, locale: string = 'en-US'): string {
+  if (!dateString) return 'Invalid Date';
+
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long',   
+    day: 'numeric',  
+  };
+
+  try {
+    const date = dateString instanceof Date ? dateString : new Date(dateString);
+
+    if (isNaN(date.getTime())) throw new Error('Invalid Date');
+
+    return date.toLocaleString(locale, options);
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return 'Invalid Date';
+  }
+}

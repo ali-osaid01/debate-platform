@@ -32,7 +32,11 @@ import eventValidation from "@/validation/event.validation";
 import ParticipantSearch from "./participant-search";
 import { ICategory } from "@/types/interface/category.interface";
 import { createEvent } from "@/services/event.service";
-import { IEventValues } from "@/types/interface/event.interface";
+import { EVENT_TYPE, IEventValues } from "@/types/interface/event.interface";
+import { STATUS } from "@/types/enum";
+import { toast } from "sonner";
+import { use, useRef } from "react";
+import { useParticipantStore } from "@/store/participants.store";
 
 export default function EventFormDialog() {
   const {
@@ -44,7 +48,8 @@ export default function EventFormDialog() {
   } = useForm<IEventValues>({
     resolver: yupResolver(eventValidation),
   });
-
+  const { clearParticipants } = useParticipantStore()
+  const closeButton = useRef<HTMLButtonElement>(null)
   const queryClient = useQueryClient();
 
   const category = watch("category");
@@ -63,15 +68,22 @@ export default function EventFormDialog() {
 
   const onSubmit = async (data: IEventValues) => {
     console.log("DATA ->", data);
-    const response = await createEvent(data);
+    if (data.type == EVENT_TYPE.PUBLIC) return toast.error("PUBLICE EVENTS ARE CLOSE UNTIL ADMIN PANEL IS COMPLETED")
+    const { status, response } = await createEvent(data);
     console.log("RESPONSE EVENT CREATE ->", response);
+    if (status == STATUS.SUCCESS) {
+      toast("Event Created Successfully");
+      clearParticipants();
+      closeButton.current?.click();
+    }
   };
 
+  const eventType = watch("type");
   console.log("ERROR ->", errors);
 
   return (
     <>
-      <Credenza>
+      <Credenza >
         <CredenzaTrigger asChild>
           <Button className="bg-black w-[280px] text-white font-semibold rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50">
             Create Event
@@ -163,15 +175,13 @@ export default function EventFormDialog() {
                 )}
               </div>
 
-              {/* Participants */}
-              <ParticipantSearch setValue={setValue}  watch={watch}/>
 
               {/* Event Type */}
               <div className="space-y-2">
                 <Label htmlFor="eventType">Event Type</Label>
                 <Select
                   onValueChange={(value) => setValue("type", value)}
-                  defaultValue="Public"
+                  defaultValue="PUBLIC"
                 >
                   <SelectTrigger id="eventType">
                     <SelectValue placeholder="Select" />
@@ -182,6 +192,13 @@ export default function EventFormDialog() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Participants */}
+
+              {eventType == EVENT_TYPE.PRIVATE && 
+              <ParticipantSearch setValue={setValue} watch={watch} />
+              }
+
 
               {/* Category */}
               <div className="space-y-2">
@@ -239,8 +256,8 @@ export default function EventFormDialog() {
 
               {/* Action Buttons */}
               <div className="flex justify-end space-x-4 p-6 border-t">
-                <CredenzaClose asChild>
-                  <Button variant={"outline"}>Cancel</Button>
+                <CredenzaClose asChild >
+                  <Button variant={"outline"} ref={closeButton}>Cancel</Button>
                 </CredenzaClose>
                 <Button
                   type="submit"

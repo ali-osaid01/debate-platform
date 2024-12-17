@@ -1,7 +1,5 @@
 import { useUserStore } from "@/store/user.store";
 import axios from "axios";
-import {useRouter} from "next/navigation";
-import { toast } from "sonner";
 
 const getAccessToken = () => {
   return localStorage.getItem("accessToken");

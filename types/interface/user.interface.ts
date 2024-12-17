@@ -11,6 +11,14 @@ export interface IUser {
     notification: boolean;
   };
   location: string;
+  customer:string;
+  subscription:{
+    subscriptionId: string;
+    subscriptionStatus: string;
+    subscriptionPlan: string;
+    subscriptionStart: Date;
+    subscriptionEnd: Date;
+  }
   gender: string;
   isProfileCompleted: boolean;
   profilePicture: string | null;

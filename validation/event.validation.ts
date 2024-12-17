@@ -35,7 +35,7 @@ const eventValidation = yup.object().shape({
       }),
     )
     .min(1, "At least one participant is required")
-    .required("Participants are required"),
+    .optional(),
 });
 
 export default eventValidation;

@@ -52,20 +52,12 @@ export default function BillingPage() {
             <CardTitle>Payment Method</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <CreditCard className="h-6 w-6 text-muted-foreground" />
-              <div>
-                <p className="font-medium">Visa ending in 1234</p>
-                <p className="text-sm text-muted-foreground">Expires 12/2024</p>
-              </div>
-            </div>
+            <Button variant="outline" className="flex items-center"> 
+            <CreditCard className="h-6 w-6 text-muted-foreground" />
+              Update Payment Method</Button>
           </CardContent>
-          <CardFooter>
-            <Button variant="outline">Update Payment Method</Button>
-          </CardFooter>
         </Card>
-
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Billing History</CardTitle>
           </CardHeader>
@@ -92,7 +84,7 @@ export default function BillingPage() {
           <CardFooter>
             <Button variant="outline">View All Invoices</Button>
           </CardFooter>
-        </Card>
+        </Card> */}
 
         <Card>
           <CardHeader>
@@ -105,7 +97,7 @@ export default function BillingPage() {
                   <Users className="h-5 w-5 text-muted-foreground" />
                   <span>Debate rooms joined</span>
                 </div>
-                <span className="font-semibold">27 / Unlimited</span>
+                <span className="font-semibold">3 </span>
               </div>
               <Progress value={60} />
             </div>

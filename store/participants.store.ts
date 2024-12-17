@@ -10,6 +10,7 @@ export interface Participant {
 export interface ParticipantState {
   participants: Participant[];
   maxParticipants: number;
+  clearParticipants: () => void;
   addParticipant: (
     user: IUser,
     setValue: UseFormSetValue<IEventValues>,
@@ -63,4 +64,7 @@ export const useParticipantStore = create<ParticipantState>((set, get) => ({
     const { participants, maxParticipants } = get();
     return participants.length < maxParticipants;
   },
+
+  clearParticipants: () => set({ participants: [] }),
+  
 }));

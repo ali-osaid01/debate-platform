@@ -27,9 +27,9 @@ export const createEvent = async (payload:any) => {
   }
 };
 
-export const fetchEvents = async (postedBy?: boolean) => {
+export const fetchEvents = async (postedBy?: boolean,type?:string) => {
   try {
-    const { data } = await api.get(`/event?postedBy=${postedBy}`);
+    const { data } = await api.get(`/event?postedBy=${postedBy}&type=${type}`);
 
     return {
       status: "success",

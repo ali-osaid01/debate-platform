@@ -4,6 +4,10 @@ import { IUser } from "./user.interface";
 export interface IParticipant {
   user: IUser | string;
 }
+export enum EVENT_TYPE {
+  PUBLIC = "PUBLIC",
+  PRIVATE = "PRIVATE",
+}
 
 export interface IEventValues extends FieldValues {
   title: string;
@@ -14,7 +18,7 @@ export interface IEventValues extends FieldValues {
   picture: string;
   type: string;
   topic: string;
-  participants: { user: string }[]
+  participants?: { user: string }[]
 }
 
 export enum ApprovalStatus {
@@ -31,6 +35,7 @@ export enum EventStatus {
 }
 
 export interface IEvent {
+  _id:string
   title: string;
   description: string;
   type: string;
@@ -50,4 +55,14 @@ export interface IEvent {
 
 export interface IEvents {
   data: IEvent[];
+}
+
+export interface IPopulatedParticipants {
+  user:string,
+  status:string,
+  userInfo:{
+    _id:string,
+    name:string,
+    profilePicture:string
+  }
 }

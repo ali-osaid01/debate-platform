@@ -98,7 +98,7 @@ export default function EventGrid({
             <div className="flex -space-x-4">
               {event.participants?.map((participant: any, index: number) => (
                 <div
-                  key={(participant.user as IUser)._id || index}
+                  key={participant.user}
                   className="flex items-center"
                 >
                   <Avatar className="w-8 h-8 mr-2">
