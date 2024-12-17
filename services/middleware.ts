@@ -1,4 +1,3 @@
-import { useUserStore } from "@/store/user.store";
 import axios from "axios";
 
 const getAccessToken = () => {

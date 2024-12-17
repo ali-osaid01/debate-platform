@@ -61,8 +61,9 @@ export default function ProfileAvatar() {
             </DropdownMenuItem>
           </Link>
           <DropdownMenuItem
+          
             className="cursor-pointer flex items-center gap-2"
-            onClick={handleLogout}
+            // onClick={handleLogout}
           >
             <LogOut className="h-4 w-4" />
             Logout
