@@ -12,6 +12,7 @@ console.log("BASE URL ->", baseURL);
 const api = axios.create({
   baseURL,
   withCredentials:true
+  
 });
 
 api.interceptors.request.use(
