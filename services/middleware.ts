@@ -17,7 +17,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    // config.headers.Authorization = `Bearer ${getAccessToken()}`;
+    config.headers.Authorization = `Bearer ${getAccessToken()}`;
     return config;
   },
   (error) => {

@@ -72,19 +72,19 @@ export default function Profile() {
           <div className="flex justify-center md:justify-start space-x-8 mb-4">
             <div className="text-center md:text-left">
               <span className="font-bold">
-                {user?.response.data.postCount || 0}
+                {user?.response?.data?.postCount || 0}
               </span>{" "}
               posts
             </div>
             <div className="text-center md:text-left">
               <span className="font-bold">
-                {user?.response.data.followerCount || 0}
+                {user?.response?.data?.followerCount || 0}
               </span>{" "}
               followers
             </div>
             <div className="text-center md:text-left">
               <span className="font-bold">
-                {user?.response.data.followingCount || 0}
+                {user?.response?.data?.followingCount || 0}
               </span>{" "}
               following
             </div>
