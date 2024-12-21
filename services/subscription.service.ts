@@ -16,7 +16,7 @@ export const fetchSubscription = async () => {
     }
 }
 
-export const createSubscription = async (payload: {customer:string,price:string}) => {
+export const createSubscription = async (payload: {price:string,plan:string}) => {
     try {
         const response = await api.post("/subscription", payload);
         return {

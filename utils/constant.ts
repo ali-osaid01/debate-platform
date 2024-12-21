@@ -16,3 +16,12 @@ export const SUCCESS_OTP_VERIFICATION_FAILED: string = "Otp Verified Failed!";
 export const ERROR_FILE_UPLOAD = "file upload failed";
 export const ERROR_VALIDATION: string = "Validation Error!";
 export const ERROR_UPDATE_PROFILE = "Profile Update Failed";
+
+export const getPrice = (key: string): string | null => {
+    const prices: Record<string, string> = {
+        BASIC: "$10",
+        PRO: "$25",
+        ELITE: "$50"
+    };
+    return prices[key];
+}

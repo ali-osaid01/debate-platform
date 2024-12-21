@@ -1,3 +1,12 @@
+export interface ISubscription {
+  plan: string;
+  subscribe: boolean;
+  price: string;
+  product: string;
+  subscriptionAuth: string;
+  expirytime: Date;
+}
+
 export interface IUser {
   _id: string;
   name: string;
@@ -12,13 +21,7 @@ export interface IUser {
   };
   location: string;
   customer:string;
-  subscription:{
-    subscriptionId: string;
-    subscriptionStatus: string;
-    subscriptionPlan: string;
-    subscriptionStart: Date;
-    subscriptionEnd: Date;
-  }
+  subscription:ISubscription;
   gender: string;
   isProfileCompleted: boolean;
   profilePicture: string | null;

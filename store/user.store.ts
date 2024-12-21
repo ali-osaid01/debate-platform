@@ -2,7 +2,6 @@
 
 import { IUser } from '@/types/interface/user.interface';
 import { create } from 'zustand';
-
 import { deleteCookie } from 'cookies-next';
 
 interface UserStore {
