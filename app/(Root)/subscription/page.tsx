@@ -8,16 +8,42 @@ import { useUserStore } from "@/store/user.store";
 import { STATUS } from "@/types/enum";
 import { SubscriptionProduct } from "@/types/interface/subscription.interface";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Loader2, CheckCircle, AlertCircle, X } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { Progress } from "@/components/ui/progress";
 import { getPrice } from '@/utils/constant';
 
 export default function Subscription() {
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
   const { user } = useUserStore();
 
+   const subscriptionFeatures = {
+    BASIC: [
+      "Access to basic debate rooms",
+      "Limited topic suggestions",
+      "Basic argument analysis",
+      "Community forum access",
+    ],
+    PRO: [
+      "Access to all debate rooms",
+      "Unlimited topic suggestions",
+      "Advanced argument analysis",
+      "Priority matchmaking",
+      "Personalized feedback",
+      "Ad-free experience",
+    ],
+    ELITE: [
+      "All Pro features",
+      "One-on-one coaching sessions",
+      "Exclusive masterclass webinars",
+      "Custom debate tournaments",
+      "Advanced analytics and insights",
+      "Early access to new features",
+    ],
+  };
+  
+
+  
   const { data, isLoading, error } = useQuery({
     queryKey: ["subscription"],
     queryFn: fetchSubscription,
@@ -58,7 +84,6 @@ export default function Subscription() {
     }
   };
 
-  // Check if the user is subscribed
   const isSubscribed = user?.subscription?.subscribe;
 
   const calculateDaysLeft = (expiryTime: string) => {
@@ -70,7 +95,7 @@ export default function Subscription() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex flex-col justify-center items-center p-4 sm:p-8">
-      <div className="max-w-4xl w-full space-y-10">
+      <div className="max-w-6xl w-full space-y-10">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
             {isSubscribed ? 'Your Subscription' : 'Choose Your Debate Plan'}
@@ -83,7 +108,6 @@ export default function Subscription() {
         </div>
 
         {isSubscribed ? (
-          // Subscribed User UI
           <Card className="max-w-2xl mx-auto">
             <CardHeader>
               <CardTitle className="text-2xl font-bold flex items-center">
@@ -108,7 +132,6 @@ export default function Subscription() {
                   <span className="text-lg font-medium">Next billing date</span>
                   <span className="text-lg font-bold">{new Date(user.subscription.expirytime).toLocaleDateString()}</span>
                 </div>
-                {/* <Progress value={calculateDaysLeft(user.subscription.expirytime.toString())} max={30} className="h-2" /> */}
                 <p className="text-sm text-muted-foreground text-right">
                   {calculateDaysLeft(user.subscription.expirytime.toString())} days left
                 </p>
@@ -121,52 +144,58 @@ export default function Subscription() {
             </CardFooter>
           </Card>
         ) : (
-          // Subscription Plans UI
           <div className="grid md:grid-cols-3 gap-8">
-            {data?.response?.data?.data?.map((tier: SubscriptionProduct, index: number) => (
-              <Card
-                key={tier.id}
-                className={`flex flex-col justify-between transition-all duration-300 ease-in-out transform hover:scale-105 ${
-                  selectedTier === tier.id ? 'ring-2 ring-primary' : ''
-                } ${index === 1 ? "border-primary md:-mt-4 md:mb-4" : ""}`}
-              >
-                <div>
-                  <CardHeader>
-                    <CardTitle className="text-2xl font-bold">{tier.metadata.plan}</CardTitle>
-                    <CardDescription className="text-4xl font-extrabold mt-2">
-                      ${tier.metadata.price}
-                      <span className="text-lg font-normal">/month</span>
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-6">{tier.description}</p>
-                    <ul className="space-y-2">
-                      {/* {tier.metadata.features.split(',').map((feature, i) => (
-                        <li key={i} className="flex items-center">
-                          <CheckCircle className="text-green-500 mr-2 h-5 w-5" />
-                          <span>{feature.trim()}</span>
-                        </li>
-                      ))} */}
-                    </ul>
-                  </CardContent>
-                </div>
-                <CardFooter className="mt-6">
-                  <Button
-                    className="w-full text-lg py-6 transition-all duration-300 ease-in-out"
-                    variant={index === 1 ? "default" : "outline"}
-                    onClick={() => {
-                      setSelectedTier(tier.id);
-                      purchaseSubscription(tier.default_price, tier.metadata.plan.toUpperCase());
-                    }}
-                  >
-                    {selectedTier === tier.id ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : null}
-                    Choose {tier.metadata.plan}
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+            {data?.response?.data?.data?.map((tier: SubscriptionProduct, index: number) => {
+              const planType = tier.metadata.plan.toUpperCase();
+              const features = subscriptionFeatures[planType as keyof typeof subscriptionFeatures] || [];
+              
+              return (
+                <Card
+                  key={tier.id}
+                  className={`flex flex-col justify-between transition-all duration-300 ease-in-out transform hover:scale-105 ${
+                    selectedTier === tier.id ? 'ring-2 ring-primary' : ''
+                  } ${index === 1 ? "border-primary md:-mt-4 md:mb-4 shadow-lg" : "hover:shadow-md"}`}
+                >
+                  <div>
+                    <CardHeader className={`${index === 1 ? 'bg-primary text-primary-foreground' : ''}`}>
+                      <CardTitle className="text-2xl font-bold">{tier.metadata.plan}</CardTitle>
+                      <CardDescription className={`text-4xl font-extrabold mt-2 ${index === 1 ? 'text-primary-foreground' : ''}`}>
+                        ${tier.metadata.price}
+                        <span className="text-lg font-normal">/month</span>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground mb-6">{tier.description}</p>
+                      <ul className="space-y-2">
+                        {features.map((feature, i) => (
+                          <li key={i} className="flex items-center">
+                            <CheckCircle className="text-green-500 mr-2 h-5 w-5 flex-shrink-0" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </div>
+                  <CardFooter className="mt-6">
+                    <Button
+                      className={`w-full text-lg py-6 transition-all duration-300 ease-in-out ${
+                        index === 1 ? 'bg-primary hover:bg-primary/90' : ''
+                      }`}
+                      variant={index === 1 ? "default" : "outline"}
+                      onClick={() => {
+                        setSelectedTier(tier.id);
+                        purchaseSubscription(tier.default_price, tier.metadata.plan.toUpperCase());
+                      }}
+                    >
+                      {selectedTier === tier.id ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : null}
+                      Choose {tier.metadata.plan}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>

@@ -24,7 +24,7 @@ export interface IUser {
   subscription:ISubscription;
   gender: string;
   isProfileCompleted: boolean;
-  profilePicture: string | null;
+  profilePicture: string;
   password: string;
   postCount: number;
   followerCount: number;

@@ -1,8 +1,10 @@
 'use client';
 
+import SubscriptionCancelModal from "@/components/helper/cancel-subscription-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { cancelSubscription } from "@/services/subscription.service";
 import { useUserStore } from "@/store/user.store";
 import { getPrice } from "@/utils/constant";
 import { CalendarDays, Users } from "lucide-react";
@@ -56,9 +58,9 @@ export default function BillingPage() {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Link href="/subscription">
-                <Button variant="outline">Change Plan</Button>
+                <Button variant="outline" >Change Plan</Button>
               </Link>
-              <Button variant="destructive">Cancel Subscription</Button>
+              <SubscriptionCancelModal id={user.subscription.subscriptionAuth} />
             </CardFooter>
           </Card>
         ) : (

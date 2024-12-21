@@ -37,7 +37,7 @@ export default function EventCard({ event }: { event: IEvent }) {
       <CardHeader className="flex flex-row items-center gap-4">
         <Link href={`/profile/${(event.postedBy as IUser)._id}`}>
         <Avatar>
-          <AvatarImage src={event.picture} alt={"EVENT PICTURE"} />
+          <AvatarImage src={(event.postedBy as IUser).profilePicture} alt={"EVENT PICTURE"} />
           <AvatarFallback>{(event?.postedBy as IUser).name?.charAt(0)}</AvatarFallback>
         </Avatar>
         </Link>
