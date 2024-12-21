@@ -23,27 +23,29 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("posts");
 
   const { data: user } = useQuery<ApiResponse<IUser>>({
-    queryKey: ["user-profile"],
+    queryKey: ["user-profile",params.id],
     queryFn: () => authenticatedUser(params.id),
+    staleTime: 1000 * 60 * 10, // 5 minutes
   });
   const isCurrentUser = user?.response?.data?._id === currentUser?._id;
 
-  console.log("IS CURRNET USER ->", isCurrentUser);
   const { data: isFollowing } = useQuery<{ response: boolean }>({
-    queryKey: ["isFollowing"],
+    queryKey: ["isFollowing",params.id],
     queryFn: () => checkIsFollowing(params.id),
     enabled: isCurrentUser == false,
+    
   });
+
   const { data: events, isLoading: isEventLoading } = useQuery<
     ApiResponse<IEvents>
   >({
     queryKey: ["user-events"],
-    queryFn: () => fetchEvents(true),
+    queryFn: () => fetchEvents(params.id),
   });
 
-  console.log("USER ->", user?.response);
-  console.log("isFollowing  ->", isFollowing);
-
+  // console.log("USER ->", user?.response);
+  // console.log("isFollowing  ->", isFollowing);
+  console.log("PARENT COMPONENT EVENTS FETCHING ->",events)
   return (
     <div className="mx-auto p-4 max-w-4xl">
       <div className="flex flex-col md:flex-row items-center md:items-start mb-8">
@@ -109,7 +111,7 @@ export default function Profile() {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
         <TabsList className="w-full justify-center">
           <TabsTrigger value="posts" className="flex-1">
-            <GridIcon className="w-4 h-4 mr-2" /> Posts
+            <GridIcon className="w-4 h-4 mr-2" /> Events
           </TabsTrigger>
           {isCurrentUser && (
             <TabsTrigger value="edit" className="flex-1">
@@ -119,7 +121,7 @@ export default function Profile() {
         </TabsList>
         <TabsContent value="posts">
           <EventGrid
-            events={events?.response.data.data}
+            events={events?.response?.data?.data}
             isLoading={isEventLoading}
           />
         </TabsContent>

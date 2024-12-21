@@ -13,13 +13,10 @@ import { useFormMutation } from "@/hooks/useFormMutation"
 import { ERROR_LOGIN, SUCCESS_LOGIN_PASSED } from "@/utils/constant"
 import { useUserStore } from "@/store/user.store";
 import { IUser } from "@/types/interface/user.interface"
+import { saveAccessToken } from "@/utils/token"
 
 
 export default function Login() {
-  // const { fcmToken,notificationPermissionStatus } = useFcmToken();
-
-  // console.log("FCM TOKEN ->",fcmToken)
-  // console.log("notificationPermissionStatus ->",notificationPermissionStatus)
 
   const {setUser} = useUserStore()
   
@@ -31,7 +28,7 @@ export default function Login() {
     resolver: yupResolver(loginValidation),
   });
   
-  const { handleFormSubmit } = useFormMutation<{data:{data:{user:IUser}}}, Error, ILogin>({
+  const { handleFormSubmit } = useFormMutation<{data:{data:{user:IUser,accessToken:string}}}, Error, ILogin>({
     mutationFn: login,
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
@@ -40,7 +37,10 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
     const payload = await handleFormSubmit(data)
-    if(payload) {setUser(payload?.data?.data?.user)}
+    if(payload) {
+      setUser(payload?.data?.data?.user)
+      saveAccessToken(payload?.data?.data?.accessToken) 
+    }
     console.log("payload ->>",payload)
   }
 

@@ -13,6 +13,7 @@ import { fetchEvents } from '@/services/event.service';
 import { EVENT_TYPE, IEvent } from '@/types/interface/event.interface';
 import { STATUS } from '@/types/enum';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("events");
@@ -21,7 +22,7 @@ export default function FeedPage() {
 
   const {data,isLoading} = useQuery({
     queryKey: ['events'],
-    queryFn:()=>fetchEvents(false,EVENT_TYPE.PRIVATE),
+    queryFn:()=>fetchEvents("",EVENT_TYPE.PRIVATE),
     enabled: activeTab === "feed",
     staleTime: 1000 * 60 * 5,
   })
@@ -102,7 +103,7 @@ export default function FeedPage() {
           <p className="text-muted-foreground">
             There are no public events at the moment. Be the first to create one!
           </p>
-          <Button onClick={() => {/* Logic to open event form */}}>
+          <Button onClick={() => {toast("PUBLIC EVENT ARE NOT AVAILABLE YET")}}>
             Create Public Event
           </Button>
         </div>
@@ -112,9 +113,6 @@ export default function FeedPage() {
         {/* Right Div */}
         {desktop && (
          <div className="p-4 hidden lg:block w-full lg:w-1/4">
-         {activeTab === "feed" ? (
-           <UpcomingEvents />
-         ) : (
            <div className="text-center space-y-4 mt-10">
              <div className="flex justify-center">
                <Calendar className="h-12 w-12 text-muted-foreground" />
@@ -123,11 +121,10 @@ export default function FeedPage() {
              <p className="text-muted-foreground">
                Looks like your calendar is clear. Why not explore some new events?
              </p>
-             <Button variant="outline">
+             {/* <Button variant="outline">
                Attend More Events
-             </Button>
+             </Button> */}
            </div>
-         )}
        </div>
         )}
       </div>

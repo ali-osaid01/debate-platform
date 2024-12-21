@@ -53,7 +53,6 @@ export function useFormMutation<TResponse, TError = Error, TVariables = unknown>
 
   const handleFormSubmit = async (data: TVariables) => {
     const { response } = await mutation.mutateAsync(data);
-    console.log("Hook Response ->", response)
     return response;
   };
 

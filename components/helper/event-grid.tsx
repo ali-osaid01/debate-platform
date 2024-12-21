@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CalendarIcon, CalendarPlus, MapPinIcon, UserIcon } from "lucide-react";
+import { CalendarIcon, CalendarPlus, Loader2, MapPinIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
-import { IEvent } from "@/types/interface/event.interface";
+import { IEvent, IParticipant } from "@/types/interface/event.interface";
 import { IUser } from "@/types/interface/user.interface";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -28,7 +28,7 @@ export default function EventGrid({
   error,
 }: EventGridProps) {
   if (isLoading) {
-    return <div className="text-center p-4">Loading events...</div>;
+    return <div className="text-center p-4 flex justify-center mt-10"><Loader2 className="animate-spin"/></div>;
   }
 
   if (error) {
@@ -60,11 +60,11 @@ export default function EventGrid({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {events.map((event, index) => (
-        <Card key={index} className="overflow-hidden">
+        <Card key={event._id} className="overflow-hidden">
           <CardHeader className="p-0">
             <div className="relative h-48 w-full">
               <Image
-                src={event.picture || "/placeholder.svg"}
+                src={event?.picture || "/placeholder.svg"}
                 alt={"EVENT"}
                 layout="fill"
                 objectFit="cover"
@@ -78,7 +78,7 @@ export default function EventGrid({
           </CardHeader>
           <CardContent className="p-4">
             <CardTitle className="text-xl mb-2">{event.title}</CardTitle>
-            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+            <p className="text-muted-foreground text-xs mb-8 line-clamp-2">
               {event.description}
             </p>
             <div className="flex items-center text-sm text-muted-foreground mb-2">
@@ -96,30 +96,27 @@ export default function EventGrid({
           </CardContent>
           <CardFooter className="p-4 pt-0 flex items-center justify-between">
             <div className="flex -space-x-4">
-              {event.participants?.map((participant: any, index: number) => (
+              {event.participants?.map((participant: IParticipant) => (
                 <div
-                  key={participant.user}
+                  key={(participant.user as IUser)._id} // Use a unique identifier for key (e.g., user._id)
                   className="flex items-center"
                 >
                   <Avatar className="w-8 h-8 mr-2">
                     <AvatarImage
                       src={
-                        (participant.userInfo as IUser).profilePicture ||
+                        (participant.user as IUser).profilePicture ||
                         "/placeholder.svg"
                       }
-                      alt={`${(participant.userInfo as IUser).name}'s avatar`}
+                      alt={`${(participant.user as IUser).name}'s avatar`}
                     />
                     <AvatarFallback>
-                      {(participant.userInfo as IUser).name?.charAt(0) || "U"}
+                      {(participant.user as IUser).name?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
-                  {/* <span className="text-sm text-muted-foreground">
-                    {(participant.userInfo as IUser).name}
-                  </span> */}
                 </div>
               ))}
             </div>
-            <Badge variant={event.status == "active" ? "default" : "secondary"}>
+            <Badge variant={event.status === "active" ? "default" : "secondary"}>
               {event.status}
             </Badge>
           </CardFooter>

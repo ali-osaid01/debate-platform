@@ -26,10 +26,19 @@ export const createEvent = async (payload:any) => {
     };
   }
 };
-
-export const fetchEvents = async (postedBy?: boolean,type?:string) => {
+export const fetchEvents = async (user?: string, type?: string) => {
   try {
-    const { data } = await api.get(`/event?postedBy=${postedBy}&type=${type}`);
+    const params = new URLSearchParams();
+    
+    if (user) {
+      params.append('postedBy', String(user));
+    }
+
+    if (type) {
+      params.append('type', type);
+    }
+
+    const { data } = await api.get(`/event?${params.toString()}`);
 
     return {
       status: "success",

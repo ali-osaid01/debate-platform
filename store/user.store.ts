@@ -4,7 +4,6 @@ import { IUser } from '@/types/interface/user.interface';
 import { create } from 'zustand';
 
 import { deleteCookie } from 'cookies-next';
-import { toast } from 'sonner';
 
 interface UserStore {
     user: IUser | null;
@@ -23,8 +22,8 @@ export const useUserStore = create<UserStore>((set, get) => {
         clearUser: () => {
             set({ user: null });
             const cookies =  deleteCookie("accessToken");
-            console.log("cookies ->",cookies)
             localStorage.removeItem("accessToken")
+            console.log("cookies ->",cookies)
         },
     };
 });

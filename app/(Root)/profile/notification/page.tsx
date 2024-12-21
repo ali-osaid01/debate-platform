@@ -67,12 +67,10 @@ function formatLabel(key: string): string {
 
 function getDescription(key: string): string {
   const descriptions: Record<string, string> = {
-    emailNotifications: "Receive notifications via email",
-    pushNotifications: "Receive notifications on your device",
-    marketingEmails: "Receive emails about new features and offers",
-    securityAlerts: "Receive alerts about your account security",
-    productUpdates: "Get notified about new product features and improvements",
-    accountActivity: "Receive updates about your account activity",
+    emailNotifications: "Get email alerts for updates",
+    pushNotifications: "Receive real-time device notifications",
+    marketingNotification: "Stay updated on features and offers",
+    promotionNotifcation: "Get notified about new product features",
   }
-  return descriptions[key] || "Manage this notification setting"
+  return descriptions[key] || "Manage notification settings"
 }

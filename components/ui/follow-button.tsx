@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { UserPlus, UserMinus, Loader2 } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { followUser } from "@/services/follow.service";
-import { FOLLOW_USER_SUCCESS, NETWORK_ERROR } from "@/utils/constant";
-import { useFormMutation } from "@/hooks/useFormMutation";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface FollowButtonProps {
@@ -19,6 +17,7 @@ type FollowFormValues = {
 export function FollowButton({ initialIsFollowing, user }: FollowButtonProps) {
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
 
+  
   const {
     handleSubmit,
     formState: { isSubmitting },

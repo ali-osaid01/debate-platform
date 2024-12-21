@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { CalendarDays, CreditCard, Download, Users } from "lucide-react"
+import Link from "next/link"
 
 export default function BillingPage() {
     
@@ -42,12 +43,14 @@ export default function BillingPage() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
+            <Link href="/subscription">
             <Button variant="outline">Change Plan</Button>
+            </Link>
             <Button variant="destructive">Cancel Subscription</Button>
           </CardFooter>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Payment Method</CardTitle>
           </CardHeader>
@@ -56,7 +59,7 @@ export default function BillingPage() {
             <CreditCard className="h-6 w-6 text-muted-foreground" />
               Update Payment Method</Button>
           </CardContent>
-        </Card>
+        </Card> */}
         {/* <Card>
           <CardHeader>
             <CardTitle>Billing History</CardTitle>

@@ -18,7 +18,6 @@ import { useFormMutation } from "@/hooks/useFormMutation";
 import { ERROR_UPDATE_PROFILE, SUCCESS_UPDATE_PROFILE } from "@/utils/constant";
 import { updateUser } from "@/services/user.service";
 import { useQueryClient } from "@tanstack/react-query";
-// import { E164Number, parsePhoneNumber } from "libphonenumber-js";
 
 interface EditProfileProps {
   user?: IUser;
@@ -29,6 +28,7 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(userValidationSchema),
@@ -45,7 +45,18 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
   const onSubmit = async (data: Partial<IUser>) => {
     handleFormSubmit(data);
     queryClient.invalidateQueries({ queryKey: ["user"] });
-    console.log("FORM DATA PROFILE ->", data);
+  };
+
+  const handleReset = () => {
+    reset({
+      name: user?.name || "",
+      username: user?.username || "",
+      website: user?.website || "",
+      bio: user?.bio || "",
+      phone: user?.phone?.trim() ?? "+33",
+      location: user?.location || "",
+      profilePicture: user?.profilePicture || ""
+    });
   };
 
   return (
@@ -160,6 +171,10 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
 
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Updating..." : "Update Profile"}
+          </Button>
+
+          <Button  className="mx-5 bg-red-500 hover:bg-red-400" disabled={isSubmitting} type="reset" onClick={handleReset}>
+           Cancel Changes
           </Button>
         </form>
       </CardContent>

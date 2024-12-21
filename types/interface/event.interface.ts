@@ -4,6 +4,7 @@ import { IUser } from "./user.interface";
 export interface IParticipant {
   user: IUser | string;
 }
+
 export enum EVENT_TYPE {
   PUBLIC = "PUBLIC",
   PRIVATE = "PRIVATE",
@@ -48,6 +49,8 @@ export interface IEvent {
   status: EventStatus;
   approvalStatus: ApprovalStatus;
   participants: IParticipant[];
+  likeCount?:number
+  isLiked?:boolean
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
