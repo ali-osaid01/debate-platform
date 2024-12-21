@@ -33,7 +33,7 @@ const GoogleButton = () => {
 
             console.log('Firebase User Info:', user);
 
-            const payload:any = await handleFormSubmit({ email: user?.email!, socialAuth:  token,profilePicture:user?.photoURL,name:user.displayName! });
+            const payload:any = await handleFormSubmit({ email: user?.email!, socialAuth:  token,profilePicture:user?.photoURL || undefined,name:user.displayName! });
 
             console.log("GOOGLE PAYLOAD ->",payload)
             if (payload) {
