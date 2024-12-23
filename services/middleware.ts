@@ -1,18 +1,17 @@
 import axios from "axios";
 
-const getAccessToken = () => {
+export const getAccessToken = () => {
   return localStorage.getItem("accessToken");
 };
 
 // const baseURL = 'http://64.225.4.148:5000/api';
-// const baseURL = 'http://localhost:5000/api'
-const baseURL = 'https://backend.cydemic.com/api'
+const baseURL = 'http://localhost:5000/api'
+// const baseURL = 'https://backend.cydemic.com/api'
 console.log("BASE URL ->", baseURL);
 
 const api = axios.create({
   baseURL,
   withCredentials:true
-  
 });
 
 api.interceptors.request.use(

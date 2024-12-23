@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Video, Send, ArrowLeft, ImageIcon } from 'lucide-react'
+import socket from '@/sockets/socket'
+import { getAccessToken } from '@/services/middleware'
 
 const chats = [
   { id: 1, name: "Alice Smith", lastMessage: "Hey, how are you?", time: "10:30 AM", avatar: "AS" },
@@ -37,6 +39,12 @@ export default function ChatPage() {
     return () => window.removeEventListener('resize', checkIsMobile)
   }, [])
 
+  useEffect(()=>{
+    const token = getAccessToken()
+    console.log("SOCKET CONNECTED ->",token)
+    socket.initializeSocket(token as string)
+  },[])
+  
   const handleChatSelect = (chat:any) => {
     setSelectedChat(chat)
     if (isMobile) {
