@@ -53,3 +53,26 @@ export const fetchEvents = async (user?: string, type?: string) => {
     };
   }
 };
+
+export const toggleEventStatus = async (payload:{event:string,notification:string,user:string,status:string}) => {
+  try {
+    const response = await api.put(`/event/toggle-user-status`, {
+      notification: payload.notification,
+      user: payload.user,
+      status: payload.status,
+      event: payload.event,
+    });
+
+    return {
+      status: "success",
+      response,
+    };
+  } catch (error: any) {
+    console.log("ERROR ->", error);
+
+    return {
+      status: "failed",
+      response: error.response?.data?.msg || "Something went wrong",
+    };
+  }
+}

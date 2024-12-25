@@ -8,6 +8,7 @@ export interface INotification {
     type: ENOTIFICATION_TYPES;
     content: string;
     title: string;
+    metadata:string
     isRead: boolean;
     data?: any;
     createdAt:Date

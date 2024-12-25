@@ -6,25 +6,20 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { formatShortDuration } from "@/lib/utils"
+import { toggleEventStatus } from "@/services/event.service"
 import { notification } from "@/services/notification.service"
-import { ENOTIFICATION_TYPES } from "@/types/enum"
+import { ENOTIFICATION_TYPES, ParticipantStatus } from "@/types/enum"
 import { INotification, INotificationResponse } from "@/types/interface/notification.interface"
 import { IUser } from "@/types/interface/user.interface"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Bell, BellOff, Calendar, ThumbsUp, UserMinus, UserPlus } from 'lucide-react'
 
 export default function NotificationSheet() {
+
   const { data, isLoading } = useQuery<ApiResponse<INotificationResponse>>({
     queryKey: ["notification"],
     queryFn: () => notification(),
   })
-
-  const notificationIcons = {
-    [ENOTIFICATION_TYPES.LIKE]: <ThumbsUp className="h-4 w-4 text-blue-500" />,
-    [ENOTIFICATION_TYPES.EVENT_INVITATION]: <Calendar className="h-4 w-4 text-green-500" />,
-    [ENOTIFICATION_TYPES.FOLLOW]: <UserPlus className="h-4 w-4 text-purple-500" />,
-    [ENOTIFICATION_TYPES.UN_FOLLOW]: <UserMinus className="h-4 w-4 text-red-500" />,
-  }
 
   return (
     <Sheet>
@@ -98,6 +93,20 @@ function NotificationItem({ notification }: { notification: INotification }) {
     [ENOTIFICATION_TYPES.EVENT_REJECTED]: <Calendar className="h-4 w-4 text-green-500" />,
   }
 
+  const queryClient = useQueryClient()
+  const handleEventToggle = async (status: string) => {
+    // console.log("Toggle Event ->>", status,notification);
+    const payload = {
+      event: notification.metadata,
+      user: notification.receiver,
+      notification: notification._id,
+      status,
+    }
+    queryClient.invalidateQueries({queryKey:["notification"]});
+    const response = await toggleEventStatus(payload);
+
+    console.log("API RESPONSE NOTIFICATION ->", response);
+  }
   return (
     <div className="flex items-start space-x-4 rounded-lg bg-card p-4 shadow-sm transition-all hover:shadow-md">
       <Avatar className="h-10 w-10">
@@ -117,10 +126,10 @@ function NotificationItem({ notification }: { notification: INotification }) {
         </div>
         {notification.type === ENOTIFICATION_TYPES.EVENT_INVITATION && (
           <div className="flex space-x-2 mt-2">
-            <Button size="sm" variant="default" className="w-full" onClick={() => console.log("Accepted", notification._id)}>
+            <Button size="sm" variant="default" className="w-full" onClick={()=>handleEventToggle(ParticipantStatus.CONFIRMED)}>
               Accept
             </Button>
-            <Button size="sm" variant="outline" className="w-full" onClick={() => console.log("Rejected", notification._id)}>
+            <Button size="sm" variant="outline" className="w-full" onClick={()=>handleEventToggle(ParticipantStatus.DECLINED)}>
               Decline
             </Button>
           </div>
