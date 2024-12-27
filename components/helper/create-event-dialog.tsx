@@ -35,7 +35,7 @@ import { createEvent } from "@/services/event.service";
 import { EVENT_TYPE, IEventValues } from "@/types/interface/event.interface";
 import { STATUS } from "@/types/enum";
 import { toast } from "sonner";
-import { use, useRef } from "react";
+import { useRef } from "react";
 import { useParticipantStore } from "@/store/participants.store";
 
 export default function EventFormDialog() {
@@ -67,7 +67,6 @@ export default function EventFormDialog() {
   });
 
   const onSubmit = async (data: IEventValues) => {
-    console.log("DATA ->", data);
     if (data.type == EVENT_TYPE.PUBLIC) return toast.error("PUBLICE EVENTS ARE CLOSE UNTIL ADMIN PANEL IS COMPLETED")
     const { status, response } = await createEvent(data);
     console.log("RESPONSE EVENT CREATE ->", response);

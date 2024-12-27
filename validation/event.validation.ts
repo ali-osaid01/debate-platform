@@ -1,3 +1,4 @@
+import { EVENT_TYPE } from "@/types/interface/event.interface";
 import * as yup from "yup";
 
 const eventValidation = yup.object().shape({
@@ -15,7 +16,7 @@ const eventValidation = yup.object().shape({
   location: yup.string().required("Location is required"),
   date:yup.date().required("Date is required"),
   picture: yup.string().required("Event Poster is required"),
-  type: yup.string().required("Event Type is required"),
+  type: yup.string().required("Event Type is required").default(EVENT_TYPE.PUBLIC),
   topic: yup.string().required("Event Topic is required"),
   participants: yup
     .array()

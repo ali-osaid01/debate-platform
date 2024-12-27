@@ -1,7 +1,5 @@
 'use client'
-
 import { useEffect } from 'react'
-
 import socket from '@/sockets/socket'
 import { getAccessToken } from '@/services/middleware'
 import { useChatSettings } from '@/store/chat-setting.store'
@@ -17,12 +15,17 @@ export default function ChatPage() {
   useEffect(() => {
     const token = getAccessToken()
     socket.initializeSocket(token as string)
+    
+    return () => {
+      socket.disconnect()
+    }
+
   }, [])
 
   
   return (
     <div className="flex bg-background">
-      <ChatList showMessages={showMessage}/>
+      <ChatList showMessages={isMobile ? false : true}/>
       <MessageBox isMobile={isMobile}/>
     </div>
   )
