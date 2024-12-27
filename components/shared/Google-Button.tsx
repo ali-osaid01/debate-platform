@@ -10,6 +10,7 @@ import { ERROR_LOGIN, SUCCESS_LOGIN_PASSED } from '@/utils/constant';
 import { useUserStore } from '@/store/user.store';
 import { useState } from 'react';
 import { IUser } from '@/types/interface/user.interface';
+import { saveAccessToken } from '@/utils/token';
 
 const GoogleButton = () => {
     const { setUser } = useUserStore();
@@ -37,6 +38,7 @@ const GoogleButton = () => {
 
             console.log("GOOGLE PAYLOAD ->",payload)
             if (payload) {
+                saveAccessToken(payload?.data?.data?.accessToken) 
                 setUser(payload?.data?.data?.user);
             }
         } catch (err) {
