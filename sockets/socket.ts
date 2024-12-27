@@ -1,8 +1,8 @@
 import io, { Socket } from "socket.io-client";
 import { toast } from "sonner";
 
-const BASE_SOCKET_CONNECTION = "http://localhost:5000";
-
+// const BASE_SOCKET_CONNECTION = "http://localhost:5000";
+const BASE_SOCKET_CONNECTION = "https://backend.cydemic.com";
 class WSService {
   private socket: Socket | null = null;
 

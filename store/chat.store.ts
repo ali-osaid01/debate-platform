@@ -27,6 +27,10 @@ export const useChatStore = create<ChatStore>((set) => ({
             set({ chats: response.chats });
         });
     },
+
+    fetchMessages: (chatId:string) => {
+        
+    },
     setCurrentChat: (chat) => set({ currentChat: chat })
 }));
 
