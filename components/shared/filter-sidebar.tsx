@@ -58,7 +58,7 @@ export function FilterSidebar() {
 
   return (
     <SidebarProvider>
-      <Sidebar className="w-64 xl:w-80 border-r md:fixed md:left-0 md:top-0 md:h-full md:overflow-y-auto">
+      <Sidebar className="w-64 xl:w-80 border-r md:fixed md:left-0 md:top-0 md:h-full md:overflow-y-auto mt-10">
         <SidebarContent className="pt-16">
           {isLoading ? (
             <LoadingSkeleton />
@@ -75,9 +75,9 @@ export function FilterSidebar() {
                       {category?.subCategories?.map((subCategory: any) => (
                         <FilterChip
                           key={subCategory._id}
-                          selected={selectedTopics.includes(subCategory.title)}
-                          onClick={() => toggleTopic(subCategory.title)}
-                          onRemove={() => toggleTopic(subCategory.title)}
+                          selected={selectedTopics.includes(subCategory._id)}
+                          onClick={() => toggleTopic(subCategory._id)}
+                          onRemove={() => toggleTopic(subCategory._id)}
                         >
                           {subCategory.title}
                         </FilterChip>

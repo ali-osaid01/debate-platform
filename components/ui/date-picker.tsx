@@ -14,11 +14,14 @@ import {
 } from "@/components/ui/popover";
 import { UseFormSetValue } from "react-hook-form";
 import { IEventValues } from "@/types/interface/event.interface";
+import { toast } from "sonner";
 
 export function DatePicker({
   setValue,
+  isFutureDate = false
 }: {
   setValue: UseFormSetValue<IEventValues>;
+  isFutureDate?: boolean;
 }) {
   const [date, setDate] = React.useState<Date>();
 
@@ -40,7 +43,13 @@ export function DatePicker({
         <Calendar
           mode="single"
           selected={date}
+          
           onSelect={(value) => {
+            if (!value) return;
+            if(isFutureDate && value < new Date()) {
+              toast.error("Please select a future date");
+              return;
+            }
             setValue("date", value || new Date());
             console.log("DATE ->", value);
             setDate(value);

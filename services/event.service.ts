@@ -1,18 +1,11 @@
-import { IEventValues } from "@/types/interface/event.interface";
 import api from "./middleware";
 
 export const createEvent = async (payload:any) => {
   try {
-    const participants = payload.participants.map((participant:any) => {
-      // Check if participant.user is an object (IUser) or a string (user ID)
-      const userId =
-        typeof participant.user === "string"
-          ? participant.user
-          : participant?.user?._id!;
-      return { user: userId };
-    });
 
-    const response = await api.post("/event", { ...payload, participants });
+    console.log("PAYLOAD ->", payload);
+    payload.category = payload.topic;
+    const response = await api.post("/event",payload);
     return {
       status: "success",
       response,
