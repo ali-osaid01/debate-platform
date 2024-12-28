@@ -7,8 +7,9 @@ import Logo from '@/public/assets/logo.jpg';
 import Image from 'next/image';
 import { useAuthenticatedUser } from '@/hooks/useAuthenticatedUser';
 import NotificationSheet from '../helper/notification-sheet';
-import { MessageCircleMore, Search, X } from 'lucide-react';
+import { MessageCircleMore, Search as SearchIcon, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import Search from '../helper/search';
 
 export default function Navbar() {
   const { user, isLoading } = useAuthenticatedUser();
@@ -33,7 +34,7 @@ export default function Navbar() {
           </Link>
 
           {/* Search Section - Desktop */}
-          <div className="hidden md:flex items-center flex-1 max-w-md mx-4">
+          {/* <div className="hidden md:flex items-center flex-1 max-w-md mx-4">
             <div className="relative w-full">
               <Input
                 type="search"
@@ -42,19 +43,19 @@ export default function Navbar() {
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             </div>
-          </div>
-
+          </div> */}
+          <Search/>
           {/* User Actions Section */}
           <div className="flex items-center space-x-4">
             {/* Search Icon - Mobile */}
-            <Button
+            {/* <Button
               variant="ghost"
               size="icon"
               className="md:hidden"
               onClick={toggleMobileSearch}
             >
               <Search className="h-5 w-5 text-primary" />
-            </Button>
+            </Button> */}
 
             {!user && isLoading ? (
               <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>
@@ -95,7 +96,7 @@ export default function Navbar() {
               placeholder="Search..."
               className="w-full pl-10 pr-4 py-2 rounded-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <Button
               variant="ghost"
               size="icon"

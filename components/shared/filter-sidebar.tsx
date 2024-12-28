@@ -19,34 +19,40 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCategories } from "@/services/category.service";
 import { ICategory } from "@/types/interface/category.interface";
+import { useEventFilterStore } from "@/store/filter-state.store";
 
 export function FilterSidebar() {
-  const [selectedTopics, setSelectedTopics] = React.useState<string[]>([]);
-
-  const toggleTopic = (topic: string) => {
-    setSelectedTopics((prev) =>
-      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
-    );
-  };
+  const { setSelectedTopic, selectedTopic, clearTopic } = useEventFilterStore();
 
   const { data, isLoading } = useQuery({
     queryFn: fetchCategories,
     queryKey: ["Categories", { type: "Filter-Categories" }],
   });
 
-  const LoadingSkeleton = () => (
+  const toggleTopic = (topic: string) => {
+    if (selectedTopic === topic) {
+      clearTopic();
+    } else {
+      setSelectedTopic(topic);
+    }
+  };
+
+  const EnhancedSkeleton = () => (
     <>
-      {[1, 2, 3].map((index) => (
-        <SidebarGroup key={index}>
+      {[...Array(3)].map((_, groupIndex) => (
+        <SidebarGroup key={groupIndex}>
           <Collapsible>
             <CollapsibleTrigger className="flex w-full items-center justify-between px-4 py-2 text-xs">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-4 w-4" />
+              <Skeleton className="h-4 w-24 rounded" />
+              <Skeleton className="h-4 w-4 rounded" />
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="flex flex-wrap gap-2 p-4">
-                {[1, 2, 3, 4].map((chipIndex) => (
-                  <Skeleton key={chipIndex} className="h-6 w-20" />
+                {[...Array(4)].map((_, chipIndex) => (
+                  <Skeleton
+                    key={chipIndex}
+                    className="h-6 w-20 rounded-md"
+                  />
                 ))}
               </div>
             </CollapsibleContent>
@@ -61,7 +67,7 @@ export function FilterSidebar() {
       <Sidebar className="w-64 xl:w-80 border-r md:fixed md:left-0 md:top-0 md:h-full md:overflow-y-auto mt-10">
         <SidebarContent className="pt-16">
           {isLoading ? (
-            <LoadingSkeleton />
+            <EnhancedSkeleton />
           ) : (
             data?.response?.data?.map((category: ICategory) => (
               <SidebarGroup key={category._id}>
@@ -75,9 +81,9 @@ export function FilterSidebar() {
                       {category?.subCategories?.map((subCategory: any) => (
                         <FilterChip
                           key={subCategory._id}
-                          selected={selectedTopics.includes(subCategory._id)}
+                          selected={selectedTopic === subCategory._id}
                           onClick={() => toggleTopic(subCategory._id)}
-                          onRemove={() => toggleTopic(subCategory._id)}
+                          onRemove={clearTopic}
                         >
                           {subCategory.title}
                         </FilterChip>

@@ -14,14 +14,15 @@ import { STATUS } from "@/types/enum";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { EventCardSkeleton } from "@/components/skeleton/event-card-skeleton";
+import { useEventFilterStore } from "@/store/filter-state.store";
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("feed");
   const desktop = useMediaQuery("(min-width: 1020px)");
-
+  const {selectedTopic} = useEventFilterStore()
   const { data, isLoading } = useQuery({
-    queryKey: ["events"],
-    queryFn: () => fetchEvents("", EVENT_TYPE.PRIVATE),
+    queryKey: ["events",selectedTopic],
+    queryFn: () => fetchEvents("", EVENT_TYPE.PRIVATE,selectedTopic),
     enabled: activeTab === "feed",
     staleTime: 1000 * 60 * 10,
   });

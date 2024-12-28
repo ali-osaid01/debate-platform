@@ -19,14 +19,16 @@ export const createEvent = async (payload:any) => {
     };
   }
 };
-export const fetchEvents = async (user?: string, type?: string) => {
+export const fetchEvents = async (user?: string, type?: string,category?:string | null) => {
   try {
     const params = new URLSearchParams();
     
     if (user) {
       params.append('postedBy', String(user));
     }
-
+    if (category) {
+      params.append('category', category);
+    }
     if (type) {
       params.append('type', type);
     }
