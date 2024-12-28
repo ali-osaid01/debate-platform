@@ -22,6 +22,7 @@ export default function EventCard({ event }: { event: IEvent }) {
 
   const handleLike = () => {
     likeEvent({ event: event._id, user: user?._id! })
+    // queryClient.invalidateQueries({ queryKey: ['events'] })
     setLikes(likes + (isLiked ? -1 : 1))
     setIsLiked(!isLiked)
   }
