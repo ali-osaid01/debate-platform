@@ -71,7 +71,7 @@ export default function FeedPage() {
           {activeTab === "feed" ? (
             <>
               {isLoading ? (
-                <div className="flex justify-center items-center w-full h-full">
+                <div className="w-full">
                   <EventCardSkeleton/>
                 </div>
               ) : (
