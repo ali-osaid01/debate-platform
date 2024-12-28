@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,12 +21,13 @@ import {
   SUCCESS_REGISTRATION_PASSED,
 } from "@/utils/constant";
 import { register as registerApi } from "@/services/auth.service";
+import GoogleButton from "@/components/shared/Google-Button";
 
 export default function Register() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(registerValidation),
   });
@@ -63,50 +63,84 @@ export default function Register() {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-2">
+        <CardContent className="space-y-5">
           {/* Name Field */}
-          <FloatingInput
-            placeholder="Name"
-            name="name"
-            type="text"
-            register={register}
-          />
-          {/* {errors.name && <p className="text-xs text-red-600">*{errors.name.message}</p>} */}
-          <FloatingInput
-            placeholder="Username"
-            name="username"
-            type="text"
-            register={register}
-          />
+          <div className="relative">
+            <FloatingInput
+              placeholder="Name"
+              name="name"
+              type="text"
+              register={register}
+            />
+            {errors.name && (
+              <p className="absolute -bottom-4 text-xs text-red-600">
+                *{errors.name.message}
+              </p>
+            )}
+          </div>
+
+          {/* Username Field */}
+          <div className="relative">
+            <FloatingInput
+              placeholder="Username"
+              name="username"
+              type="text"
+              register={register}
+            />
+            {errors.username && (
+              <p className="absolute -bottom-4 text-xs text-red-600">
+                *{errors.username.message}
+              </p>
+            )}
+          </div>
+
           {/* Email Field */}
-          <FloatingInput
-            placeholder="Email"
-            name="email"
-            type="text"
-            register={register}
-          />
-          {/* {errors.email && <p className="text-xs text-red-600">*{errors.email.message}</p>} */}
+          <div className="relative">
+            <FloatingInput
+              placeholder="Email"
+              name="email"
+              type="text"
+              register={register}
+            />
+            {errors.email && (
+              <p className="absolute -bottom-4 text-xs text-red-600">
+                *{errors.email.message}
+              </p>
+            )}
+          </div>
 
           {/* Password Field */}
-          <FloatingInput
-            placeholder="Password"
-            name="password"
-            type="password"
-            register={register}
-          />
-          {/* {errors.password && <p className="text-xs text-red-600">*{errors.password.message}</p>} */}
+          <div className="relative">
+            <FloatingInput
+              placeholder="Password"
+              name="password"
+              type="password"
+              register={register}
+            />
+            {errors.password && (
+              <p className="absolute -bottom-4 text-xs text-red-600">
+                *{errors.password.message}
+              </p>
+            )}
+          </div>
 
           {/* Confirm Password Field */}
-          <FloatingInput
-            placeholder="Confirm Password"
-            name="cPassword"
-            type="password"
-            register={register}
-          />
-          {/* {errors.cPassword && <p className="text-xs text-red-600">*{errors.cPassword.message}</p>} */}
+          <div className="relative">
+            <FloatingInput
+              placeholder="Confirm Password"
+              name="cPassword"
+              type="password"
+              register={register}
+            />
+            {errors.cPassword && (
+              <p className="absolute -bottom-4 text-xs text-red-600">
+                *{errors.cPassword.message}
+              </p>
+            )}
+          </div>
 
           <Button
-            className="w-full bg-black text-white hover:bg-gray-800"
+            className="w-full bg-black text-white hover:bg-gray-800 mt-6"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Registering..." : "Register"}
@@ -125,19 +159,11 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Google Register Button */}
-          <Button
-            variant="outline"
-            className="w-full border-gray-300 text-gray-900 hover:bg-gray-100"
-          >
-            <FcGoogle className="mr-2 h-4 w-4" />
-            Google
-          </Button>
+          <GoogleButton />
 
-          {/* Link to Login */}
           <div className="text-center text-sm text-gray-500">
             Already have an account?{" "}
-            <Link href={"/login"} className="text-gray-900 hover:underline">
+            <Link href="/login" className="text-gray-900 hover:underline">
               Login
             </Link>
           </div>

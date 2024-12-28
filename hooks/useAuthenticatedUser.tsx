@@ -11,7 +11,7 @@ export function useAuthenticatedUser() {
     queryKey: ["user"],
     queryFn: () => authenticatedUser(),
     enabled: user === null,
-    // initialData: user,
+    initialData: user,
   });
 
   useEffect(() => {

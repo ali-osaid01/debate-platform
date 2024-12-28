@@ -18,6 +18,7 @@ import { useFormMutation } from "@/hooks/useFormMutation";
 import { ERROR_UPDATE_PROFILE, SUCCESS_UPDATE_PROFILE } from "@/utils/constant";
 import { updateUser } from "@/services/user.service";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 interface EditProfileProps {
   user?: IUser;
@@ -34,7 +35,6 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
     resolver: yupResolver(userValidationSchema),
   });
   const queryClient = useQueryClient();
-
   const { handleFormSubmit } = useFormMutation<unknown, Error, Partial<IUser>>({
     mutationFn: updateUser,
     successMessage: SUCCESS_UPDATE_PROFILE,
@@ -57,6 +57,7 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
       location: user?.location || "",
       profilePicture: user?.profilePicture || ""
     });
+    
   };
 
   return (

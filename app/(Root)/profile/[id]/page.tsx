@@ -1,6 +1,5 @@
-"use client";
-
-import { useState } from "react";
+'use client'
+import React, { useState, useMemo } from "react";
 import { GridIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,97 +16,97 @@ import { fetchEvents } from "@/services/event.service";
 import { IEvents } from "@/types/interface/event.interface";
 import EventGrid from "@/components/helper/event-grid";
 
+const ProfileStats = React.memo(({ user }: { user: IUser | null }) => (
+  <div className="flex justify-center md:justify-start space-x-8 mb-4">
+    <div className="text-center md:text-left">
+      <span className="font-bold">{user?.postCount || 0}</span> posts
+    </div>
+    <div className="text-center md:text-left">
+      <span className="font-bold">{user?.followerCount || 0}</span> followers
+    </div>
+    <div className="text-center md:text-left">
+      <span className="font-bold">{user?.followingCount || 0}</span> following
+    </div>
+  </div>
+));
+
+const ProfileInfo = React.memo(({ user }: { user: IUser | null }) => (
+  <div className="text-center md:text-left">
+    <h2 className="font-bold">{user?.name}</h2>
+    <p className="text-sm text-muted-foreground">{user?.bio}</p>
+    <p className="text-sm">
+      <Link href={user?.website || ""}>{user?.website}</Link>
+    </p>
+  </div>
+));
+
+const ProfileAvatar = React.memo(({ profilePicture }: { profilePicture?: string }) => (
+  <Avatar className="w-32 h-32 md:w-40 md:h-40">
+    <AvatarImage
+      src={profilePicture || "./placeholderImage.png"}
+      alt="Profile picture"
+    />
+    <AvatarFallback>
+      <UserIcon className="w-16 h-16" />
+    </AvatarFallback>
+  </Avatar>
+));
+
 export default function Profile() {
   const params = useParams<{ id: string }>();
   const { user: currentUser } = useUserStore();
   const [activeTab, setActiveTab] = useState("posts");
 
-  const { data: user } = useQuery<ApiResponse<IUser>>({
-    queryKey: ["user-profile",params.id],
+  const { data: userData } = useQuery<ApiResponse<IUser>>({
+    queryKey: ["user-profile", params.id],
     queryFn: () => authenticatedUser(params.id),
-    staleTime: 1000 * 60 * 10, // 5 minutes
+    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
   });
-  const isCurrentUser = user?.response?.data?._id === currentUser?._id;
+
+  const user = userData?.response?.data;
+
+  const isCurrentUser = useMemo(() => {
+    if (!user || !currentUser) return null; // Avoid rendering during undefined state
+    return user._id === currentUser._id;
+  }, [user, currentUser]);
 
   const { data: isFollowing } = useQuery<{ response: boolean }>({
-    queryKey: ["isFollowing",params.id],
+    queryKey: ["isFollowing", params.id],
     queryFn: () => checkIsFollowing(params.id),
-    enabled: isCurrentUser == false,
-    
+    enabled: isCurrentUser === false,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
   });
 
-  const { data: events, isLoading: isEventLoading } = useQuery<
-    ApiResponse<IEvents>
-  >({
-    queryKey: ["user-events"],
+  const { data: events, isLoading: isEventLoading } = useQuery<ApiResponse<IEvents>>({
+    queryKey: ["user-events", params.id],
     queryFn: () => fetchEvents(params.id),
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
   });
 
-  // console.log("USER ->", user?.response);
-  // console.log("isFollowing  ->", isFollowing);
-  console.log("PARENT COMPONENT EVENTS FETCHING ->",events)
   return (
     <div className="mx-auto p-4 max-w-4xl">
       <div className="flex flex-col md:flex-row items-center md:items-start mb-8">
         <div className="mb-4 md:mb-0 md:mr-8">
-          <Avatar className="w-32 h-32 md:w-40 md:h-40">
-            <AvatarImage
-              src={
-                user?.response?.data?.profilePicture || "./placeholderImage.png"
-              }
-              alt="Profile picture"
-            />
-            <AvatarFallback>
-              <UserIcon className="w-16 h-16" />
-            </AvatarFallback>
-          </Avatar>
+          <ProfileAvatar profilePicture={user?.profilePicture} />
         </div>
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
-            <h1 className="text-2xl font-bold mr-4">
-              {user?.response?.data?.username}
-            </h1>
-            <div className="flex space-x-2 mt-2 md:mt-0"></div>
+            <h1 className="text-2xl font-bold mr-4">{user?.username}</h1>
           </div>
-          <div className="flex justify-center md:justify-start space-x-8 mb-4">
-            <div className="text-center md:text-left">
-              <span className="font-bold">
-                {user?.response?.data?.postCount || 0}
-              </span>{" "}
-              posts
-            </div>
-            <div className="text-center md:text-left">
-              <span className="font-bold">
-                {user?.response?.data?.followerCount || 0}
-              </span>{" "}
-              followers
-            </div>
-            <div className="text-center md:text-left">
-              <span className="font-bold">
-                {user?.response?.data?.followingCount || 0}
-              </span>{" "}
-              following
-            </div>
-          </div>
-          <div className="text-center md:text-left">
-            <h2 className="font-bold">{user?.response?.data?.name}</h2>
-            <p className="text-sm text-muted-foreground">
-              {user?.response?.data?.bio}
-            </p>
-            <p className="text-sm">
-              <Link href={user?.response?.data?.website || ""}>
-                {user?.response?.data?.website}
-              </Link>
-            </p>
-          </div>
+          <ProfileStats user={user ?? null} />
+          <ProfileInfo user={user ?? null} />
         </div>
-        {!isCurrentUser && (
+        {isCurrentUser === false && ( // Only render FollowButton when isCurrentUser is explicitly false
           <FollowButton
             initialIsFollowing={isFollowing?.response || false}
             user={params.id}
           />
         )}
       </div>
+
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
         <TabsList className="w-full justify-center">
           <TabsTrigger value="posts" className="flex-1">
@@ -121,13 +120,16 @@ export default function Profile() {
         </TabsList>
         <TabsContent value="posts">
           <EventGrid
+            isCurrentUserProfile={isCurrentUser || false}
             events={events?.response?.data?.data}
             isLoading={isEventLoading}
           />
         </TabsContent>
-        <TabsContent value="edit">
-          <EditProfile user={user?.response?.data} />
-        </TabsContent>
+        {isCurrentUser && (
+          <TabsContent value="edit">
+            <EditProfile user={user} />
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );

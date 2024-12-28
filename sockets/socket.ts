@@ -1,8 +1,8 @@
 import io, { Socket } from "socket.io-client";
 import { toast } from "sonner";
 
-// const BASE_SOCKET_CONNECTION = "http://localhost:5000";
-const BASE_SOCKET_CONNECTION = "https://backend.cydemic.com";
+const BASE_SOCKET_CONNECTION = "http://localhost:5000";
+// const BASE_SOCKET_CONNECTION = "https://backend.cydemic.com";
 class WSService {
   private socket: Socket | null = null;
 
@@ -10,7 +10,7 @@ class WSService {
     try {
       this.socket = io(BASE_SOCKET_CONNECTION, {
         extraHeaders: {
-          "accesstoken": token,
+          accesstoken: token,
         },
       });
 
@@ -53,7 +53,7 @@ class WSService {
 
   removeListener(
     listenerName: string,
-    listener: (...args: any[]) => void
+    listener: (...args: any[]) => void,
   ): void {
     this.socket?.off(listenerName, listener);
   }

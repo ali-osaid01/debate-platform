@@ -13,36 +13,54 @@ interface UseFormMutationOptions<TResponse, TError, TVariables> {
   mutationFn: (data: TVariables) => Promise<MutationResponse<TResponse>>;
   successMessage?: string;
   errorMessage?: string;
-  route?: string
-  onSuccess?:()=>void
-  onError?:()=>void
+  route?: string;
+  onSuccess?: () => void;
+  onError?: () => void;
 }
 
 interface UseFormMutationReturn<TResponse, TError, TVariables> {
   handleFormSubmit: (data: TVariables) => Promise<TResponse>;
   isLoading: boolean;
-  mutation: UseMutationResult<MutationResponse<TResponse>, TError, TVariables, unknown>;
+  mutation: UseMutationResult<
+    MutationResponse<TResponse>,
+    TError,
+    TVariables,
+    unknown
+  >;
 }
 
-export function useFormMutation<TResponse, TError = Error, TVariables = unknown>({
+export function useFormMutation<
+  TResponse,
+  TError = Error,
+  TVariables = unknown,
+>({
   mutationFn,
   successMessage,
   errorMessage,
   route,
   onError,
-  onSuccess
-}: UseFormMutationOptions<TResponse, TError, TVariables>): UseFormMutationReturn<TResponse, TError, TVariables> {
+  onSuccess,
+}: UseFormMutationOptions<
+  TResponse,
+  TError,
+  TVariables
+>): UseFormMutationReturn<TResponse, TError, TVariables> {
   const router = useRouter();
-  const mutation = useMutation<MutationResponse<TResponse>, TError, TVariables, unknown>({
+  const mutation = useMutation<
+    MutationResponse<TResponse>,
+    TError,
+    TVariables,
+    unknown
+  >({
     mutationFn,
     onSuccess: async ({ status, response }) => {
-      console.log("STATUS coming onSuccess",status)
+      console.log("STATUS coming onSuccess", status);
       if (status === STATUS.SUCCESS) {
-        if(onSuccess) onSuccess()
-        if(route) router.push(route)
-        if(successMessage) toast(successMessage);
+        if (onSuccess) onSuccess();
+        if (route) router.push(route);
+        if (successMessage) toast(successMessage);
       } else {
-        if(onError) onError()
+        if (onError) onError();
         toast.error(errorMessage);
       }
     },
