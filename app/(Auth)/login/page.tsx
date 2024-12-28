@@ -14,7 +14,6 @@ import { ERROR_LOGIN, SUCCESS_LOGIN_PASSED } from "@/utils/constant"
 import { useUserStore } from "@/store/user.store";
 import { IUser } from "@/types/interface/user.interface"
 import { saveAccessToken } from "@/utils/token"
-import { toast } from "sonner"
 
 
 export default function Login() {
@@ -40,8 +39,8 @@ export default function Login() {
       const payload = await handleFormSubmit(data);
       console.log("PAYLOAD ->",payload)
       if (payload && payload.data?.data?.user && payload.data?.data?.accessToken) {
-        // setUser(payload.data.data.user);
-        // saveAccessToken(payload.data.data.accessToken);
+        setUser(payload.data.data.user);
+        saveAccessToken(payload.data.data.accessToken);
       }
   };
 
