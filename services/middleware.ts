@@ -26,24 +26,24 @@ api.interceptors.request.use(
   },
 );
 
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    if (error.response && error.response?.status === 401) {
-      toast(
-        error?.response?.data?.data == "Invalid Credentials!"
-          ? "Invalid Credentials!"
-          : " Session timed out",
-      );
-      localStorage.clear();
-      deleteCookie("accessToken");
-      window.location.href = "/login";
-    } else {
-      return Promise.reject(error);
-    }
-  },
-);
+// api.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   async (error) => {
+//     if (error.response && error.response?.status === 401) {
+//       toast(
+//         error?.response?.data?.data == "Invalid Credentials!" || error?.response?.data?.data == "Invalid email or password"
+//           ? "Invalid Credentials!"
+//           : " Session timed out",
+//       );
+//       localStorage.clear();
+//       deleteCookie("accessToken");
+//       window.location.href = "/login";
+//     } else {
+//       return Promise.reject(error);
+//     }
+//   },
+// );
 
 export default api;

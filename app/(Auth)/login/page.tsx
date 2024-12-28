@@ -14,6 +14,7 @@ import { ERROR_LOGIN, SUCCESS_LOGIN_PASSED } from "@/utils/constant"
 import { useUserStore } from "@/store/user.store";
 import { IUser } from "@/types/interface/user.interface"
 import { saveAccessToken } from "@/utils/token"
+import { toast } from "sonner"
 
 
 export default function Login() {
@@ -32,17 +33,17 @@ export default function Login() {
     mutationFn: login,
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
-    route: '/feed'
+    // route: '/feed'
   });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
-    const payload = await handleFormSubmit(data)
-    if(payload) {
-      setUser(payload?.data?.data?.user)
-      saveAccessToken(payload?.data?.data?.accessToken) 
-    }
-    console.log("payload ->>",payload)
-  }
+      const payload = await handleFormSubmit(data);
+      console.log("PAYLOAD ->",payload)
+      if (payload && payload.data?.data?.user && payload.data?.data?.accessToken) {
+        // setUser(payload.data.data.user);
+        // saveAccessToken(payload.data.data.accessToken);
+      }
+  };
 
   return (
     <div>
@@ -86,7 +87,7 @@ export default function Login() {
               Forget password?
             </Link>
 
-            <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">
+            <Button className="w-full bg-gray-900 text-white hover:bg-gray-800" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Processing..." : "Login"}
             </Button>
           </CardContent>

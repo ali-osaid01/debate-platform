@@ -5,7 +5,8 @@ import { IUser } from "@/types/interface/user.interface";
 
 export const login = async (payload:ILogin) => {
     try {
-        const response = await api.post('/auth/login',payload,{withCredentials:true});
+        const response = await api.post('/auth/login',payload);
+        console.log("AUTH SERVICE RESPONSE ->",response)
         return { status: STATUS.SUCCESS,response}
         
     } catch (error: any) {
