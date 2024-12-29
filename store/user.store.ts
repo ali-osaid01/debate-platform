@@ -19,9 +19,9 @@ export const useUserStore = create<UserStore>((set, get) => {
         setUser: (user: IUser) => set({ user }),
 
         clearUser: () => {
-            set({ user: null });
-            const cookies =  deleteCookie("accessToken");
+            const cookies = deleteCookie("accessToken");
             localStorage.removeItem("accessToken")
+            set({ user: null });
             console.log("cookies ->",cookies)
         },
     };

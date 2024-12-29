@@ -2,8 +2,7 @@ import api from "./middleware";
 
 export const createEvent = async (payload:any) => {
   try {
-
-    console.log("PAYLOAD ->", payload);
+    console.log("PAYLOAD ->",payload?.participants);
     payload.category = payload.topic;
     const response = await api.post("/event",payload);
     return {

@@ -18,7 +18,6 @@ import { useFormMutation } from "@/hooks/useFormMutation";
 import { ERROR_UPDATE_PROFILE, SUCCESS_UPDATE_PROFILE } from "@/utils/constant";
 import { updateUser } from "@/services/user.service";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 interface EditProfileProps {
   user?: IUser;
@@ -44,7 +43,7 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
 
   const onSubmit = async (data: Partial<IUser>) => {
     handleFormSubmit(data);
-    queryClient.invalidateQueries({ queryKey: ["user"] });
+    queryClient.invalidateQueries({ queryKey: ["user-profile"] });
   };
 
   const handleReset = () => {
@@ -57,7 +56,7 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
       location: user?.location || "",
       profilePicture: user?.profilePicture || ""
     });
-    
+
   };
 
   return (
@@ -174,8 +173,8 @@ const EditProfile: FC<EditProfileProps> = ({ user }) => {
             {isSubmitting ? "Updating..." : "Update Profile"}
           </Button>
 
-          <Button  className="mx-5 bg-red-500 hover:bg-red-400" disabled={isSubmitting} type="reset" onClick={handleReset}>
-           Cancel Changes
+          <Button className="mx-5 bg-red-500 hover:bg-red-400" disabled={isSubmitting} type="reset" onClick={handleReset}>
+            Cancel Changes
           </Button>
         </form>
       </CardContent>

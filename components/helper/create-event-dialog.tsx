@@ -38,7 +38,6 @@ import { STATUS } from "@/types/enum";
 import { toast } from "sonner";
 import { useParticipantStore } from "@/store/participants.store";
 
-// Memoized form field components
 const FormField = memo(({ label, children, error }: { label?: string; children: React.ReactNode; error?: string }) => (
   <div className="space-y-2">
     {label && <Label htmlFor={label}>{label}</Label>}
@@ -109,19 +108,19 @@ function EventFormDialog() {
     staleTime: 5 * 60 * 1000,
   });
 
-  const onSubmit = useCallback(async (data: IEventValues) => {
+  const onSubmit = (async (data: IEventValues) => {
     if (data.type === EVENT_TYPE.PUBLIC) {
       toast.error("PUBLIC EVENTS ARE CLOSED UNTIL ADMIN PANEL IS COMPLETED");
       return;
     }
-    data.participants = participants.map(participant => ({ user: participant.user._id }));
-    const { status, response } = await createEvent(data);
+    
+    const { status, response } = await createEvent({...data,participants});
     if (status === STATUS.SUCCESS) {
       toast("Event Created Successfully");
       clearParticipants();
       closeButton.current?.click();
     }
-  }, [clearParticipants]);
+  });
 
   const handleCategoryChange = useCallback((value: string) => {
     setValue("category", value);

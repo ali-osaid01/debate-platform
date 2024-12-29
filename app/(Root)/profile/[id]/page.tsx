@@ -67,7 +67,7 @@ export default function Profile() {
   const user = userData?.response?.data;
 
   const isCurrentUser = useMemo(() => {
-    if (!user || !currentUser) return null; // Avoid rendering during undefined state
+    if (!user || !currentUser) return null; 
     return user._id === currentUser._id;
   }, [user, currentUser]);
 

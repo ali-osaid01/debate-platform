@@ -10,7 +10,6 @@ import { IUser } from "@/types/interface/user.interface"
 import { formatDate } from "@/utils/data"
 import { likeEvent } from "@/services/like.service"
 import { useUserStore } from "@/store/user.store"
-import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 
 export default function EventCard({ event }: { event: IEvent }) {
@@ -18,11 +17,9 @@ export default function EventCard({ event }: { event: IEvent }) {
   const [likes, setLikes] = useState(event.likeCount || 0)
   const [isLiked, setIsLiked] = useState(event.isLiked || false)
   const { user } = useUserStore();
-  const queryClient = useQueryClient();
 
   const handleLike = () => {
     likeEvent({ event: event._id, user: user?._id! })
-    // queryClient.invalidateQueries({ queryKey: ['events'] })
     setLikes(likes + (isLiked ? -1 : 1))
     setIsLiked(!isLiked)
   }
@@ -37,14 +34,14 @@ export default function EventCard({ event }: { event: IEvent }) {
       <CardHeader className="flex flex-row items-center gap-4">
         <Link href={`/profile/${(event.postedBy as IUser)._id}`}>
         <Avatar>
-          <AvatarImage src={(event.postedBy as IUser).profilePicture} alt={"EVENT PICTURE"} />
+          <AvatarImage src={(event.postedBy as IUser).profilePicture} alt={"EVENT PICTURE"}/>
           <AvatarFallback>{(event?.postedBy as IUser).name?.charAt(0)}</AvatarFallback>
         </Avatar>
         </Link>
         <div >
           <h2 className="text-lg font-semibold">{event.title}</h2>
           <p className="text-xs text-muted-foreground">Posted by  <br /><span className="text-xs">
-            {(event.postedBy as IUser).name}
+            {(event.postedBy as IUser).username}
           </span></p>
         </div>
       </CardHeader>
