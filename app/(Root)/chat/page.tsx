@@ -2,13 +2,11 @@
 import { useEffect } from 'react'
 import socket from '@/sockets/socket'
 import { getAccessToken } from '@/services/middleware'
-import { useChatSettings } from '@/store/chat-setting.store'
 import ChatList from '@/components/shared/chat-list'
 import MessageBox from '@/components/shared/message-box'
 import { useIsMobile } from '@/hooks/use-mobile'
 
 export default function ChatPage() {
-  const {showMessage} = useChatSettings()
   const isMobile = useIsMobile()
  
   
@@ -22,7 +20,6 @@ export default function ChatPage() {
 
   }, [])
 
-  
   return (
     <div className="flex bg-background">
       <ChatList showMessages={isMobile ? false : true}/>
