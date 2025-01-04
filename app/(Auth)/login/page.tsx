@@ -32,7 +32,7 @@ export default function Login() {
     mutationFn: login,
     successMessage: SUCCESS_LOGIN_PASSED,
     errorMessage: ERROR_LOGIN,
-    // route: '/feed'
+    route: '/feed'
   });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {

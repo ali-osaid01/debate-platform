@@ -17,9 +17,11 @@ export default function ProfileAvatar() {
   const router = useRouter();
   const { clearUser, user } = useUserStore();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     clearUser();
-    router.push("/login");
+    setTimeout(() => {
+      router.push("/login");
+    }, 1000);
   };
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-import { memo, useCallback, useRef } from "react";
+import { useRef } from "react";
 import { CalendarRangeIcon, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -38,15 +38,15 @@ import { STATUS } from "@/types/enum";
 import { toast } from "sonner";
 import { useParticipantStore } from "@/store/participants.store";
 
-const FormField = memo(({ label, children, error }: { label?: string; children: React.ReactNode; error?: string }) => (
+const FormField = ({ label, children, error }: { label?: string; children: React.ReactNode; error?: string }) => (
   <div className="space-y-2">
     {label && <Label htmlFor={label}>{label}</Label>}
     {children}
     {error && <p className="text-sm text-red-500">{error}</p>}
   </div>
-));
+);
 
- const CategorySelect = memo(({ 
+ const CategorySelect = ({ 
   data, 
   onValueChange, 
   error,
@@ -75,7 +75,7 @@ const FormField = memo(({ label, children, error }: { label?: string; children: 
       </SelectContent>
     </Select>
   </FormField>
-));
+);
 
 function EventFormDialog() {
   const {
@@ -122,12 +122,12 @@ function EventFormDialog() {
     }
   });
 
-  const handleCategoryChange = useCallback((value: string) => {
+  const handleCategoryChange = (value: string) => {
     setValue("category", value);
     queryClient.invalidateQueries({
       queryKey: ["Categories"],
     });
-  }, [setValue, queryClient]);
+  };
 
   return (
     <Credenza>
@@ -259,4 +259,4 @@ function EventFormDialog() {
   );
 }
 
-export default memo(EventFormDialog);
+export default EventFormDialog;

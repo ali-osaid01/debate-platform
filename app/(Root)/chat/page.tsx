@@ -21,7 +21,7 @@ export default function ChatPage() {
   }, [])
 
   return (
-    <div className="flex bg-background">
+    <div className="flex">
       <ChatList showMessages={isMobile ? false : true}/>
       <MessageBox isMobile={isMobile}/>
     </div>

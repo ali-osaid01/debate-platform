@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -24,7 +24,7 @@ import { IUser } from "@/types/interface/user.interface";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bell, BellOff, Calendar, Loader2, ThumbsUp, UserMinus, UserPlus } from "lucide-react";
 
-// Memoized notification icons mapping
+// zed notification icons mapping
 const notificationIcons = {
   [ENOTIFICATION_TYPES.LIKE]: <ThumbsUp className="h-4 w-4 text-blue-500" />,
   [ENOTIFICATION_TYPES.EVENT_INVITATION]: <Calendar className="h-4 w-4 text-green-500" />,
@@ -36,22 +36,22 @@ const notificationIcons = {
   [ENOTIFICATION_TYPES.EVENT_REJECTED]: <Calendar className="h-4 w-4 text-green-500" />,
 };
 
-// Memoized empty state component
-const EmptyState = memo(() => (
+// zed empty state component
+const EmptyState = () => (
   <div className="flex flex-col items-center justify-center h-[60vh] text-center">
     <BellOff className="h-12 w-12 text-muted-foreground mb-4" />
     <p className="text-lg font-semibold text-muted-foreground">No notifications</p>
     <p className="text-sm text-muted-foreground mt-1">You're all caught up!</p>
   </div>
-));
+);
 EmptyState.displayName = 'EmptyState';
 
-// Memoized notification item component
-const NotificationItem = memo(({ notification }: { notification: INotification }) => {
+// zed notification item component
+const NotificationItem = ({ notification }: { notification: INotification }) => {
   const queryClient = useQueryClient();
   const [loadingStatus, setLoadingStatus] = useState<string | null>(null);
 
-  const handleEventToggle = useCallback(async (status: string) => {
+  const handleEventToggle = (async (status: string) => {
     try {
       setLoadingStatus(status);
       const payload = {
@@ -67,7 +67,7 @@ const NotificationItem = memo(({ notification }: { notification: INotification }
     } finally {
       setLoadingStatus(null);
     }
-  }, [notification, queryClient]);
+  });
 
   return (
     <div className="flex items-start space-x-4 rounded-lg bg-card p-4 shadow-sm transition-all hover:shadow-md">
@@ -123,11 +123,10 @@ const NotificationItem = memo(({ notification }: { notification: INotification }
       </div>
     </div>
   );
-});
-NotificationItem.displayName = 'NotificationItem';
+};
 
-// Memoized notification list component
-const NotificationList = memo(({ notifications }: { notifications?: INotification[] }) => {
+// zed notification list component
+const NotificationList = ({ notifications }: { notifications?: INotification[] }) => {
   if (!notifications?.length) {
     return <EmptyState />;
   }
@@ -141,15 +140,13 @@ const NotificationList = memo(({ notifications }: { notifications?: INotificatio
       </div>
     </ScrollArea>
   );
-});
-NotificationList.displayName = 'NotificationList';
+};
 
-// Main notification sheet component
 export default function NotificationSheet() {
   const { data } = useQuery<ApiResponse<INotificationResponse>>({
     queryKey: ["notification"],
     queryFn: ()=>notification(),
-    staleTime: 30000, // 30 seconds
+    // staleTime: 30000, // 30 seconds
   });
 
   const notificationCount = data?.response?.data?.data?.length || 0;

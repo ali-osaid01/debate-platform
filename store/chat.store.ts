@@ -30,7 +30,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         });
     },
 
-    fetchMessages: (page = 1, limit = 10) => {
+    fetchMessages: (page = 1, limit = 1000) => {
         const currentChatId = get().currentChat?.id;
 
         if (!currentChatId) {
@@ -61,6 +61,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     },
 
     receiveNewMessage: () => {
+        socket.removeAllListener(SOCKET_EVENTS.NEW_MESSAGE);
         socket.on(SOCKET_EVENTS.NEW_MESSAGE, (data: {message:IMessage}) => {
             set((state) => ({ messages: [...state.messages, data.message] }));
         });

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { GridIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -16,7 +16,7 @@ import { fetchEvents } from "@/services/event.service";
 import { IEvents } from "@/types/interface/event.interface";
 import EventGrid from "@/components/helper/event-grid";
 
-const ProfileStats = React.memo(({ user }: { user: IUser | null }) => (
+const ProfileStats = ({ user }: { user: IUser | null }) => (
   <div className="flex justify-center md:justify-start space-x-8 mb-4">
     <div className="text-center md:text-left">
       <span className="font-bold">{user?.postCount || 0}</span> posts
@@ -28,9 +28,9 @@ const ProfileStats = React.memo(({ user }: { user: IUser | null }) => (
       <span className="font-bold">{user?.followingCount || 0}</span> following
     </div>
   </div>
-));
+);
 
-const ProfileInfo = React.memo(({ user }: { user: IUser | null }) => (
+const ProfileInfo = ({ user }: { user: IUser | null }) => (
   <div className="text-center md:text-left">
     <h2 className="font-bold">{user?.name}</h2>
     <p className="text-sm text-muted-foreground">{user?.bio}</p>
@@ -38,9 +38,9 @@ const ProfileInfo = React.memo(({ user }: { user: IUser | null }) => (
       <Link href={user?.website || ""}>{user?.website}</Link>
     </p>
   </div>
-));
+);
 
-const ProfileAvatar = React.memo(({ profilePicture }: { profilePicture?: string }) => (
+const ProfileAvatar = ({ profilePicture }: { profilePicture?: string }) => (
   <Avatar className="w-32 h-32 md:w-40 md:h-40">
     <AvatarImage
       src={profilePicture || "./placeholderImage.png"}
@@ -50,7 +50,7 @@ const ProfileAvatar = React.memo(({ profilePicture }: { profilePicture?: string 
       <UserIcon className="w-16 h-16" />
     </AvatarFallback>
   </Avatar>
-));
+);
 
 export default function Profile() {
   const params = useParams<{ id: string }>();
@@ -66,10 +66,7 @@ export default function Profile() {
 
   const user = userData?.response?.data;
 
-  const isCurrentUser = useMemo(() => {
-    if (!user || !currentUser) return null; 
-    return user._id === currentUser._id;
-  }, [user, currentUser]);
+  const isCurrentUser = !user || !currentUser ? false : user._id === currentUser._id;
 
   const { data: isFollowing } = useQuery<{ response: boolean }>({
     queryKey: ["isFollowing", params.id],

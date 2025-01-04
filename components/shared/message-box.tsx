@@ -3,7 +3,7 @@
 import { MessageCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useChatStore } from '@/store/chat.store';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IUser } from '@/types/interface/user.interface';
@@ -14,22 +14,18 @@ import ChatBoxHeader from '../helper/MessageBoxHeader';
 
 export default function MessageBox({ isMobile }: { isMobile: boolean }) {
   const [showMessages, setShowMessages] = useState(false);
-  const { currentChat, fetchMessages, messages, receiveNewMessage } = useChatStore();
+  const { currentChat, fetchMessages, messages } = useChatStore();
   const { user } = useUserStore();
 
   const handleBackToList = () => {
     setShowMessages(false);
   };
 
-  
-
   useEffect(() => {
     if (currentChat) {
       fetchMessages();
     }
   }, [currentChat, fetchMessages]);
-  
-
 
   if (!currentChat) {
     return (
@@ -41,19 +37,15 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
         <p className="text-xl text-muted-foreground max-w-md mb-8">
           Select a conversation from the list to start messaging or create a new chat to begin.
         </p>
-        <Button className="px-8 py-6 text-lg" size="lg">
-          Start a New Chat
-        </Button>
       </div>
     );
   }
 
   return (
-    <div className={`${isMobile && !showMessages ? 'hidden' : 'flex'} flex-1 flex-col`}>
-      <ChatBoxHeader isMobile={isMobile} handleBackToList={handleBackToList} currentChat={currentChat} />
-
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-6 max-w-3xl mx-auto">
+    <div className={`${isMobile && !showMessages ? 'hidden' : 'flex'} flex-1 flex-col bg-background`}>
+      <ChatBoxHeader isMobile={isMobile} handleBackToList={handleBackToList} currentChat={currentChat} onLeaveChat={()=>console.log("LEAVEING CHAT")}  onMuteChat={()=>console.log("mute")}/>
+      <ScrollArea  className="flex-1 max-h-[calc(90vh-160px)] overflow-y-auto" scrollToBottom>
+        <div className="space-y-4 max-w-3xl mx-auto">
           {messages.map((message, index) => {
             const isCurrentUser = (message?.sender as IUser)?._id === user?._id;
             const showSenderInfo = index === 0 || (messages[index - 1].sender as IUser)?._id !== (message?.sender as IUser)?._id;
@@ -92,5 +84,4 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
       <SendMessage />
     </div>
   );
-
 }
