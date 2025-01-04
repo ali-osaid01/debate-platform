@@ -15,6 +15,7 @@ import { checkIsFollowing } from "@/services/follow.service";
 import { fetchEvents } from "@/services/event.service";
 import { IEvents } from "@/types/interface/event.interface";
 import EventGrid from "@/components/helper/event-grid";
+import { UserAchievements } from "@/components/helper/user-achievement";
 
 const ProfileStats = ({ user }: { user: IUser | null }) => (
   <div className="flex justify-center md:justify-start space-x-8 mb-4">
@@ -92,16 +93,19 @@ export default function Profile() {
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
             <h1 className="text-2xl font-bold mr-4">{user?.username}</h1>
+            {isCurrentUser === false && (
+              <FollowButton
+                initialIsFollowing={isFollowing?.response || false}
+                user={params.id}
+              />
+            )}
           </div>
           <ProfileStats user={user ?? null} />
           <ProfileInfo user={user ?? null} />
+          <div className="mt-4">
+            <UserAchievements badges={[]} score={192} />
+          </div>
         </div>
-        {isCurrentUser === false && ( // Only render FollowButton when isCurrentUser is explicitly false
-          <FollowButton
-            initialIsFollowing={isFollowing?.response || false}
-            user={params.id}
-          />
-        )}
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">

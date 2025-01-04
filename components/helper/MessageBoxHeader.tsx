@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ArrowLeft, Video, MoreVertical, Bell, X, XCircle, VolumeOff, Users, Flag, Trash2, LogOut } from 'lucide-react';
+import { ArrowLeft, Video, MoreVertical, Bell, X, Users, Flag, Trash2, LogOut } from 'lucide-react';
 import { IEvent } from '@/types/interface/event.interface';
 import { IChat } from '@/types/interface/chat.interface';
 
