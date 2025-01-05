@@ -55,15 +55,23 @@ export function useFormMutation<
     mutationFn,
     onSuccess: async ({ status, response }) => {
       console.log("STATUS coming onSuccess", status);
+    
       if (status === STATUS.SUCCESS) {
-        if (onSuccess) onSuccess();
-        if (route) router.push(route);
-        if (successMessage) toast(successMessage);
-      } else {
-        if (onError) onError();
-        toast.error(errorMessage);
+        if (onSuccess) onSuccess(); 
+        if (route) router.push(route); 
+        if (successMessage) toast(successMessage); 
+        return;
       }
+    
+      if (onError) return onError(); 
+      console.log("ERROR RESPONSE ->", response);
+    
+      const errorMessage = 
+        typeof response === "string" ? response : "An unexpected error occurred";
+    
+      toast.error(errorMessage);
     },
+    
     onError: () => {
       toast.error(NETWORK_ERROR);
     },

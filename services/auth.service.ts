@@ -32,7 +32,7 @@ export const register =  async (payload:ILogin) => {
        
         return {
             status: STATUS.FAILED,
-            response: error.response?.data?.msg || "Something went wrong",
+            response: error.response?.data?.data || "Something went wrong",
         }
     }
 }

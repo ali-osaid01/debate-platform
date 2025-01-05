@@ -31,7 +31,7 @@ export default function Login() {
   const { handleFormSubmit } = useFormMutation<{data:{data:{user:IUser,accessToken:string}}}, Error, ILogin>({
     mutationFn: login,
     successMessage: SUCCESS_LOGIN_PASSED,
-    errorMessage: ERROR_LOGIN,
+    // errorMessage: ERROR_LOGIN,
     route: '/feed'
   });
 
