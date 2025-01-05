@@ -32,7 +32,7 @@ export default function Search() {
   return (
     <>
       {/* Desktop Search */}
-      <div className="hidden md:flex items-center flex-1 max-w-md mx-4">
+      <div className="">
         <div className="relative w-full">
           <Input
             type="text"

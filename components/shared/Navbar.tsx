@@ -24,43 +24,35 @@ export default function Navbar() {
   return (
     <nav className="bg-background border-b sticky top-0 z-50 shadow-sm">
       <div className="mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between relative">
           {/* Logo Section */}
-          <Link href={user ? '/feed' : '/'} className="flex items-center">
-            <span className="text-2xl font-semibold flex items-center">
-              <Image src={Logo} alt="Logo" width={45} height={20} className="rounded-full" />
-              <p className="font-extralight font-mono hidden lg:block ml-2 text-primary">
-                Virtual Debate
-              </p>
-            </span>
-          </Link>
+          <div className="flex-shrink-0">
+            <Link href={user ? '/feed' : '/'} className="flex items-center">
+              <span className="text-2xl font-semibold flex items-center">
+                <Image src={Logo} alt="Logo" width={45} height={20} className="rounded-full" />
+                <p className="font-extralight font-mono hidden lg:block ml-2 text-primary">
+                  Virtual Debate
+                </p>
+              </span>
+            </Link>
+          </div>
 
           {/* Search Section - Desktop */}
-          {/* <div className="hidden md:flex items-center flex-1 max-w-md mx-4">
-            <div className="relative w-full">
-              <Input
-                type="search"
-                placeholder="Search..."
-                className="w-full pl-10 pr-4 py-2 rounded-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+          {pathname !== '/' && (
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-md mx-auto hidden md:block">
+              <Search />
             </div>
-          </div> */}
-          {pathname !== '/' &&
-            <Search />
-          }
-          {/* User Actions Section */}
-          <div className="flex items-center space-x-4">
-            {/* Search Icon - Mobile */}
-            {/* <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={toggleMobileSearch}
-            >
-              <Search className="h-5 w-5 text-primary" />
-            </Button> */}
+          )}
 
+          {/* Mobile Search Toggle */}
+          <div className="md:hidden flex-1  text-end mx-2">
+            <Button variant="outline" size="icon" onClick={toggleMobileSearch}>
+              <SearchIcon className="h-5 w-5" />
+            </Button>
+          </div>
+
+          {/* User Actions Section */}
+          <div className="flex items-center space-x-4 flex-shrink-0">
             {!user && isLoading ? (
               <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>
             ) : user ? (
@@ -76,10 +68,14 @@ export default function Navbar() {
             ) : (
               <div className="flex space-x-2">
                 <Link href="/sign-up" passHref>
-                  <Button variant="outline" className="rounded-full">Register</Button>
+                  <Button variant="outline" className="rounded-full">
+                    Register
+                  </Button>
                 </Link>
                 <Link href="/login" passHref>
-                  <Button variant="default" className="rounded-full">Login</Button>
+                  <Button variant="default" className="rounded-full">
+                    Login
+                  </Button>
                 </Link>
               </div>
             )}
@@ -89,10 +85,11 @@ export default function Navbar() {
 
       {/* Mobile Search Bar */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileSearch ? 'max-h-16 opacity-100' : 'max-h-0 opacity-0'
-          }`}
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          showMobileSearch ? 'max-h-16 opacity-100 ' : 'max-h-0 opacity-0'
+        }`}
       >
-        <div className="container mx-auto px-4 py-2">
+        <div className="mx-auto px-4 py-2">
           <div className="relative">
             <Input
               type="search"
@@ -114,4 +111,3 @@ export default function Navbar() {
     </nav>
   );
 }
-

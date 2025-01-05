@@ -19,6 +19,7 @@ export interface IUser {
   settings: {
     notification: boolean;
   };
+  score:number;
   location: string;
   customer:string;
   subscription:ISubscription;

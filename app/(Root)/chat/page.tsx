@@ -13,11 +13,10 @@ export default function ChatPage() {
   useEffect(() => {
     const token = getAccessToken()
     socket.initializeSocket(token as string)
-    
+    console.log("======SOCKET CONNECTED======")
     return () => {
       socket.disconnect()
     }
-
   }, [])
 
   return (

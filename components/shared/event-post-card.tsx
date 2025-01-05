@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Calendar, Heart, MapPin } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
-import { IEvent } from "@/types/interface/event.interface"
+import { EVENT_TYPE, IEvent } from "@/types/interface/event.interface"
 import { IUser } from "@/types/interface/user.interface"
 import { formatDate } from "@/utils/data"
 import { likeEvent } from "@/services/like.service"
@@ -33,10 +33,10 @@ export default function EventCard({ event }: { event: IEvent }) {
     <Card className="w-full max-w-xl mx-auto">
       <CardHeader className="flex flex-row items-center gap-4">
         <Link href={`/profile/${(event.postedBy as IUser)._id}`}>
-        <Avatar>
-          <AvatarImage src={(event.postedBy as IUser).profilePicture} alt={"EVENT PICTURE"}/>
-          <AvatarFallback>{(event?.postedBy as IUser).name?.charAt(0)}</AvatarFallback>
-        </Avatar>
+          <Avatar>
+            <AvatarImage src={(event.postedBy as IUser).profilePicture} alt={"EVENT PICTURE"} />
+            <AvatarFallback>{(event?.postedBy as IUser).name?.charAt(0)}</AvatarFallback>
+          </Avatar>
         </Link>
         <div >
           <h2 className="text-lg font-semibold">{event.title}</h2>
@@ -84,12 +84,14 @@ export default function EventCard({ event }: { event: IEvent }) {
             )}
           </div>
         </div>
-        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => toast('Event Added to Calender', {
-          description: 'Monday, January 3rd at 6:00pm',
-        })}>
-          <Calendar className="w-4 h-4" />
-          <span className="text-xs">Add to Calender</span>
-        </Button>
+        {event.type === EVENT_TYPE.PUBLIC && (
+          <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={() => toast('Event Added to Calender', {
+            description: 'Monday, January 3rd at 6:00pm',
+          })}>
+            <Calendar className="w-4 h-4" />
+            <span className="text-xs">Add to Calender</span>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   )

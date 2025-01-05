@@ -2,6 +2,7 @@ import socket from '@/sockets/socket';
 import { SOCKET_EVENTS } from '@/types/enum';
 import { IChat } from '@/types/interface/chat.interface';
 import { IMessage } from '@/types/interface/message.interface';
+import { toast } from 'sonner';
 import { create } from 'zustand';
 
 interface ChatStore {
@@ -13,6 +14,8 @@ interface ChatStore {
     fetchMessages: (page?: number, limit?: number) => void;
     sendMessage: (message: string, type?: string) => void;
     receiveNewMessage: () => void;
+    onLeaveChat: () => void;
+    onLeaveRoom: () => void;
 }
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -30,7 +33,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         });
     },
 
-    fetchMessages: (page = 1, limit = 1000) => {
+    fetchMessages: (page = 1, limit = 10000) => {
         const currentChatId = get().currentChat?.id;
 
         if (!currentChatId) {
@@ -63,7 +66,21 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     receiveNewMessage: () => {
         socket.removeAllListener(SOCKET_EVENTS.NEW_MESSAGE);
         socket.on(SOCKET_EVENTS.NEW_MESSAGE, (data: {message:IMessage}) => {
+            console.log("NEW MESSAGE ->", data)
             set((state) => ({ messages: [...state.messages, data.message] }));
         });
-    } 
+    },
+
+    onLeaveChat: () => {
+        const { currentChat,receiveNewMessage } = get();
+        socket.emit(SOCKET_EVENTS['USER-LEAVE'], currentChat?.id);
+        receiveNewMessage();
+        toast("Chat left Successfully");
+    },
+
+    onLeaveRoom: () => {
+        const { currentChat } = get();
+        socket.emit(SOCKET_EVENTS['USER-LEAVE-ROOM'], currentChat?.id);
+        set({ currentChat: null, messages: [] });
+    }
 }));

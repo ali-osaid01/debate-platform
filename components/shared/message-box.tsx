@@ -1,6 +1,6 @@
 'use client'
 
-import { MessageCircle } from 'lucide-react';
+import { Info, MessageCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useEffect, useRef, useState } from 'react';
@@ -14,7 +14,7 @@ import ChatBoxHeader from '../helper/MessageBoxHeader';
 
 export default function MessageBox({ isMobile }: { isMobile: boolean }) {
   const [showMessages, setShowMessages] = useState(false);
-  const { currentChat, fetchMessages, messages } = useChatStore();
+  const { currentChat, fetchMessages, messages, } = useChatStore();
   const { user } = useUserStore();
 
   const handleBackToList = () => {
@@ -27,6 +27,7 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
     }
   }, [currentChat, fetchMessages]);
 
+ 
   if (!currentChat) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-gradient-to-b from-background to-accent/20">
@@ -43,43 +44,62 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
 
   return (
     <div className={`${isMobile && !showMessages ? 'hidden' : 'flex'} flex-1 flex-col bg-background`}>
-      <ChatBoxHeader isMobile={isMobile} handleBackToList={handleBackToList} currentChat={currentChat} onLeaveChat={()=>console.log("LEAVEING CHAT")}  onMuteChat={()=>console.log("mute")}/>
+      <ChatBoxHeader isMobile={isMobile} handleBackToList={handleBackToList}/>
       <ScrollArea  className="flex-1 max-h-[calc(90vh-160px)] overflow-y-auto" scrollToBottom>
-        <div className="space-y-4 max-w-3xl mx-auto">
-          {messages.map((message, index) => {
-            const isCurrentUser = (message?.sender as IUser)?._id === user?._id;
-            const showSenderInfo = index === 0 || (messages[index - 1].sender as IUser)?._id !== (message?.sender as IUser)?._id;
-            return (
-              <div key={message.id || index} className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
-                {!isCurrentUser && (
-                  <Avatar className="h-8 w-8 mr-2">
-                    <AvatarImage src={(message.sender as IUser)?.profilePicture || '/placeholder-avatar.jpg'} alt="Sender Avatar" />
-                    <AvatarFallback>{(message.sender as IUser)?.username?.[0]?.toUpperCase() || 'A'}</AvatarFallback>
-                  </Avatar>
-                )}
-                <div className={`max-w-[70%] ${isCurrentUser ? 'items-end text-right' : 'items-start text-left'}`}>
-                  <div
-                    className={`p-3 rounded-2xl ${isCurrentUser
-                      ? 'bg-primary text-primary-foreground rounded-br-sm'
-                      : 'bg-accent text-accent-foreground rounded-bl-sm'
-                      }`}
-                  >
-                    {message?.content}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {showSenderInfo && !isCurrentUser && (message.sender as IUser)?.username} • {formatDate(message?.createdAt)}
-                  </div>
-                </div>
-                {isCurrentUser && (
-                  <Avatar className="h-8 w-8 ml-2">
-                    <AvatarImage src={user?.profilePicture || '/placeholder-user-avatar.jpg'} alt="Your Avatar" />
-                    <AvatarFallback>{user?.username?.[0]?.toUpperCase() || 'Y'}</AvatarFallback>
-                  </Avatar>
-                )}
-              </div>
-            );
-          })}
+      <div className="space-y-4 max-w-3xl mx-auto">
+  {messages.map((message, index) => {
+    const isCurrentUser = (message?.sender as IUser)?._id === user?._id;
+    const showSenderInfo =
+      index === 0 || (messages[index - 1].sender as IUser)?._id !== (message?.sender as IUser)?._id;
+
+    return (
+      <div key={message?.id || index} className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+        {message?.isAnnocement ? (
+          <div className="flex justify-center items-center my-4 w-full">
+          <div className="bg-yellow-200 text-yellow-800 px-4 py-2 rounded-lg shadow-md flex items-center space-x-3 max-w-lg">
+            <Info className="w-5 h-5 text-yellow-600" />
+            <span className="text-sm font-medium">{(message?.sender as IUser)?.username} {message?.content}</span>
+          </div>
         </div>
+        ) : (
+          // Regular Message
+          <>
+            {!isCurrentUser && (
+              <Avatar className="h-8 w-8 mr-2">
+                <AvatarImage
+                  src={(message?.sender as IUser)?.profilePicture || '/placeholder-avatar.jpg'}
+                  alt="Sender Avatar"
+                />
+                <AvatarFallback>{(message?.sender as IUser)?.username?.[0]?.toUpperCase() || 'A'}</AvatarFallback>
+              </Avatar>
+            )}
+            <div className={`max-w-[70%] ${isCurrentUser ? 'items-end text-right' : 'items-start text-left'}`}>
+              <div
+                className={`p-3 rounded-2xl ${
+                  isCurrentUser
+                    ? 'bg-primary text-primary-foreground rounded-br-sm'
+                    : 'bg-accent text-accent-foreground rounded-bl-sm'
+                }`}
+              >
+                {message?.content}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">
+                {showSenderInfo && !isCurrentUser && (message?.sender as IUser)?.username} •{' '}
+                {formatDate(message?.createdAt)}
+              </div>
+            </div>
+            {isCurrentUser && (
+              <Avatar className="h-8 w-8 ml-2">
+                <AvatarImage src={user?.profilePicture || '/placeholder-user-avatar.jpg'} alt="Your Avatar" />
+                <AvatarFallback>{user?.username?.[0]?.toUpperCase() || 'Y'}</AvatarFallback>
+              </Avatar>
+            )}
+          </>
+        )}
+      </div>
+    );
+  })}
+</div>
       </ScrollArea>
       <SendMessage />
     </div>
