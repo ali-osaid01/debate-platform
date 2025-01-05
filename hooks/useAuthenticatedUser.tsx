@@ -10,10 +10,13 @@ export function useAuthenticatedUser() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["user"],
     queryFn: () => authenticatedUser(),
-    enabled: user === null,
+    // enabled: user === null,
     initialData: user,
   });
 
+  if(isError){
+    console.log("Error",error)
+  }
   useEffect(() => {
     if (data?.status == STATUS.SUCCESS && data?.response?.data) {
       setUser(data.response.data);

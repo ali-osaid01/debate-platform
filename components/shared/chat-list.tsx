@@ -17,6 +17,7 @@ const ChatList: FC<ChatListProps> = ({ showMessages }) => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    console.log("FETCHING CHATS",user?._id)
     fetchChats(user?._id!);
   }, [user, fetchChats]);
 

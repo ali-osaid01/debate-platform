@@ -15,7 +15,7 @@ export default function ChatPage() {
     socket.initializeSocket(token as string)
     console.log("======SOCKET CONNECTED======")
     return () => {
-      socket.disconnect()
+      socket.removeAllListener()
     }
   }, [])
 

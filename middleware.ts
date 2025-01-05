@@ -25,9 +25,8 @@ export function middleware(request: NextRequest) {
       return false;
     });
   };
-
+  console.log("COOKIES REQUEST",request.cookies)
   const token = request.cookies.get("accessToken")?.value;
-  console.log("TOKEN ->", token);
 
   if (publicPaths.includes(path) && token) {
     return NextResponse.redirect(new URL("/feed", request.nextUrl));
@@ -37,7 +36,6 @@ export function middleware(request: NextRequest) {
     console.log("isPrivatePath Valid")
     return NextResponse.redirect(new URL("/login", request.nextUrl));
   }
-
   return NextResponse.next();
 }
 

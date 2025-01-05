@@ -25,10 +25,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
     fetchChats: (userId: string) => {
         const chatListEvent = `${SOCKET_EVENTS.CHAT_LIST}-${userId}`;
-
         socket.emit(SOCKET_EVENTS.CHAT_LIST);
-
+        
+        console.log("FETCH CHAT WORKING")
         socket.on(chatListEvent, (response: { chats: IChat[] }) => {
+            console.log("response ->", response)
             set({ chats: response.chats });
         });
     },
