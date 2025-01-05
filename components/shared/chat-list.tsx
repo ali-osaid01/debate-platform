@@ -6,15 +6,16 @@ import { useUserStore } from '@/store/user.store';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { IChat } from '@/types/interface/chat.interface';
 import { formatDate } from '@/utils/data';
+import { useChatSettings } from '@/store/chat-setting.store';
 
 interface ChatListProps {
-  showMessages: boolean;
+  isMobile: boolean;
 }
 
-const ChatList: FC<ChatListProps> = ({ showMessages }) => {
+const ChatList: FC<ChatListProps> = ({isMobile}) => {
   const { fetchChats, chats, setCurrentChat, currentChat } = useChatStore();
   const { user } = useUserStore();
-  const isMobile = useIsMobile();
+  const {setShowMessage,showMessage} = useChatSettings();
 
   useEffect(() => {
     console.log("FETCHING CHATS",user?._id)
@@ -23,11 +24,12 @@ const ChatList: FC<ChatListProps> = ({ showMessages }) => {
 
   const onChatSelect = useCallback((chat: IChat) => {
     setCurrentChat(chat);
+    setShowMessage(true);
   }, [setCurrentChat]);
 
   return (
     <div
-      className={`${isMobile && showMessages ? 'hidden' : 'block'} w-full md:w-1/4 border-r border-border`}>
+      className={`${isMobile && showMessage ? 'hidden' : 'block'} w-full md:w-1/4 border-r border-border`}>
       <header className="p-4 font-semibold text-lg border-b border-border">Chats</header>
       <ScrollArea className="h-[calc(88vh-60px)]">
         {chats.length > 0 ? (
@@ -71,9 +73,9 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isSelected, onSelect }) => {
       </div>
       <div className="flex-1">
         <div className="font-semibold truncate" title={chat.name}>{chat.name}</div>
-        <div className="text-sm text-muted-foreground truncate" title={chat.lastMessage}>
+        {/* <div className="text-sm text-muted-foreground truncate" title={chat.lastMessage}>
           {chat.lastMessage || 'No messages yet'}
-        </div>
+        </div> */}
       </div>
       <div className="text-xs text-muted-foreground whitespace-nowrap">
         {formatDate(chat.updatedAt)}

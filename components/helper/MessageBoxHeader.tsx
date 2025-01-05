@@ -83,7 +83,7 @@ const ChatBoxHeader: FC<ChatBoxHeaderProps> = ({ isMobile, handleBackToList,  })
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>Group Chat Options</DropdownMenuLabel>
+            <DropdownMenuLabel>Chat Options</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleViewParticipants} className="flex items-center gap-2 cursor-pointer">
               <Users className="w-4 h-4" />

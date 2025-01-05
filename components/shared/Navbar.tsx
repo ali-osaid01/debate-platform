@@ -37,8 +37,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Search Section - Desktop */}
-          {pathname !== '/' && (
+          {pathname === '/feed' && (
             <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-md mx-auto hidden md:block">
               <Search />
             </div>
@@ -64,6 +63,7 @@ export default function Navbar() {
                 </Link>
                 <NotificationSheet />
                 <ProfileAvatar />
+                
               </div>
             ) : (
               <div className="flex space-x-2">

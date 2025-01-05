@@ -115,11 +115,9 @@ function EventFormDialog() {
     }
     
     const { status, response } = await createEvent({...data,participants});
-    if (status === STATUS.SUCCESS) {
       toast("Event Created Successfully");
       clearParticipants();
       closeButton.current?.click();
-    }
   });
 
   const handleCategoryChange = (value: string) => {

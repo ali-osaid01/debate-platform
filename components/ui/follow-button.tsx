@@ -1,51 +1,46 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { UserPlus, UserMinus, Loader2 } from "lucide-react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { followUser } from "@/services/follow.service";
-import { useQueryClient } from "@tanstack/react-query";
+import { STATUS } from "@/types/enum";
 
 interface FollowButtonProps {
   initialIsFollowing: boolean;
   user: string;
 }
-type FollowFormValues = {
-  userId: string;
-};
+
 export function FollowButton({ initialIsFollowing, user }: FollowButtonProps) {
-  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
-
-  
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<FollowFormValues>({
-    defaultValues: {
-      userId: user,
-    },
-  });
-
   const queryClient = useQueryClient();
+  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
     setIsFollowing(initialIsFollowing);
   }, [initialIsFollowing]);
 
-  const onSubmit: SubmitHandler<FollowFormValues> = async (data) => {
-    followUser(user);
-    queryClient.invalidateQueries({ queryKey: ["isFollowing"] });
-    queryClient.invalidateQueries({ queryKey: ["user-profile"] });
-    console.log("THIS PART CALLED");
-  };
+  const {mutate,status} = useMutation<{ response: any; status: STATUS }, Error>({
+    mutationFn: () => followUser(user),
+    onMutate: async () => {
+      setIsButtonDisabled(true); // Disable button
+      setIsFollowing((prev) => !prev); // Optimistically update UI
+    },
+    onError: (error) => {
+      setIsFollowing(initialIsFollowing); // Revert UI on error
+    },
+    onSettled: () => {
+      setIsButtonDisabled(false); // Re-enable button after mutation
+      queryClient.invalidateQueries({ queryKey: ["isFollowing", user] });
+      queryClient.invalidateQueries({ queryKey: ["user-profile", user] });
+      
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Button
-        disabled={isSubmitting}
-        variant={isFollowing ? "secondary" : "default"}
-        className={`
+    <Button
+      disabled={status === "pending" || isButtonDisabled} // Disable button during mutation
+      variant={isFollowing ? "secondary" : "default"}
+      className={`
         font-semibold text-sm px-4 py-2 rounded-full transition-all duration-200 ease-in-out
         ${
           isFollowing
@@ -54,23 +49,23 @@ export function FollowButton({ initialIsFollowing, user }: FollowButtonProps) {
         }
         focus:outline-none focus:ring-2 focus:ring-offset-2
       `}
-      >
-        <span className="flex items-center">
-          {isSubmitting ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : isFollowing ? (
-            <>
-              <span className="mr-1">Following</span>
-              <UserMinus className="w-4 h-4" />
-            </>
-          ) : (
-            <>
-              <span className="mr-1">Follow</span>
-              <UserPlus className="w-4 h-4" />
-            </>
-          )}
-        </span>
-      </Button>
-    </form>
+      onClick={() => mutate()}
+    >
+      <span className="flex items-center">
+        {status === "pending" ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : isFollowing ? (
+          <>
+            <span className="mr-1">Following</span>
+            <UserMinus className="w-4 h-4" />
+          </>
+        ) : (
+          <>
+            <span className="mr-1">Follow</span>
+            <UserPlus className="w-4 h-4" />
+          </>
+        )}
+      </span>
+    </Button>
   );
 }

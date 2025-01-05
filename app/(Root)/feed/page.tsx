@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { EventCardSkeleton } from "@/components/skeleton/event-card-skeleton";
 import { useEventFilterStore } from "@/store/filter-state.store";
+import UpcomingEvents from "@/components/shared/Upcoming-Events-Section";
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("feed");
@@ -138,18 +139,9 @@ export default function FeedPage() {
           )}
         </div>
         {/* Right Div */}
-        <div className="p-4 hidden lg:block w-full lg:w-1/4">
-          <div className="text-center space-y-4 mt-10">
-            <div className="flex justify-center">
-              <Calendar className="h-12 w-12 text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-semibold">No Upcoming Events</h3>
-            <p className="text-muted-foreground">
-              Looks like your calendar is clear. Why not explore some new
-              events?
-            </p>
-          </div>
-        </div>
+        {desktop && 
+        <UpcomingEvents/>
+        }
       </div>
     </div>
   );

@@ -74,14 +74,12 @@ export default function Profile() {
     queryFn: () => checkIsFollowing(params.id),
     enabled: isCurrentUser === false,
     staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
   });
 
   const { data: events, isLoading: isEventLoading } = useQuery<ApiResponse<IEvents>>({
     queryKey: ["user-events", params.id],
     queryFn: () => fetchEvents(params.id),
     staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
   });
 
   return (
@@ -103,11 +101,10 @@ export default function Profile() {
           <ProfileStats user={user ?? null} />
           <ProfileInfo user={user ?? null} />
           <div className="mt-4">
-            <UserAchievements badges={[]} score={192} />
+            <UserAchievements badges={user?.badge || []} score={user?.score || 0} />
           </div>
         </div>
       </div>
-
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
         <TabsList className="w-full justify-center">
           <TabsTrigger value="posts" className="flex-1">

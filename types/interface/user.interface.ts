@@ -6,6 +6,14 @@ export interface ISubscription {
   subscriptionAuth: string;
   expirytime: Date;
 }
+export interface IBadge {
+  _id:string
+  id:string
+  name: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface IUser {
   _id: string;
@@ -16,6 +24,7 @@ export interface IUser {
   socialAuth: string;
   dob: Date;
   phone: string;
+  badge: [IBadge];
   settings: {
     notification: boolean;
   };

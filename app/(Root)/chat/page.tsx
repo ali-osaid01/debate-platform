@@ -19,9 +19,11 @@ export default function ChatPage() {
     }
   }, [])
 
+  console.log("IS MOBILE",isMobile);
+  
   return (
     <div className="flex">
-      <ChatList showMessages={isMobile ? false : true}/>
+      <ChatList isMobile={isMobile}/>
       <MessageBox isMobile={isMobile}/>
     </div>
   )

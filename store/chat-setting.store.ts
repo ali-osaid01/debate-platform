@@ -9,7 +9,7 @@ interface ChatSettingsStore {
 
 export const useChatSettings = create<ChatSettingsStore>((set) => ({
     isMobile: false,
-    showMessage: true,
+    showMessage: false,
     setIsMobile: (value: boolean) => set({ isMobile: value }),
     setShowMessage: (value: boolean) => set({ showMessage: value }),
 }))
