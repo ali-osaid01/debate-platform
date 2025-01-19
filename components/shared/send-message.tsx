@@ -28,16 +28,15 @@ export default function SendMessage() {
         }
     });
 
-    const selectedImage = watch('image')?.[0];
     const message = watch('message');
+    const image = watch('image');
 
 
     const onSubmit = (data: FormInputs) => {
-            sendMessage(data.message);
+            console.log("data ->",data)
+            sendMessage(data.message,image ? 'image' : 'text',data.image);
             reset();
     };
-    const image = watch('image');
-    
     return (
         <div className="p-4 border-t border-border bg-background/80 backdrop-blur-sm sticky bottom-0">
             {image && (
@@ -83,7 +82,7 @@ export default function SendMessage() {
                                     type="button"
                                     variant="outline"
                                     size="icon"
-                                    className={`bg-accent/30 border-none hover:bg-accent/50 ${selectedImage ? 'text-primary' : ''}`}
+                                    className={`bg-accent/30 border-none hover:bg-accent/50 ${image ? 'text-primary' : ''}`}
                                 >
                                     <ImageIcon className="h-5 w-5" />
                                     <span className="sr-only">Upload image</span>
@@ -102,7 +101,7 @@ export default function SendMessage() {
                                 size="icon"
                                 type="submit"
                                 className="bg-primary text-primary-foreground hover:bg-primary/90"
-                                disabled={!message?.trim() && !selectedImage}
+                                disabled={!message?.trim() && !image}
                             >
                                 <Send className="h-5 w-5" />
                                 <span className="sr-only">Send message</span>

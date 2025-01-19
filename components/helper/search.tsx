@@ -1,34 +1,50 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Search as SearchIcon, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { useEventFilterStore } from "@/store/filter-state.store";
+import useDebounce from "@/hooks/useDebounce";
 
 export default function Search() {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const { searchUsername, setSearchUsername, clearUsername } =
-    useEventFilterStore();
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [isTyping, setIsTyping] = useState(false);
+  const { setSearchUsername, clearUsername, setLoading } = useEventFilterStore();
+  
+  const debouncedSearchTerm = useDebounce(searchInput, 500);
 
-  const handleSearch = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchUsername(e.target.value || null);
-    },
-    [setSearchUsername]
-  );
+  useEffect(() => {
+    if (searchInput !== debouncedSearchTerm) {
+      setIsTyping(true);
+      setLoading(true);
+    } else {
+      setIsTyping(false);
+      setTimeout(() => setLoading(false), 100);
+    }
+  }, [searchInput, debouncedSearchTerm, setLoading]);
+
+  useEffect(() => {
+    setSearchUsername(debouncedSearchTerm || null);
+  }, [debouncedSearchTerm, setSearchUsername]);
+
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  }, []);
 
   const toggleMobileSearch = useCallback(() => {
     setIsMobileSearchOpen((prev) => !prev);
   }, []);
 
   const handleClearSearch = useCallback(() => {
+    setSearchInput("");
     clearUsername();
+    setLoading(false);
     if (isMobileSearchOpen) {
       setIsMobileSearchOpen(false);
     }
-  }, [clearUsername, isMobileSearchOpen]);
-
+  }, [clearUsername, isMobileSearchOpen, setLoading]);
   return (
     <>
       {/* Desktop Search */}
@@ -36,13 +52,17 @@ export default function Search() {
         <div className="relative w-full">
           <Input
             type="text"
-            value={searchUsername || ""}
+            value={searchInput}
             onChange={handleSearch}
             placeholder="Search by username..."
-            className="w-full pl-10 pr-12 py-2 rounded-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+            className={cn(
+              "w-full pl-10 pr-12 py-2 rounded-full border-gray-300",
+              "focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50",
+              isTyping && "text-primary"
+            )}
           />
-          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-          {searchUsername && (
+         <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+          {searchInput && (
             <Button
               variant="ghost"
               size="icon"
@@ -77,14 +97,17 @@ export default function Search() {
           <div className="relative w-full max-w-lg">
             <Input
               type="text"
-              value={searchUsername || ""}
+              value={searchInput}
               onChange={handleSearch}
               placeholder="Search by username..."
-              className="w-full pl-10 pr-12 py-2 rounded-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+              className={cn(
+                "w-full pl-10 pr-12 py-2 rounded-full border-gray-300",
+                "focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50",
+                isTyping && "text-primary"
+              )}
               autoFocus={isMobileSearchOpen}
             />
-            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-            {searchUsername && (
+            {searchInput && (
               <Button
                 variant="ghost"
                 size="icon"

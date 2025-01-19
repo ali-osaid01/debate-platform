@@ -12,7 +12,7 @@ interface ChatStore {
     fetchChats: (userId: string) => void;
     setCurrentChat: (chat: IChat | null) => void;
     fetchMessages: (page?: number, limit?: number) => void;
-    sendMessage: (message: string, type?: string) => void;
+    sendMessage: (message: string, type?: string,media?:string) => void;
     receiveNewMessage: () => void;
     onLeaveChat: () => void;
     onLeaveRoom: () => void;
@@ -57,9 +57,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         set({ currentChat: chat });
     },
 
-    sendMessage: (message, type = 'text') => {
+    sendMessage: (message, type = 'text',media) => {
         const { currentChat,receiveNewMessage } = get();
-        const payload = { chat: currentChat?.id, message, type };
+        console.log("SEND MESSAGE ->", message,media)
+        const payload = { chat: currentChat?.id, message, type,media };
         socket.emit(SOCKET_EVENTS.SEND_MESSAGE, payload);
         receiveNewMessage();
     },

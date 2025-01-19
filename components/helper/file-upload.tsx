@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import Image from 'next/image';
 import { useFormMutation } from '@/hooks/useFormMutation';
 import { ERROR_FILE_UPLOAD } from '@/utils/constant';
-import { upload } from '@/services/file-upload.server';
+import { upload } from '@/services/file-upload.service';
 import { FieldValues, Path, UseFormSetValue } from 'react-hook-form';
 import { Loader2 } from 'lucide-react';
 

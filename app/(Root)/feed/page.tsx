@@ -20,17 +20,17 @@ import UpcomingEvents from "@/components/shared/Upcoming-Events-Section";
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState("feed");
   const desktop = useMediaQuery("(min-width: 1020px)");
-  const {selectedTopic} = useEventFilterStore()
+  const {selectedTopic,searchUsername,loading} = useEventFilterStore()
+
   const { data, isLoading } = useQuery({
-    queryKey: ["events",selectedTopic],
-    queryFn: () => fetchEvents("", EVENT_TYPE.PRIVATE,selectedTopic),
+    queryKey: ["events",selectedTopic,searchUsername],
+    queryFn: () => fetchEvents("", EVENT_TYPE.PRIVATE,selectedTopic,searchUsername),
     enabled: activeTab === "feed",
     staleTime: 1000 * 60 * 10,
   });
 
   return (
     <div>
-      {/* Tabs Section */}
       <div className="w-full max-w-[300px] md:max-w-[500px] mx-auto mt-5">
         <div className="flex mb-8 bg-muted rounded-tr-full rounded-bl-full relative">
           <button
@@ -72,6 +72,7 @@ export default function FeedPage() {
         <div className="flex flex-col items-center space-y-6 w-full lg:w-1/2">
           {activeTab === "feed" ? (
             <>
+            {loading && <Loader2 className="w-12 h-12 text-primary animate-spin"/>}
               {isLoading ? (
                 <div className="w-full">
                   <EventCardSkeleton/>

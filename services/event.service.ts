@@ -18,7 +18,7 @@ export const createEvent = async (payload:any) => {
     };
   }
 };
-export const fetchEvents = async (user?: string, type?: string,category?:string | null) => {
+export const fetchEvents = async (user?: string, type?: string,category?:string | null,username?:string | null) => {
   try {
     const params = new URLSearchParams();
     
@@ -31,7 +31,9 @@ export const fetchEvents = async (user?: string, type?: string,category?:string 
     if (type) {
       params.append('type', type);
     }
-
+    if(username){
+      params.append('username',username);
+    }
     const { data } = await api.get(`/event?${params.toString()}`);
 
     return {

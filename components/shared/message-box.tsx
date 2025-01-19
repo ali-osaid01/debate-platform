@@ -1,9 +1,7 @@
 'use client'
-
 import { Info, MessageCircle } from 'lucide-react';
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useChatStore } from '@/store/chat.store';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IUser } from '@/types/interface/user.interface';
@@ -12,6 +10,8 @@ import { useUserStore } from '@/store/user.store';
 import SendMessage from './send-message';
 import ChatBoxHeader from '../helper/MessageBoxHeader';
 import { useChatSettings } from '@/store/chat-setting.store';
+import { IMessage } from '@/types/interface/message.interface';
+import Image from 'next/image';
 
 export default function MessageBox({ isMobile }: { isMobile: boolean }) {
 
@@ -29,7 +29,7 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
     }
   }, [currentChat, fetchMessages]);
 
-
+  console.log("MESSAGE ->",messages)
   if (!currentChat) {
     return (
       <div className={`${isMobile && !showMessage ? 'hidden' : 'flex'} flex-1 flex flex-col items-center justify-center text-center p-8 bg-gradient-to-b from-background to-accent/20`}>
@@ -43,6 +43,28 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
       </div>
     );
   }
+  const renderMessageContent = (message: IMessage, isCurrentUser: boolean) => {
+    if (message.messageType === 'image') {
+      return (
+        <div className="space-y-2">
+          <div className="relative w-full max-w-md rounded-lg overflow-hidden">
+            <Image
+              src={message.media || ''}
+              alt="Message image"
+              width={200}
+              height={200}
+              // className="object-cover rounded-lg"
+              loading="lazy"
+            />
+          </div>
+          {/* {message.content && (
+            <div className="text-sm">{message.content}</div>
+          )} */}
+        </div>
+      );
+    }
+    return message.content;
+  };
 
   return (
     <div className={`${isMobile && !showMessage ? 'hidden' : 'flex'} flex-1 flex-col bg-background`}>
@@ -66,7 +88,6 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
                     </div>
                   </div>
                 ) : (
-                  // Regular Message
                   <>
                     {!isCurrentUser && (
                       <Avatar className="h-8 w-8 mr-2">
@@ -85,6 +106,7 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
                           }`}
                       >
                         {message?.content}
+                        {renderMessageContent(message, isCurrentUser)}
                       </div>
                       <div className="text-xs text-muted-foreground mt-1">
                         {showSenderInfo && !isCurrentUser && (message?.sender as IUser)?.username} •{' '}

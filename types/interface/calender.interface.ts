@@ -3,7 +3,7 @@ import { IUser } from "./user.interface";
 
 export interface ICalender  {
     id:string
-    events: IEvent;
+    event: IEvent;
     creator: string | IUser;
     createdAt: Date;
     updatedAt: Date;

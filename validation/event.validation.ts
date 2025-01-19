@@ -10,7 +10,7 @@ const eventValidation = yup.object().shape({
   description: yup
     .string()
     .min(10, "Description must be at least 10 characters long")
-    .max(40, "Description cannot be longer than 40 characters")
+    .max(150, "Description cannot be longer than 150 characters")
     .required("Description is required"),
   category: yup.string().required("Category is required"),
   location: yup.string().required("Location is required"),
@@ -23,16 +23,6 @@ const eventValidation = yup.object().shape({
     .of(
       yup.object().shape({
         user: yup.string().required(),
-        // .test(
-        //   "isValidUser",
-        //   "User must be an object with valid fields or a string",
-        //   (value) =>
-        //     typeof value === "string" ||
-        //     (typeof value === "object" &&
-        //       value !== null &&
-        //       "_id" in value &&
-        //       "username" in value),
-        // ),
       }),
     )
     .min(1, "At least one participant is required")
