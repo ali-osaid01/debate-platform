@@ -33,7 +33,7 @@ export default function SendMessage() {
 
 
     const onSubmit = (data: FormInputs) => {
-            console.log("data ->",data)
+            console.log("MESSAGE SEND ->",data.message)
             sendMessage(data.message,image ? 'image' : 'text',data.image);
             reset();
     };

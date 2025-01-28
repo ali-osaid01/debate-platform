@@ -43,7 +43,7 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
       </div>
     );
   }
-  const renderMessageContent = (message: IMessage, isCurrentUser: boolean) => {
+  const renderMessageContent = (message: IMessage) => {
     if (message.messageType === 'image') {
       return (
         <div className="space-y-2">
@@ -63,7 +63,6 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
         </div>
       );
     }
-    return message.content;
   };
 
   return (
@@ -106,7 +105,7 @@ export default function MessageBox({ isMobile }: { isMobile: boolean }) {
                           }`}
                       >
                         {message?.content}
-                        {renderMessageContent(message, isCurrentUser)}
+                        {renderMessageContent(message)}
                       </div>
                       <div className="text-xs text-muted-foreground mt-1">
                         {showSenderInfo && !isCurrentUser && (message?.sender as IUser)?.username} •{' '}
