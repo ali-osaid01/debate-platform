@@ -51,14 +51,6 @@ export default function UpcomingEventsCard({ calender }: UpcomingEventsCardProps
             Posted by {(calender.event.postedBy as IUser).username}
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handlePin}
-          className={isPinned ? "text-blue-500" : "text-gray-500"}
-        >
-          <Pin className="h-5 w-5" />
-        </Button>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-gray-600 mb-4">{truncate(calender.event.description, 100)}</p>

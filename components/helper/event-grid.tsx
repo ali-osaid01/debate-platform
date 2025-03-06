@@ -136,9 +136,6 @@ export default function EventGrid({
                   </ScrollArea>
                 </CredenzaContent>
               </Credenza>
-              <Badge className="absolute top-2 right-2 bg-primary text-primary-foreground">
-                {event.category}
-              </Badge>
             </div>
           </CardHeader>
           <CardContent className="p-4">
