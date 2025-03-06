@@ -51,3 +51,5 @@ export enum SOCKET_EVENTS {
     "FETCH-CHAT-MESSAGE" = "fetch-chat-message",
     NEW_MESSAGE = "new-message",
 }  
+
+export type UserActionType = "enable" | "disable" | "delete";

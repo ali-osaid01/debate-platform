@@ -37,7 +37,7 @@ export default function UpcomingEvents() {
           </div>
           <div className="space-y-6">
             {data && data?.events.map((event:ICalender) => (
-              <UpcomingEventsCard key={event.id} calender={event} />
+              <UpcomingEventsCard key={event._id} calender={event} />
             ))}
           </div>
         </div>

@@ -17,9 +17,12 @@ export interface IBadge {
 
 export interface IUser {
   _id: string;
+  id:string;
   name: string;
   username: string;
   email: string;
+  online:boolean;
+  isActive:boolean
   bio: string;
   socialAuth: string;
   dob: Date;

@@ -1,3 +1,5 @@
+import { Bell, FileText, HelpCircle, LayoutDashboard, LogOut, Trophy, UserCog, Users } from "lucide-react";
+
 export const vapidKey = "BK2WrcNO5mJn6WwlB7YfMHLBoJHjkxXeOrw-44Sqmx1TGT-NpQsfjP3bCe4TbxeRJqd61LULnHbvs-ko1GBluPg";
 export const SUCCESS_REGISTRATION_PASSED: string = "Registered Successfully!";
 export const SUCCESS_LOGIN_PASSED: string = "Logged In Successfully!";
@@ -25,3 +27,12 @@ export const getPrice = (key: string): string | null => {
     };
     return prices[key];
 }
+
+export const menuItem = [
+    { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+    { name: 'Users', icon: Users, href: '/users' },
+    { name: 'Sub Admin', icon: UserCog, href: '/moderators' },
+    { name: 'Bowls club', icon: Trophy, href: '/admin-events' },
+    { name: 'Support', icon: HelpCircle, href: '/support' },
+    { name: 'Logout', icon: LogOut, href: '/login' },
+]

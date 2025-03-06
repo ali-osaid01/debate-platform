@@ -32,13 +32,12 @@ export default function EventGrid({
   error,
   isCurrentUserProfile
 }: EventGridProps) {
-  if (isLoading) {
+  if (isLoading) 
     return <div className="text-center p-4 flex justify-center mt-10"><Loader2 className="animate-spin" /></div>;
-  }
+  
 
-  if (error) {
+  if (error) 
     return <div className="text-center p-4 text-red-500">Error: {error}</div>;
-  }
 
   if (!events || events.length === 0) {
     return (
@@ -103,10 +102,6 @@ export default function EventGrid({
                           <div className="flex items-center space-x-2">
                             <CalendarIcon className="w-5 h-5 text-muted-foreground" />
                             <span>{new Date(event.date).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Clock className="w-5 h-5 text-muted-foreground" />
-                            <span>{new Date(event.date).toLocaleTimeString()}</span>
                           </div>
                           <div className="flex items-center space-x-2">
                             <MapPinIcon className="w-5 h-5 text-muted-foreground" />
