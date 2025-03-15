@@ -49,6 +49,7 @@ export const fetchUsers = async (
       response: data,
     };
   } catch (error: any) {
+    console.log("ERROR ->", error);
     return {
       status: STATUS.FAILED,
       error: error.response?.data?.message || "Something went wrong",

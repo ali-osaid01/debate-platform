@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from '../ui/badge';
 import { useQuery } from '@tanstack/react-query';
-import { fetchUser } from '@/service/user.api';
+import { fetchUsers } from '@/services/user.service';
 import usePaginationStore from '@/store/pagination.store';
 import UserProfileSheet from '../ui/user-profile-sheet';
 import { IUser } from '@/types/interface/user.interface';
@@ -19,20 +19,18 @@ import { UserActionsDropdown } from '../ui/user-action-dropdown';
 interface UserTableProps {
     key: string;
     search?: string
-    isActive?: boolean
 }
 
-const UserTable: FC<UserTableProps> = ({ key,search,isActive }) => {
+const UserTable: FC<UserTableProps> = ({ key,search }) => {
     const { pagination } = usePaginationStore();
     const { page = 1, limit = 10 } = pagination[key] || {};
 
-    const { data, isLoading } = useQuery({
-        queryKey: ['users', page, limit,search,isActive],
-        queryFn: () => fetchUser({ page, limit,search,isActive  }),
+    const { data, isLoading ,error} = useQuery({
+        queryKey: ['users'],
+        queryFn: () => fetchUsers(page, limit, ""),
     });
-
-    const users = data?.data?.data || [];
-
+    const users = data?.response?.data?.data|| [];
+    
     return (
         <div className="flex flex-col min-h-screen">
             <div className="flex-grow">
@@ -48,7 +46,7 @@ const UserTable: FC<UserTableProps> = ({ key,search,isActive }) => {
                                     <label className="font-bold text-white">PROFILE</label>
                                 </div>
                             </TableHead>
-                            <TableHead className="font-semibold text-white text-center">ONLINE STATUS</TableHead>
+                            <TableHead className="font-semibold text-white text-center">NAME</TableHead>
                             <TableHead className="font-semibold text-white text-center">USERNAME</TableHead>
                             <TableHead className="font-semibold text-white text-center">SUBSCRIBER</TableHead>
                             <TableHead className="font-semibold text-white text-center">ACCOUNT STATUS</TableHead>
@@ -69,14 +67,14 @@ const UserTable: FC<UserTableProps> = ({ key,search,isActive }) => {
                                 </TableCell>
                                 <TableCell className="w-60 text-center">
                                     <Badge variant="outline" className='bg-[#E6E6F2] text-[#427D77] rounded-xl'>
-                                    {user.online === true ? "Active" : "Inactive"}
+                                    {user.name}
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="w-60 text-center">{user.username}</TableCell>
                                 <TableCell className={`text-center ${user.subscription.subscribe == true ? 'text-green-500' : 'text-red-500'}`}>{user.subscription.subscribe? 'Yes' : 'No'}</TableCell>
                                 <TableCell>
                                     <p className={user.isActive === true ? "text-green-500 font-semibold" : "text-red-500 font-semibold"}>
-                                    {user.isActive == true ? 'active' : 'disabled'}
+                                    {user.isActive === true ? 'active' : 'disabled'}
                                     </p>
                                 </TableCell>
                                 <TableCell>

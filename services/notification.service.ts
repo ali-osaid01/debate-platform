@@ -16,3 +16,19 @@ export const notification = async (type?: ENOTIFICATION_TYPES) => {
         }
     }
 }
+
+export const readNotification = async () => {
+    try {
+        const { data } = await api.put(`/notification/read`);
+        return {
+            response: data,
+            status: "success"
+        }
+    } catch (error: any) {
+        console.log("ERROR NOTIFICATION ->", error);
+        return {
+            response: error?.response?.data?.msg,
+            status: "failed"
+        }
+    }
+}

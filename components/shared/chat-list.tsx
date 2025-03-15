@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useCallback } from 'react';
 import { ScrollArea } from '../ui/scroll-area';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useChatStore } from '@/store/chat.store';
 import { useUserStore } from '@/store/user.store';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -10,17 +9,19 @@ import { useChatSettings } from '@/store/chat-setting.store';
 
 interface ChatListProps {
   isMobile: boolean;
+  isSocketConnected: boolean;
 }
 
-const ChatList: FC<ChatListProps> = ({isMobile}) => {
+const ChatList: FC<ChatListProps> = ({isMobile,isSocketConnected}) => {
   const { fetchChats, chats, setCurrentChat, currentChat } = useChatStore();
   const { user } = useUserStore();
   const {setShowMessage,showMessage} = useChatSettings();
 
   useEffect(() => {
-    console.log("FETCHING CHATS",user?._id)
-    fetchChats(user?._id!);
-  }, [user, fetchChats]);
+    if (!user?._id) return; 
+    console.log("FETCHING CHATS", user._id);
+    fetchChats(user._id);
+  }, [user?._id, isSocketConnected]); 
 
   const onChatSelect = useCallback((chat: IChat) => {
     setCurrentChat(chat);
@@ -42,7 +43,7 @@ const ChatList: FC<ChatListProps> = ({isMobile}) => {
             />
           ))
         ) : (
-          <div className="p-4 text-sm text-muted-foreground text-center">No chats available</div>
+          <div className="p-4 text-sm text-muted-foreground text-center">Loading...</div>
         )}
       </ScrollArea>
     </div>

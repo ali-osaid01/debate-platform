@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import socket from '@/sockets/socket'
 import { getAccessToken } from '@/services/middleware'
 import ChatList from '@/components/shared/chat-list'
@@ -8,22 +8,20 @@ import { useIsMobile } from '@/hooks/use-mobile'
 
 export default function ChatPage() {
   const isMobile = useIsMobile()
- 
+  const [isSocketConnected, setIsSocketConnected] = useState(false)
   
   useEffect(() => {
     const token = getAccessToken()
     socket.initializeSocket(token as string)
-    console.log("======SOCKET CONNECTED======")
+    setIsSocketConnected(true)
     return () => {
       socket.removeAllListener()
     }
   }, [])
 
-  console.log("IS MOBILE",isMobile);
-  
   return (
     <div className="flex">
-      <ChatList isMobile={isMobile}/>
+      <ChatList isMobile={isMobile} isSocketConnected={isSocketConnected}/>
       <MessageBox isMobile={isMobile}/>
     </div>
   )

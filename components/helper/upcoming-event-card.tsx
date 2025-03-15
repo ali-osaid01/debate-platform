@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {  Users, Calendar, Pin, MapPin, ThumbsUp } from 'lucide-react';
 import { useState } from "react";
 import { ICalender } from "@/types/interface/calender.interface";
-import { useChatStore } from "@/store/chat.store";
 import { useRouter } from "next/navigation";
 import { IUser } from "@/types/interface/user.interface";
 
@@ -16,7 +15,6 @@ interface UpcomingEventsCardProps {
 export default function UpcomingEventsCard({ calender }: UpcomingEventsCardProps) {
   const [isPinned, setIsPinned] = useState(false);
   const router = useRouter();
-  // const {setCurrentChat} = useChatStore();
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleString("en-US", {
       weekday: "short",
@@ -28,10 +26,6 @@ export default function UpcomingEventsCard({ calender }: UpcomingEventsCardProps
     });
   };
 
-  const handlePin = () => {
-    setIsPinned(!isPinned);
-    console.log(`Event ${calender.event._id} ${isPinned ? 'unpinned' : 'pinned'}`);
-  };
 
   const truncate = (str: string, n: number) => {
     return (str?.length > n) ? str.slice(0, n-1) + '...' : str;
@@ -42,6 +36,7 @@ export default function UpcomingEventsCard({ calender }: UpcomingEventsCardProps
     router.push(`/chat`);
   }
 
+  console.log("Upcoming Event Card ->", calender);
   return (
     <Card className="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
       <CardHeader className="flex flex-row items-start justify-between pb-2">
@@ -65,7 +60,8 @@ export default function UpcomingEventsCard({ calender }: UpcomingEventsCardProps
           </div>
           <div className="flex items-center">
             <Users className="mr-2 h-5 w-5 text-green-500" />
-            <span className="text-sm">{calender.event?.participants?.length} participants</span>
+            <span className="text-sm">{calender.event?.participants?.length + 1} participants</span> 
+            {/* +1 for the event creator */}
           </div>
         </div>
       </CardContent>
