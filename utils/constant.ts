@@ -34,5 +34,7 @@ export const menuItem = [
     { name: 'Sub Admin', icon: UserCog, href: '/moderators' },
     { name: 'Bowls club', icon: Trophy, href: '/admin-events' },
     { name: 'Support', icon: HelpCircle, href: '/support' },
-    { name: 'Logout', icon: LogOut, href: '/login' },
+    { name: 'Events', icon: Trophy, href: '/events'},
+    { name: 'Logout', icon: LogOut, href: '/login' }
+    
 ]
