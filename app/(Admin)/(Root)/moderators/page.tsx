@@ -1,8 +1,11 @@
 import React from 'react'
+import SubAdminTable from '@/components/helper/admin-table'
 
 const page = () => {
   return (
-    <div>moderators</div>
+    <div>
+      <SubAdminTable/>
+    </div>
   )
 }
 
