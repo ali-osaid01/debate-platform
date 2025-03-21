@@ -20,7 +20,7 @@ import FileUpload from "@/components/helper/file-upload";
 import { badgeValidation } from "@/validation/badge.validation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createBadge, fetchBadge } from "@/services/badge.service";
 
 type Badge = {
@@ -30,6 +30,7 @@ type Badge = {
 
 function CreateBadge() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -45,6 +46,7 @@ function CreateBadge() {
   })
   const onSubmit = (data: Badge) => {
     mutate(data)
+    queryClient.invalidateQueries({queryKey:["badges"]})
     reset();
     setIsDialogOpen(false);
   };
