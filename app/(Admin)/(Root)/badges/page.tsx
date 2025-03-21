@@ -20,8 +20,8 @@ import FileUpload from "@/components/helper/file-upload";
 import { badgeValidation } from "@/validation/badge.validation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useQuery } from "@tanstack/react-query";
-import { fetchBadge } from "@/services/badge.service";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createBadge, fetchBadge } from "@/services/badge.service";
 
 type Badge = {
   name: string;
@@ -40,7 +40,11 @@ function CreateBadge() {
     resolver: yupResolver(badgeValidation),
   });
 
+  const { mutate} = useMutation({
+    mutationFn:createBadge
+  })
   const onSubmit = (data: Badge) => {
+    mutate(data)
     reset();
     setIsDialogOpen(false);
   };
