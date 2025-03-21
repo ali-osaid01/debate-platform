@@ -1,4 +1,4 @@
-import { Bell, FileText, HelpCircle, LayoutDashboard, LogOut, Trophy, UserCog, Users } from "lucide-react";
+import { Bell, FileText, FileTextIcon, HelpCircle, LayoutDashboard, LogOut, Trophy, UserCog, Users } from "lucide-react";
 
 export const vapidKey = "BK2WrcNO5mJn6WwlB7YfMHLBoJHjkxXeOrw-44Sqmx1TGT-NpQsfjP3bCe4TbxeRJqd61LULnHbvs-ko1GBluPg";
 export const SUCCESS_REGISTRATION_PASSED: string = "Registered Successfully!";
@@ -31,10 +31,18 @@ export const getPrice = (key: string): string | null => {
 export const menuItem = [
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Users', icon: Users, href: '/users' },
-    { name: 'Sub Admin', icon: UserCog, href: '/moderators' },
-    { name: 'Bowls club', icon: Trophy, href: '/admin-events' },
-    { name: 'Support', icon: HelpCircle, href: '/support' },
+    { name: 'Moderators', icon: UserCog, href: '/moderators' },
     { name: 'Events', icon: Trophy, href: '/events'},
-    { name: 'Logout', icon: LogOut, href: '/login' }
-    
+    { name:'Badges', icon: FileTextIcon, href: '/badges'},
+    { name: 'Logout', icon: LogOut, href: '/login' }   
 ]
+
+export const generatePassword = (): string => {
+    const length = 8;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    return password;
+}

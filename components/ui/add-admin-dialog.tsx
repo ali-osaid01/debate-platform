@@ -14,11 +14,10 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-// import { generatePassword } from "@/utils/helper"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { generatePassword } from "@/utils/constant"
+import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { createAdminSchema } from "@/validation/admin.validation"
-// import { createAdmin } from "@/service/admin.api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
@@ -26,6 +25,7 @@ type CreateAdminPayload = {
     email: string
     password: string
     firstName: string
+    username:string
     lastName: string
     phoneNumber: string
     profileImage?: string
@@ -45,18 +45,18 @@ export function CreateAdminDialog() {
     resolver: yupResolver(createAdminSchema),
   })
 
-  const { mutate, status } = useMutation({
-    mutationFn: createAdmin,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["sub-admins"],
-      })
-      toast.success("Sub-admin created successfully")
-      reset()
-    },
-  })
+  // const { mutate, status } = useMutation({
+  //   mutationFn: createAdmin,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["sub-admins"],
+  //     })
+  //     toast.success("Sub-admin created successfully")
+  //     reset()
+  //   },
+  // })
 
-  const onSubmit:SubmitHandler<CreateAdminPayload> = (data) => mutate(data as any)
+  // const onSubmit:SubmitHandler<CreateAdminPayload> = (data) => mutate(data as any)
 
   return (
     <>
@@ -77,7 +77,7 @@ export function CreateAdminDialog() {
               the ability to control the rights.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form >
             <div className="grid gap-6 pt-4">
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-4">
@@ -109,6 +109,19 @@ export function CreateAdminDialog() {
                         {errors.lastName && (
                           <p className="text-red-500 text-sm">
                             {errors.lastName.message}
+                          </p>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Username</Label>
+                        <Input
+                          id="lastName"
+                          placeholder="Type here"
+                          {...register("username")}
+                        />
+                        {errors.username && (
+                          <p className="text-red-500 text-sm">
+                            {errors.username.message}
                           </p>
                         )}
                       </div>

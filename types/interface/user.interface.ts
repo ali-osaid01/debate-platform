@@ -18,6 +18,8 @@ export interface IBadge {
 export interface IUser {
   _id: string;
   id:string;
+  firstname: string;
+  lastname:string;
   name: string;
   username: string;
   email: string;
