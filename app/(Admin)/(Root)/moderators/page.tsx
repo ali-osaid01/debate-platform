@@ -18,7 +18,7 @@ const AdminPage:FC<AdminPageProps> = async ({searchParams}) => {
                 <Search initialValue={search} />
                 <CreateAdminDialog />
             </section>
-            <SubAdminTable/>
+            <SubAdminTable />
         </main>
     )
 }

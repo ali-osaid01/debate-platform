@@ -1,7 +1,6 @@
-// src/services/admin.service.ts
-import { IAdmin } from "@/types/interface/admin.interface";
 import api from "./middleware";
 import { STATUS } from "@/types/enum";
+import { IUser } from "@/types/interface/user.interface";
 
 export const fetchAdmins = async (
   page?: number,
@@ -9,7 +8,7 @@ export const fetchAdmins = async (
   search?: string,
 ): Promise<any> => {
   try {
-    const url = `/admin?page=${page || 1}&limit=${limit || 10}&search=${search || ""}`;
+    const url = `/moderator?page=${page || 1}&limit=${limit || 10}&search=${search || ""}`;
     const { data } = await api.get(url);
     return {
       status: STATUS.SUCCESS,
@@ -18,22 +17,21 @@ export const fetchAdmins = async (
   } catch (error: any) {
     return {
       status: STATUS.FAILED,
-      error: error.response?.data?.message || "Failed to fetch admins",
+      error: error.response?.data?.msg || "Failed to fetch admins",
     };
   }
 };
 
-export const createAdmin = async (payload: Partial<IAdmin>): Promise<any> => {
+export const createAdmin = async (payload: Partial<IUser>): Promise<any> => {
   try {
-    const { data } = await api.post("/admin", payload);
+    const { data } = await api.post("/moderator", payload);
+    console.log("data", data);
     return {
       status: STATUS.SUCCESS,
       response: data,
     };
   } catch (error: any) {
-    return {
-      status: STATUS.FAILED,
-      error: error.response?.data?.message || "Failed to create admin",
-    };
+    console.log("error", error);
+  throw new Error(error.response?.data?.data || "Failed to create admin");
   }
 };
