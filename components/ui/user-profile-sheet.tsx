@@ -24,7 +24,7 @@ const UserProfileSheet:FC<UserProfileSheetProps> = ({user}) => {
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src={user?.profilePicture} />
                                 <AvatarFallback>
-                                    {user?.name[0]}{user?.name[1]}
+                                {user?.name?.[0]}{user?.name?.[1]}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col gap-1">
@@ -44,7 +44,8 @@ const UserProfileSheet:FC<UserProfileSheetProps> = ({user}) => {
                         <div className="flex justify-center">
                             <Avatar className="h-24 w-24">
                                 <AvatarImage src={user?.profilePicture} />
-                                <AvatarFallback>{user?.name[0]}{user?.name[1]}
+                                <AvatarFallback>
+                                    {user?.name?.[0]}{user?.name?.[1]}
                                     </AvatarFallback>
                             </Avatar>
                         </div>

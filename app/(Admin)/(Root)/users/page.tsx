@@ -13,7 +13,7 @@ const UserPage: FC<UserProps> = async ({ searchParams }) => {
   return (
     <div>
         <DashboardSearch initialValue={search}  />
-        <UserTable key='users-table'/>
+        <UserTable key='users-table' search={search}/>
     </div>
   )
 }

@@ -25,9 +25,9 @@ const UserTable: FC<UserTableProps> = ({ key,search }) => {
     const { pagination } = usePaginationStore();
     const { page = 1, limit = 10 } = pagination[key] || {};
 
-    const { data, isLoading ,error} = useQuery({
-        queryKey: ['users'],
-        queryFn: () => fetchUsers(page, limit, ""),
+    const { data } = useQuery({
+        queryKey: ['users',page,limit,search],
+        queryFn: () => fetchUsers(page, limit, search || ""),
     });
     const users = data?.response?.data?.data|| [];
     

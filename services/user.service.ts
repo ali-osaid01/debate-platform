@@ -49,10 +49,41 @@ export const fetchUsers = async (
       response: data,
     };
   } catch (error: any) {
-    console.log("ERROR ->", error);
     return {
       status: STATUS.FAILED,
       error: error.response?.data?.message || "Something went wrong",
     };
   }
 };
+
+export const toggleStatus = async (id: string, action: boolean): Promise<any> => {
+  try {
+    const url = `/user/toggle-status/${id}`;
+    const { data } = await api.post(url, { status:action });
+    return {
+      status: STATUS.SUCCESS,
+      response: data,
+    };
+  } catch (error: any) {
+    return {
+      status: STATUS.FAILED,
+      response: error.response?.data?.message || "Something went wrong",
+    };
+  }
+}
+
+export const deleteUser = async (id: string): Promise<any> => {
+  try {
+    const url = `/user/${id}`;
+    const { data } = await api.delete(url);
+    return {
+      status: STATUS.SUCCESS,
+      response: data,
+    };
+  } catch (error: any) {
+    return {
+      status: STATUS.FAILED,
+      response: error.response?.data?.message || "Something went wrong",
+    };
+  }
+}
