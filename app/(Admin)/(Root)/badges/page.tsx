@@ -23,14 +23,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBadge } from "@/services/badge.service";
 
-const initialBadges = [
-  { id: 1, name: "Gold Medal", image: "/placeholder.svg?height=80&width=80" },
-  { id: 2, name: "Silver Medal", image: "/placeholder.svg?height=80&width=80" },
-  { id: 3, name: "Bronze Medal", image: "/placeholder.svg?height=80&width=80" },
-  { id: 4, name: "Achievement Badge", image: "/placeholder.svg?height=80&width=80" },
-  { id: 5, name: "Excellence Award", image: "/placeholder.svg?height=80&width=80" },
-];
-
 type Badge = {
   name: string;
   image: string;
@@ -104,7 +96,6 @@ function BadgeList() {
     queryFn: () => fetchBadge(1, 10),
   });
 
-  console.log("->",data);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       {data?.response?.data?.map((badge:{name:string,image:string,id:string}) => (
