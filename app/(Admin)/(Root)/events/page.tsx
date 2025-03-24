@@ -1,10 +1,10 @@
 import React from 'react'
-// import EventsPage from '@/components/helper/events'
+import EventsPage from '@/components/helper/events'
 
 const page = () => {
   return (
     <div>
-      {/* <EventsPage /> */}
+      <EventsPage />
     </div>
   )
 }

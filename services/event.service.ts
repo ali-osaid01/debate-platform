@@ -50,7 +50,7 @@ export const fetchEvents = async (user?: string, type?: string,category?:string 
   }
 };
 
-export const toggleEventStatus = async (payload:{event:string,notification:string,user:string,status:string}) => {
+export const toggleUserStatus = async (payload:{event:string,notification:string,user:string,status:string}) => {
   try {
     const response = await api.put(`/event/toggle-user-status`, {
       notification: payload.notification,
@@ -62,6 +62,51 @@ export const toggleEventStatus = async (payload:{event:string,notification:strin
     return {
       status: "success",
       response,
+    };
+  } catch (error: any) {
+    console.log("ERROR ->", error);
+
+    return {
+      status: "failed",
+      response: error.response?.data?.msg || "Something went wrong",
+    };
+  }
+}
+export const toggleEventStatus = async (payload:{event:string,status:string}) => {
+  try {
+    const response = await api.put(`/event/toggle-status/`, {
+      event: payload.event,
+      status: payload.status,
+    });
+
+    return {
+      status: "success",
+      response,
+    };
+  } catch (error: any) {
+    console.log("ERROR ->", error);
+
+    return {
+      status: "failed",
+      response: error.response?.data?.msg || "Something went wrong",
+    };
+  }
+}
+export const fetchPublicEvents = async (payload:{type:string,status:string}) => {
+  try {
+    const params = new URLSearchParams();
+      const { type,status } = payload;
+    if (type) {
+      params.append('type', type);
+    }
+    if(status){
+      params.append('status',status);
+    }
+    const { data } = await api.get(`/event?${params.toString()}`);
+
+    return {
+      status: "success",
+      response: data,
     };
   } catch (error: any) {
     console.log("ERROR ->", error);

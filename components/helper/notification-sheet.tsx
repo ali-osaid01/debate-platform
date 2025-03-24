@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatShortDuration } from "@/lib/utils";
-import { toggleEventStatus } from "@/services/event.service";
+import { toggleUserStatus } from "@/services/event.service";
 import { notification, readNotification } from "@/services/notification.service";
 import { ENOTIFICATION_TYPES, ParticipantStatus } from "@/types/enum";
 import {
@@ -66,7 +66,7 @@ const NotificationItem = ({ notification }: { notification: INotification }) => 
         notification: notification._id,
         status,
       };
-      await toggleEventStatus(payload);
+      await toggleUserStatus(payload);
       await queryClient.invalidateQueries({ queryKey: ["notification"] });
     } catch (error) {
       console.error("Error toggling event status:", error);
